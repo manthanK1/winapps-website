@@ -1,6 +1,8 @@
 ---
 title: Legacy pharma SaaS re-platformed to cloud-native
 order: 2
+image: ../../assets/images/work/pharma-saas-replatform.jpg
+imageAlt: Sealed medicine vials in a laboratory rack
 sector: Pharma
 region: Global
 disciplines: [Modernization, Cloud]

@@ -1,6 +1,8 @@
 ---
 title: Member app for a multi-site fitness chain
 order: 1
+image: ../../assets/images/work/fitness-member-app.jpg
+imageAlt: Gym floor with blue strength-training machines
 sector: Fitness
 region: United Kingdom
 disciplines: [Mobile, AI]

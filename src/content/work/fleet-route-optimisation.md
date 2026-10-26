@@ -1,6 +1,8 @@
 ---
 title: Fleet management and route optimisation
 order: 4
+image: ../../assets/images/work/fleet-route-optimisation.jpg
+imageAlt: Truck on an open highway
 sector: Logistics
 disciplines: [Platform, ML]
 problem: Dispatch, drivers and customers needed one real-time view of a delivery fleet.

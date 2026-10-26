@@ -1,6 +1,8 @@
 ---
 title: AI visual quality inspection on the production line
 order: 3
+image: ../../assets/images/work/ai-visual-inspection.jpg
+imageAlt: Close-up of machined metal engine components and gears
 sector: Manufacturing
 region: India
 disciplines: [Computer vision, MLOps]

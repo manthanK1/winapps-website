@@ -26,9 +26,12 @@ const services = defineCollection({
 
 const work = defineCollection({
   loader: glob({ pattern: "*.md", base: "./src/content/work" }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     order: z.number(),
+    // Illustrative sector photo (not the client's premises). See CREDITS.md.
+    image: image(),
+    imageAlt: z.string(),
     sector: z.string(),
     region: z.string().optional(),
     disciplines: z.array(z.string()),
@@ -50,10 +53,12 @@ const faq = defineCollection({
 
 const industries = defineCollection({
   loader: file("src/content/industries.yaml"),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     name: z.string(),
     order: z.number(),
     icon: iconName,
+    image: image(),
+    imageAlt: z.string(),
     summary: z.string(),
     focus: z.array(z.string()),
     relatedWork: z.array(reference("work")).default([]),

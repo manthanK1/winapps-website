@@ -1,5 +1,6 @@
 ---
 import { getCollection, getEntries } from "astro:content";
+import { Picture } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import Icon from "../components/Icon.astro";
@@ -31,6 +32,14 @@ const crumbs = [{ name: "Industries", path: "/industries/" }];
       <ul class="grid gap-x-10 gap-y-0 md:grid-cols-2">
         {industries.map((ind, i) => (
           <li class="border-t border-line py-10" id={ind.id} data-reveal style={`--reveal-delay:${(i % 2) * 70}ms`}>
+            <Picture
+              src={ind.image}
+              alt={ind.imageAlt}
+              formats={["avif", "webp"]}
+              widths={[400, 640, 960]}
+              sizes="(min-width: 1280px) 590px, (min-width: 768px) 46vw, 100vw"
+              class="mb-8 aspect-[16/9] w-full rounded-2xl bg-teal-50 object-cover"
+            />
             <div class="flex items-start gap-5">
               <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-teal-50 text-teal-700"><Icon name={ind.icon as IconName} size={24} /></span>
               <div class="min-w-0">
