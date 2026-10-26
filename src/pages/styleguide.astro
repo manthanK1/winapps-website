@@ -1,0 +1,150 @@
+---
+// Internal design-system reference. Not indexed, not in the sitemap.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Logo from "../components/Logo.astro";
+import Icon from "../components/Icon.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import FaqList from "../components/FaqList.astro";
+import Ribbon from "../components/Ribbon.astro";
+
+// Mirrors the @theme values in global.css (inline here so the swatch
+// classes don't ship in every page's CSS).
+const palette: Record<string, string[]> = {
+  teal: ["#eef7f7", "#d6eded", "#aedadb", "#7fc2c3", "#4fa6a8", "#2e9799", "#1f8a8c", "#187173", "#13595b", "#0f4547", "#0b2e2f"],
+  orange: ["#fef6eb", "#fde9ce", "#fbd39e", "#f8bc6a", "#f5a945", "#f39a2b", "#dc7e12", "#b5620e", "#8f4d12", "#743f13", "#3f1f07"],
+  amber: ["#fefbe8", "#fef4c3", "#fde88a", "#fad64b", "#f6c21e", "#e6a80c", "#c68207", "#9e5d0a", "#824a10", "#6e3d13", "#402006"],
+  stone: ["#fbfaf7", "#f7f5f0", "#eeebe4", "#e3e0d8", "#c9c6bd", "#8f9a9a", "#5b6b6c", "#435253", "#2c3a3b", "#1c2b2d", "#142224"],
+};
+const scales = Object.keys(palette);
+const steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+const anchors: Record<string, number[]> = { teal: [600, 800, 950], orange: [500], amber: [400] };
+const semantic = [
+  { name: "paper", hex: "#F7F5F0", use: "Page background" },
+  { name: "white", hex: "#FFFFFF", use: "Cards, alternate sections" },
+  { name: "line", hex: "#E3E0D8", use: "Borders, dividers" },
+  { name: "muted", hex: "#5B6B6C", use: "Secondary text (5.1:1 on paper)" },
+  { name: "ink", hex: "#142224", use: "Body text (15.0:1 on paper)" },
+];
+const type = [
+  { token: "text-display", sample: "Senior engineers for software", cls: "text-display font-semibold tracking-[-0.035em]" },
+  { token: "text-h1", sample: "Tell us what you're building.", cls: "text-h1 font-semibold tracking-[-0.03em]" },
+  { token: "text-h2", sample: "Six practices, one standard.", cls: "text-h2 font-semibold tracking-tight" },
+  { token: "text-h3", sample: "Dedicated pod", cls: "text-h3 font-semibold tracking-tight" },
+  { token: "text-h4", sample: "Who owns the code and IP?", cls: "text-h4 font-semibold tracking-tight" },
+  { token: "text-lead", sample: "We design, build and scale AI systems, web and mobile products and cloud platforms.", cls: "text-lead text-stone-700" },
+  { token: "text-base", sample: "Body copy at 17–18px with a 1.6 line height, kept under 70 characters per line for comfortable reading.", cls: "text-base text-stone-700" },
+  { token: "text-sm", sample: "Supporting text, card details and form hints.", cls: "text-sm text-stone-700" },
+];
+---
+<BaseLayout title="Styleguide" description="Winapps design system reference." noindex>
+  <div class="container-site space-y-24 py-16">
+    <header>
+      <p class="eyebrow">Design system</p>
+      <h1 class="mt-4 text-h1 font-semibold text-teal-800">Winapps styleguide</h1>
+      <p class="mt-4 max-w-2xl text-lead text-stone-700">Tokens and components used across the site. Source: <code>src/styles/global.css</code>.</p>
+    </header>
+
+    <section aria-labelledby="sg-logo">
+      <h2 id="sg-logo" class="text-h3 font-semibold text-teal-800">Logo</h2>
+      <p class="mt-2 text-sm text-muted">Supplied PNG, background keyed out, never redrawn or recoloured. Light backgrounds only until a reversed version is supplied.</p>
+      <div class="mt-6 flex flex-wrap items-end gap-8">
+        <div class="rounded-xl border border-line bg-paper p-8"><Logo height={120} /></div>
+        <div class="rounded-xl border border-line bg-white p-8"><Logo height={64} /></div>
+        <div class="rounded-xl border border-line bg-white p-8"><Logo height={44} /></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="sg-color">
+      <h2 id="sg-color" class="text-h3 font-semibold text-teal-800">Colour</h2>
+      <p class="mt-2 max-w-3xl text-sm text-muted">Teal leads; orange and amber are accents only. Teal-600 is 3.8:1 on paper, so it is used for large text, icons, borders and focus rings, never small text. Links use teal-700 (5.3:1). Orange buttons carry ink text (7.4:1). Run <code>node scripts/contrast.mjs</code> to re-check. Ringed swatches are the fixed brand values.</p>
+      <div class="mt-8 grid gap-3 sm:grid-cols-5">
+        {semantic.map((s) => (
+          <div class="overflow-hidden rounded-lg border border-line">
+            <div class="h-16" style={`background:${s.hex}`}></div>
+            <div class="bg-white p-3 text-xs"><p class="font-semibold text-ink">{s.name} · {s.hex}</p><p class="text-muted">{s.use}</p></div>
+          </div>
+        ))}
+      </div>
+      <div class="mt-8 space-y-4">
+        {scales.map((scale) => (
+          <div>
+            <p class="text-sm font-semibold text-ink">{scale}</p>
+            <div class="mt-2 grid grid-cols-6 gap-1.5 sm:grid-cols-11">
+              {steps.map((n, i) => (
+                <div class:list={["rounded-md p-1", anchors[scale]?.includes(n) && "ring-2 ring-ink ring-offset-2"]}>
+                  <div class="h-10 rounded" style={`background:${palette[scale][i]}`}></div>
+                  <p class="mt-1 text-[11px] text-muted">{n}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="mt-8 h-3 max-w-md rounded-full" style="background:linear-gradient(135deg,#F39A2B,#F6C21E)"></div>
+      <p class="mt-2 text-sm text-muted">Signature gradient: primary button hover and the hero ribbon stroke only.</p>
+    </section>
+
+    <section aria-labelledby="sg-type">
+      <h2 id="sg-type" class="text-h3 font-semibold text-teal-800">Typography</h2>
+      <p class="mt-2 max-w-3xl text-sm text-muted">Schibsted Grotesk 500/600 for headings, Inter 400/600 for text. Self-hosted woff2, metric-matched fallbacks to prevent layout shift.</p>
+      <div class="mt-8 divide-y divide-line border-y border-line">
+        {type.map((t) => (
+          <div class="grid gap-2 py-5 sm:grid-cols-[10rem_1fr] sm:items-baseline">
+            <code class="text-xs text-muted">{t.token}</code>
+            <p class:list={[t.cls, "text-ink"]}>{t.sample}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section aria-labelledby="sg-buttons">
+      <h2 id="sg-buttons" class="text-h3 font-semibold text-teal-800">Buttons, links, chips</h2>
+      <div class="mt-6 flex flex-wrap items-center gap-4">
+        <a href="#sg-buttons" class="btn btn-primary">Primary action <Icon name="arrow-right" size={18} class="icon-arrow" /></a>
+        <a href="#sg-buttons" class="btn btn-secondary">Secondary</a>
+        <a href="#sg-buttons" class="btn btn-primary btn-sm">Small</a>
+        <a href="#sg-buttons" class="link">Text link</a>
+        <span class="chip">Kubernetes</span>
+      </div>
+      <div class="on-dark mt-6 flex flex-wrap items-center gap-4 rounded-xl bg-teal-950 p-6">
+        <a href="#sg-buttons" class="btn btn-primary">On dark</a>
+        <a href="#sg-buttons" class="btn btn-secondary">Secondary on dark</a>
+        <a href="#sg-buttons" class="link">Link on dark</a>
+        <span class="chip">Chip</span>
+      </div>
+    </section>
+
+    <section aria-labelledby="sg-cards">
+      <h2 id="sg-cards" class="text-h3 font-semibold text-teal-800">Cards &amp; surfaces</h2>
+      <div class="mt-6 grid gap-6 md:grid-cols-3">
+        <div class="card p-6"><p class="font-semibold">Card</p><p class="mt-1 text-sm text-muted">White, 1px line border, soft shadow.</p></div>
+        <div class="card card-interactive card-ribbon p-6"><p class="font-semibold">Interactive + ribbon corner</p><p class="mt-1 text-sm text-muted">Lifts on hover.</p></div>
+        <div class="on-dark rounded-2xl bg-teal-800 p-6 text-white"><p class="font-semibold">Feature surface</p><p class="mt-1 text-sm text-teal-100">Teal-800, used once per section at most.</p></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="sg-sections">
+      <h2 id="sg-sections" class="text-h3 font-semibold text-teal-800">Section patterns</h2>
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <div class="rounded-xl border border-line bg-paper p-6"><SectionHeader eyebrow="Paper" title="Default section" /></div>
+        <div class="rounded-xl border border-line bg-white p-6"><SectionHeader eyebrow="White" title="Alternate section" /></div>
+        <div class="on-dark rounded-xl bg-teal-950 p-6"><SectionHeader eyebrow="Deep teal" title="Trust / CTA" /></div>
+      </div>
+      <div class="relative mt-6 h-48 overflow-hidden rounded-xl border border-line bg-paper">
+        <Ribbon variant="hero" class="absolute right-0 top-0 h-full w-1/2" />
+        <p class="relative p-6 text-sm text-muted">Ribbon motif: abstract curves echoing the logo, never the logo itself.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="sg-faq">
+      <h2 id="sg-faq" class="text-h3 font-semibold text-teal-800">Accordion &amp; form fields</h2>
+      <div class="mt-6 grid gap-10 lg:grid-cols-2">
+        <FaqList items={[{ question: "Native details/summary accordion", answer: "Keyboard accessible with no JavaScript. Height animates where the browser supports it." }]} />
+        <div class="space-y-4">
+          <div><label class="field-label" for="sg-field">Label</label><input id="sg-field" type="text" class="field" placeholder="Placeholder" /></div>
+          <div><label class="field-label" for="sg-field-err">With error</label><input id="sg-field-err" type="email" class="field" aria-invalid="true" value="not-an-email" /><p class="field-error">Please enter a valid email address.</p></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

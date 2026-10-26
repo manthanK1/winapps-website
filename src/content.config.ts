@@ -1,0 +1,99 @@
+import { defineCollection, reference } from "astro:content";
+import { file, glob } from "astro/loaders";
+import { z } from "astro/zod";
+
+// Content lives in src/content/. Edit the Markdown/YAML files there; the
+// schemas below catch missing or misspelled fields at build time.
+
+const iconName = z.string();
+
+const services = defineCollection({
+  loader: glob({ pattern: "*.md", base: "./src/content/services" }),
+  schema: z.object({
+    title: z.string(),
+    order: z.number(),
+    icon: iconName,
+    summary: z.string(), // one line under the title
+    outcome: z.string(), // "What you get" headline outcome
+    deliverables: z.array(z.string()).min(1),
+    delivery: z.array(z.object({ title: z.string(), text: z.string() })).min(1),
+    tech: z.array(z.string()),
+    relatedWork: reference("work").optional(),
+    faq: z.array(z.object({ question: z.string(), answer: z.string() })).default([]),
+    seoDescription: z.string().max(170),
+  }),
+});
+
+const work = defineCollection({
+  loader: glob({ pattern: "*.md", base: "./src/content/work" }),
+  schema: z.object({
+    title: z.string(),
+    order: z.number(),
+    sector: z.string(),
+    region: z.string().optional(),
+    disciplines: z.array(z.string()),
+    problem: z.string(),
+    delivered: z.string(),
+    stack: z.array(z.string()),
+    services: z.array(reference("services")).default([]),
+    architecture: z.array(z.object({ layer: z.string(), nodes: z.array(z.string()) })),
+    // Leave null until client-approved outcome metrics are available.
+    results: z.array(z.object({ value: z.string(), label: z.string() })).nullable().default(null),
+    seoDescription: z.string().max(170),
+  }),
+});
+
+const faq = defineCollection({
+  loader: file("src/content/faq.yaml"),
+  schema: z.object({ question: z.string(), answer: z.string(), order: z.number() }),
+});
+
+const industries = defineCollection({
+  loader: file("src/content/industries.yaml"),
+  schema: z.object({
+    name: z.string(),
+    order: z.number(),
+    icon: iconName,
+    summary: z.string(),
+    focus: z.array(z.string()),
+    relatedWork: z.array(reference("work")).default([]),
+  }),
+});
+
+// Real quotes only, with written permission. Files starting with "_" are ignored.
+const testimonials = defineCollection({
+  loader: glob({ pattern: "[!_]*.md", base: "./src/content/testimonials" }),
+  schema: z.object({
+    quote: z.string(),
+    name: z.string(),
+    role: z.string(),
+    company: z.string(),
+    permissionConfirmed: z.literal(true),
+  }),
+});
+
+// Real client logos only, with written permission.
+const clients = defineCollection({
+  loader: glob({ pattern: "[!_]*.md", base: "./src/content/clients" }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      logo: image(),
+      permissionConfirmed: z.literal(true),
+    }),
+});
+
+// Leadership for the About page. Real people and photos only.
+const team = defineCollection({
+  loader: glob({ pattern: "[!_]*.md", base: "./src/content/team" }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      role: z.string(),
+      order: z.number(),
+      photo: image().optional(),
+      linkedin: z.string().url().optional(),
+    }),
+});
+
+export const collections = { services, work, faq, industries, testimonials, clients, team };

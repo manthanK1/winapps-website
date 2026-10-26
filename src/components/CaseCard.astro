@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Icon from "./Icon.astro";
+import { href } from "../lib/url";
+
+interface Props {
+  item: CollectionEntry<"work">;
+  featured?: boolean;
+  headingLevel?: "h2" | "h3";
+}
+const { item, featured = false, headingLevel: H = "h3" } = Astro.props;
+const d = item.data;
+---
+<article class:list={["card card-interactive card-ribbon group flex h-full flex-col p-6 sm:p-8", { "lg:p-10": featured }]}>
+  <p class="text-xs font-semibold uppercase tracking-[0.08em] text-teal-700">
+    {d.sector}{d.region && <> · {d.region}</>}
+  </p>
+  <H class:list={["mt-3 font-semibold tracking-tight text-ink", featured ? "text-h3" : "text-h4"]}>
+    <a href={href(`/work/${item.id}/`)} class="after:absolute after:inset-0 after:rounded-[inherit] focus-visible:outline-none">
+      {d.title}
+    </a>
+  </H>
+  <dl class="mt-5 space-y-4 text-sm">
+    <div>
+      <dt class="font-semibold text-stone-800">Problem</dt>
+      <dd class="mt-1 text-stone-700">{d.problem}</dd>
+    </div>
+    <div>
+      <dt class="font-semibold text-stone-800">What we delivered</dt>
+      <dd class="mt-1 text-stone-700">{d.delivered}</dd>
+    </div>
+  </dl>
+  <!-- TODO: client-approved outcome metric (results field in the case study file) -->
+  <ul class="mt-6 flex flex-wrap gap-2" aria-label="Technology">
+    {d.stack.map((t) => <li class="chip">{t}</li>)}
+  </ul>
+  <p class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-teal-700" aria-hidden="true">
+    Read the case study <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+  </p>
+</article>
+
+<style>
+  article:has(a:focus-visible) { outline: 3px solid var(--color-teal-600); outline-offset: 3px; }
+</style>

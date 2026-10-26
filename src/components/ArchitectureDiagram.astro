@@ -1,0 +1,35 @@
+---
+// Layered system diagram drawn from the case study's `architecture` field.
+// Illustrative only: simplified to respect client confidentiality.
+interface Props {
+  layers: { layer: string; nodes: string[] }[];
+}
+const { layers } = Astro.props;
+---
+<figure class="rounded-2xl border border-line bg-white p-5 sm:p-8">
+  <ol class="space-y-0">
+    {layers.map((l, i) => (
+      <li class="relative">
+        <div class="grid gap-3 sm:grid-cols-[9rem_1fr] sm:items-center sm:gap-6">
+          <p class="text-xs font-semibold uppercase tracking-[0.08em] text-teal-700">{l.layer}</p>
+          <ul class="flex flex-wrap gap-2.5">
+            {l.nodes.map((n) => (
+              <li class="rounded-lg border border-teal-200 bg-teal-50 px-3.5 py-2.5 text-sm font-semibold text-teal-900">{n}</li>
+            ))}
+          </ul>
+        </div>
+        {i < layers.length - 1 && (
+          <div class="flex h-10 items-center sm:ml-[10.5rem]" aria-hidden="true">
+            <svg width="16" height="40" viewBox="0 0 16 40" fill="none" class="ml-4">
+              <path d="M8 2v32" stroke="var(--color-teal-300)" stroke-width="2" stroke-linecap="round" />
+              <path d="M3 29l5 6 5-6" stroke="var(--color-teal-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        )}
+      </li>
+    ))}
+  </ol>
+  <figcaption class="mt-6 border-t border-line pt-4 text-sm text-muted">
+    Illustrative architecture, simplified to protect client confidentiality.
+  </figcaption>
+</figure>

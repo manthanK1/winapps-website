@@ -1,0 +1,25 @@
+---
+// The supplied Winapps logo, used exactly as provided (background keyed out
+// only). Light backgrounds only: there is no reversed version yet.
+import { Image } from "astro:assets";
+import logo from "../assets/brand/logo.png";
+
+interface Props {
+  height: number;
+  class?: string;
+  eager?: boolean;
+}
+const { height, class: className, eager = false } = Astro.props;
+const width = Math.round((logo.width / logo.height) * height);
+---
+<Image
+  src={logo}
+  alt="Winapps"
+  width={width}
+  height={height}
+  densities={[1, 2]}
+  format="webp"
+  loading={eager ? "eager" : "lazy"}
+  decoding="async"
+  class={className}
+/>

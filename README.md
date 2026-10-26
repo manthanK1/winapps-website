@@ -1,44 +1,57 @@
-# Winapps website (redesign)
+# Winapps website
 
-A static marketing site for Winapps, aimed at buyers in the US and Europe.
-It's plain HTML, CSS and JS, with no build step.
+Marketing site for Winapps®, built with [Astro](https://astro.build) and Tailwind CSS. Every page is pre-rendered static HTML; JavaScript is limited to a few small scripts (mobile menu, practice tabs, live clocks, contact form, scroll reveal).
+
+## Editing content
+
+Most text lives in `src/content/` and can be edited without touching code:
+
+| What | Where |
+| --- | --- |
+| The six services | `src/content/services/*.md` |
+| Case studies | `src/content/work/*.md` |
+| Home page FAQ | `src/content/faq.yaml` |
+| Industries | `src/content/industries.yaml` |
+| Testimonials (hidden until one exists) | `src/content/testimonials/`: copy `_TEMPLATE.md` |
+| Client logos (hidden until one exists) | `src/content/clients/`: copy `_TEMPLATE.md` |
+| Leadership (hidden until one exists) | `src/content/team/`: copy `_TEMPLATE.md` |
+| Company facts: email, phone, address, socials | `src/lib/site.ts` |
+
+The build checks every content file against a schema (`src/content.config.ts`) and stops with a clear error if a field is missing.
+
+**Rule:** never add invented clients, logos, testimonials, statistics or awards. Placeholders are marked `TODO` in the source; see [TODO.md](TODO.md).
+
+## Commands
 
 ```
-winapps-website/
-├── index.html            # single-page site
-├── assets/css/styles.css # design tokens + all styles
-├── assets/js/main.js     # nav, reveals, live clocks, contact form
-└── assets/img/favicon.svg
+npm install          # once
+npm run dev          # local preview at http://localhost:4321/winapps-website/
+npm run build        # production build into dist/
+npm run brand        # regenerate logo, favicon and font assets
+node scripts/og-image.mjs   # regenerate the social preview image
 ```
 
-## Run locally
+Quality checks are listed in [DEPLOY.md](DEPLOY.md#before-every-release).
 
-Open `index.html` in a browser, or serve the folder:
+## Structure
 
 ```
-npx serve .
-# or
-python -m http.server 8080
+src/
+  content/        editable content (Markdown / YAML)
+  components/     page sections and UI components
+  layouts/        BaseLayout (head, SEO, header, footer)
+  pages/          one file per route
+  styles/         global.css: design tokens and component styles
+  lib/            site facts, URL helper, icons, structured data
+  assets/         logo and self-hosted fonts
+brand/source/     original logo as supplied
+scripts/          brand assets, screenshots, Lighthouse, QA
 ```
 
-## Deploy
+The design system is documented at `/styleguide/` (not indexed by search engines).
 
-Any static host works: Netlify, Vercel, Cloudflare Pages or S3 + CloudFront. Drag the folder into Netlify, or point the host at this directory with no build command.
+## Brand
 
-## Positioning principles
-
-1. **Every claim must survive due diligence.** US and EU procurement teams check claims. The old site used award badges hotlinked from another agency's server (Inc., Stevie and Globee awards) and unverifiable percentages. Those are gone. Add an award or statistic back only with a link to the public source.
-2. **Commitments over adjectives.** We state what the client gets: IP assignment, code in their own repos, a DPA, approval of each engineer, and time-zone overlap.
-3. **Senior and specific.** Six practices, three engagement models and one clear CTA.
-
-## Before launch checklist
-
-- [ ] **Case studies** (`#work` in `index.html`): confirm each one is a real engagement you can discuss on a reference call. Add verified, client-approved outcome metrics where possible.
-- [ ] **Overlap hours**: the site promises 4+ hours with CET and 3–4 hours with US Eastern (the Winapps workday is shown as 11:00–20:00 IST in `main.js`). Make sure delivery teams actually work these hours.
-- [ ] **"Engineers with 8+ years"** and **"reply within one business day"**: keep these only if they are true.
-- [ ] **Contact form**: currently opens the visitor's email app (mailto). Connect it to a real backend (HubSpot, Formspree, or a serverless function) so you don't lose leads.
-- [ ] **Privacy policy and Terms** pages: these are required for EU visitors. The footer links are placeholders.
-- [ ] **Analytics**: if you add tracking cookies, add a GDPR-compliant consent banner. Plausible or Fathom need no banner.
-- [ ] **Registered business address**: EU buyers expect one on the site.
-- [ ] **Real logos and testimonials**: only with written client permission.
-- [ ] Add an Open Graph image (`og:image`) for LinkedIn sharing.
+- Logo: `brand/source/winapps-logo-original.png`, used as supplied with only the grey background removed. Light backgrounds only until a reversed version exists.
+- Colours: teal leads, orange/amber for calls to action and small accents. Tokens and contrast notes are in `src/styles/global.css`; run `node scripts/contrast.mjs` to re-check.
+- Type: Schibsted Grotesk (headings) and Inter (text), both SIL Open Font License, self-hosted.

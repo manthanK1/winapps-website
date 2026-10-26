@@ -1,0 +1,24 @@
+---
+import Breadcrumbs from "./Breadcrumbs.astro";
+import Ribbon from "./Ribbon.astro";
+
+interface Props {
+  title: string;
+  lead?: string;
+  eyebrow?: string;
+  breadcrumbs: { name: string; path: string }[];
+}
+const { title, lead, eyebrow, breadcrumbs } = Astro.props;
+---
+<section class="relative overflow-hidden border-b border-line bg-paper">
+  <Ribbon variant="page" class="pointer-events-none absolute right-0 top-0 hidden h-full w-[46%] md:block" />
+  <div class="container-site relative py-12 sm:py-16 lg:py-20">
+    <Breadcrumbs items={breadcrumbs} />
+    <div class="mt-8 max-w-3xl">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1 class="mt-4 text-h1 font-semibold tracking-[-0.03em] text-teal-800">{title}</h1>
+      {lead && <p class="mt-6 max-w-2xl text-lead text-stone-700">{lead}</p>}
+      <slot />
+    </div>
+  </div>
+</section>

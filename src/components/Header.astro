@@ -1,0 +1,101 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import { NAV, SITE } from "../lib/site";
+import { href, isActive } from "../lib/url";
+
+const current = Astro.url.pathname;
+---
+<header class="site-header fixed inset-x-0 top-0 z-50 border-b border-transparent bg-paper transition-[border-color,box-shadow] duration-300" data-site-header>
+  <div class="container-site flex h-16 items-center gap-6 transition-[height] duration-300 lg:h-20 [[data-scrolled]_&]:lg:h-16">
+    <a href={href("/")} class="-my-1 flex shrink-0 items-center rounded-sm">
+      <Logo height={52} eager class="logo-img h-11 w-auto origin-left transition-transform duration-300 lg:h-[52px] [[data-scrolled]_&]:lg:scale-[0.85]" />
+    </a>
+
+    <nav aria-label="Primary" class="ml-auto hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {NAV.map((item) => (
+          <li>
+            <a
+              href={href(item.href)}
+              aria-current={isActive(current, item.href) ? "page" : undefined}
+              class="relative inline-flex min-h-11 items-center rounded-md px-3 text-sm font-semibold text-stone-800 transition-colors hover:text-teal-800 aria-[current=page]:text-teal-800 aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3 aria-[current=page]:after:bottom-1.5 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-orange-500"
+            >{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <a href={href("/contact/")} class="btn btn-primary btn-sm hidden lg:inline-flex">Book a call</a>
+
+    <button
+      type="button"
+      class="ml-auto inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-semibold text-teal-800 hover:bg-teal-50 lg:hidden"
+      aria-haspopup="dialog"
+      aria-controls="mobile-menu"
+      data-menu-open
+    >
+      <Icon name="menu" size={22} /> Menu
+    </button>
+  </div>
+</header>
+
+<dialog id="mobile-menu" aria-label="Site menu" class="mobile-menu m-0 h-dvh max-h-none w-full max-w-none bg-paper p-0 text-ink backdrop:bg-ink/40">
+  <div class="container-site flex h-16 items-center justify-between">
+    <a href={href("/")} class="flex items-center rounded-sm"><Logo height={44} class="h-11 w-auto" /></a>
+    <button type="button" class="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-semibold text-teal-800 hover:bg-teal-50" data-menu-close>
+      <Icon name="x" size={22} /> Close
+    </button>
+  </div>
+  <nav aria-label="Mobile" class="container-site pt-6 pb-10">
+    <ul class="border-t border-line">
+      {[...NAV, { label: "Contact", href: "/contact/" }].map((item) => (
+        <li class="border-b border-line">
+          <a
+            href={href(item.href)}
+            aria-current={isActive(current, item.href) ? "page" : undefined}
+            class="flex min-h-14 items-center justify-between py-3 font-display text-h3 font-semibold tracking-tight text-ink aria-[current=page]:text-teal-700"
+          >
+            {item.label}
+            <Icon name="arrow-right" size={22} class="text-teal-600" />
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a href={href("/contact/")} class="btn btn-primary mt-8 w-full">Book a 30-min intro call</a>
+    <p class="mt-3 text-center text-sm text-muted">Reply within 1 business day · NDA before the first call</p>
+    <div class="mt-10 space-y-2 text-sm">
+      <a class="link block" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      <a class="link block" href={SITE.phoneHref}>{SITE.phone}</a>
+    </div>
+  </nav>
+</dialog>
+
+<style>
+  [data-scrolled] .site-header,
+  .site-header[data-scrolled] {
+    border-color: var(--color-line);
+    box-shadow: 0 6px 24px -18px rgb(20 34 36 / 0.35);
+  }
+  .mobile-menu[open] { animation: menu-in 0.28s var(--ease-out); }
+  @keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } }
+  @media (prefers-reduced-motion: reduce) { .mobile-menu[open] { animation: none; } }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-site-header]")!;
+  const onScroll = () => header.toggleAttribute("data-scrolled", window.scrollY > 24);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // Mobile menu: a modal <dialog> gives focus trapping and Esc-to-close natively.
+  const dialog = document.getElementById("mobile-menu") as HTMLDialogElement;
+  const opener = document.querySelector<HTMLButtonElement>("[data-menu-open]")!;
+  opener.addEventListener("click", () => dialog.showModal());
+  dialog.querySelector("[data-menu-close]")!.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).closest("a")) dialog.close();
+  });
+  dialog.addEventListener("close", () => opener.focus());
+  matchMedia("(min-width: 64rem)").addEventListener("change", (e) => e.matches && dialog.close());
+</script>

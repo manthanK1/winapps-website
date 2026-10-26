@@ -1,0 +1,181 @@
+---
+// Contact form. With PUBLIC_WEB3FORMS_KEY set, it posts to Web3Forms (works
+// without JS too: Web3Forms redirects back here). Without a key it falls
+// back to composing an email. Honeypot field blocks simple bots.
+import Icon from "./Icon.astro";
+import { SITE } from "../lib/site";
+import { absolute } from "../lib/url";
+
+const key = import.meta.env.PUBLIC_WEB3FORMS_KEY as string | undefined;
+const action = key ? "https://api.web3forms.com/submit" : `mailto:${SITE.email}`;
+const redirect = absolute("/contact/?sent=1", Astro.site);
+const needs = ["AI / ML", "Web or mobile product", "Cloud", "Modernization", "Data & analytics", "Dedicated team"];
+const countries = ["United States", "United Kingdom", "Germany", "Netherlands", "Sweden", "France", "Other in Europe", "India", "Other"];
+---
+<form
+  class="space-y-6"
+  method="post"
+  action={action}
+  enctype={key ? undefined : "text/plain"}
+  novalidate
+  data-contact-form
+  data-mode={key ? "web3forms" : "mailto"}
+>
+  {key && (
+    <>
+      <input type="hidden" name="access_key" value={key} />
+      <input type="hidden" name="subject" value="New project inquiry from winapps website" />
+      <input type="hidden" name="from_name" value="Winapps website" />
+      <input type="hidden" name="redirect" value={redirect} />
+    </>
+  )}
+  <!-- Honeypot: humans never see or fill this. -->
+  <div class="hidden" aria-hidden="true">
+    <label>Leave this empty<input type="checkbox" name="botcheck" tabindex="-1" /></label>
+  </div>
+
+  <div class="grid gap-6 sm:grid-cols-2">
+    <div>
+      <label class="field-label" for="cf-name">Name</label>
+      <input class="field" id="cf-name" name="name" type="text" autocomplete="name" required aria-describedby="cf-name-error" />
+      <p class="field-error" id="cf-name-error" hidden>Please enter your name.</p>
+    </div>
+    <div>
+      <label class="field-label" for="cf-email">Work email</label>
+      <input class="field" id="cf-email" name="email" type="email" autocomplete="email" required aria-describedby="cf-email-error" />
+      <p class="field-error" id="cf-email-error" hidden>Please enter a valid email address.</p>
+    </div>
+    <div>
+      <label class="field-label" for="cf-company">Company <span class="field-hint">(optional)</span></label>
+      <input class="field" id="cf-company" name="company" type="text" autocomplete="organization" />
+    </div>
+    <div>
+      <label class="field-label" for="cf-country">Country</label>
+      <select class="field" id="cf-country" name="country" autocomplete="country-name">
+        {countries.map((c) => <option>{c}</option>)}
+      </select>
+    </div>
+  </div>
+
+  <fieldset>
+    <legend class="field-label">What do you need? <span class="field-hint">(optional)</span></legend>
+    <div class="mt-1 flex flex-wrap gap-2">
+      {needs.map((n, i) => (
+        <label class="need-chip">
+          <input type="checkbox" name="needs" value={n} id={`cf-need-${i}`} class="peer sr-only" />
+          <span>{n}</span>
+        </label>
+      ))}
+    </div>
+  </fieldset>
+
+  <div>
+    <label class="field-label" for="cf-message">Project details</label>
+    <textarea class="field min-h-36" id="cf-message" name="message" rows="5" required aria-describedby="cf-message-error" placeholder="What are you building, and where are you stuck?"></textarea>
+    <p class="field-error" id="cf-message-error" hidden>Please tell us a little about the project.</p>
+  </div>
+
+  <div class="space-y-3">
+    <button type="submit" class="btn btn-primary w-full sm:w-auto" data-submit>
+      Send inquiry <Icon name="arrow-right" size={18} class="icon-arrow" />
+    </button>
+    <p class="text-sm text-muted">
+      We use your details only to reply to this inquiry. NDA available before any detailed discussion.
+      Prefer email? Write to <a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+    </p>
+  </div>
+
+  <div role="status" aria-live="polite" class="text-sm" data-form-status></div>
+</form>
+
+<style>
+  .need-chip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-stone-400);
+    background: var(--color-white);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .need-chip:hover span { border-color: var(--color-teal-600); }
+  .need-chip input:checked + span { background: var(--color-teal-700); border-color: var(--color-teal-700); color: var(--color-white); }
+  .need-chip input:focus-visible + span { outline: 3px solid var(--color-teal-600); outline-offset: 2px; }
+</style>
+
+<script>
+  import { SITE } from "../lib/site";
+
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  if (form) {
+    const status = form.querySelector<HTMLElement>("[data-form-status]")!;
+    const submit = form.querySelector<HTMLButtonElement>("[data-submit]")!;
+    const fields = ["name", "email", "message"].map((n) => form.elements.namedItem(n) as HTMLInputElement);
+
+    const valid = (el: HTMLInputElement) =>
+      el.value.trim() !== "" && (el.type !== "email" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()));
+
+    const showError = (el: HTMLInputElement, show: boolean) => {
+      el.setAttribute("aria-invalid", String(show));
+      document.getElementById(`${el.id}-error`)!.hidden = !show;
+    };
+    fields.forEach((el) => el.addEventListener("blur", () => el.value && showError(el, !valid(el))));
+
+    const setStatus = (kind: "ok" | "error" | "info", html: string) => {
+      status.className = `rounded-lg p-4 text-sm ${kind === "ok" ? "bg-teal-50 text-teal-900" : kind === "error" ? "bg-orange-50 text-ink" : "text-muted"}`;
+      status.innerHTML = html;
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const invalid = fields.filter((el) => !valid(el));
+      fields.forEach((el) => showError(el, invalid.includes(el)));
+      if (invalid.length) {
+        invalid[0].focus();
+        setStatus("error", "Please check the highlighted fields.");
+        return;
+      }
+      const data = new FormData(form);
+      if (data.get("botcheck")) return;
+      const needs = data.getAll("needs").join(", ") || "Not specified";
+      const summary = [
+        `Name: ${data.get("name")}`,
+        `Email: ${data.get("email")}`,
+        `Company: ${data.get("company") || "-"}`,
+        `Country: ${data.get("country")}`,
+        `Needs: ${needs}`,
+        "",
+        String(data.get("message")),
+      ].join("\n");
+      const mailto = `mailto:${SITE.email}?subject=${encodeURIComponent(`Project inquiry from ${data.get("name")}`)}&body=${encodeURIComponent(summary)}`;
+
+      if (form.dataset.mode !== "web3forms") {
+        window.location.href = mailto;
+        setStatus("info", `Opening your email app. If nothing happens, write to <a class="link" href="mailto:${SITE.email}">${SITE.email}</a>.`);
+        return;
+      }
+
+      submit.disabled = true;
+      setStatus("info", "Sending…");
+      try {
+        data.set("needs", needs);
+        const res = await fetch(form.action, { method: "POST", headers: { Accept: "application/json" }, body: data });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || !json.success) throw new Error(json.message || "Request failed");
+        form.reset();
+        setStatus("ok", "<strong>Thanks, your inquiry is in.</strong> A senior engineer will reply within one business day.");
+      } catch {
+        setStatus("error", `Something went wrong sending the form. Please <a class="link" href="${mailto}">send it by email instead</a> or write to <a class="link" href="mailto:${SITE.email}">${SITE.email}</a>.`);
+      } finally {
+        submit.disabled = false;
+      }
+    });
+
+    if (new URLSearchParams(location.search).has("sent")) {
+      setStatus("ok", "<strong>Thanks, your inquiry is in.</strong> A senior engineer will reply within one business day.");
+    }
+  }
+</script>

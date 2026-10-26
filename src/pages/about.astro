@@ -1,0 +1,104 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import Logo from "../components/Logo.astro";
+import Clocks from "../components/Clocks.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { SITE } from "../lib/site";
+
+const team = (await getCollection("team")).sort((a, b) => a.data.order - b.data.order);
+const crumbs = [{ name: "About", path: "/about/" }];
+
+const values = [
+  { title: "Senior by default", text: "Every engagement is led by an experienced engineer. The people you meet on the sales call are the people who do the work." },
+  { title: "Written communication", text: "Decisions, trade-offs and status are written down, so nothing depends on who was in which meeting." },
+  { title: "Security as a baseline", text: "Least-privilege access, client-managed credentials and offboarding checklists on every project, not just the regulated ones." },
+  { title: "Your code, your IP", text: "Work is committed to your repositories from day one, and every contract assigns the intellectual property to you." },
+];
+---
+<BaseLayout
+  title="About"
+  description={`Winapps® is a software engineering partner founded in India in ${SITE.founded}, working with companies in India, the US, the UK and Europe.`}
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    breadcrumbs={crumbs}
+    eyebrow={`About Winapps · Est. ${SITE.founded}`}
+    title="A senior engineering partner, since 2013."
+    lead="We build and scale software for companies in India, the US, the UK and Europe: AI systems, web and mobile products, cloud platforms and the modernization of systems that run the business."
+  />
+
+  <section class="section bg-white" aria-labelledby="story-title">
+    <div class="container-site grid gap-12 lg:grid-cols-12 lg:gap-10">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Our story</p>
+        <h2 id="story-title" class="mt-4 text-h2 font-semibold tracking-tight text-teal-800">Built on engineers clients can rely on.</h2>
+        <div class="prose-site mt-6 text-stone-700">
+          <p>
+            Winapps® was founded in India in {SITE.founded}. Since then we have worked as an engineering partner to companies in India, the US, the UK and Europe, across AI and machine learning, product engineering, cloud, legacy modernization and data.
+          </p>
+          <p>
+            Most of our work is under NDA, which is why you will find the problems we solved on this site, but not our clients' names. We are happy to share references on a call.
+          </p>
+          <!-- TODO: founding story in your own words: who started Winapps, why, and the milestones since 2013. -->
+        </div>
+      </div>
+      <div class="flex items-start justify-center rounded-2xl border border-line bg-paper p-10 lg:col-span-4 lg:col-start-9">
+        <Logo height={180} class="h-auto w-full max-w-64" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-paper" aria-labelledby="values-title">
+    <div class="container-site">
+      <SectionHeader id="values-title" eyebrow="What we value" title="Principles that show up in the work." />
+      <dl class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        {values.map((v, i) => (
+          <div class="border-t-2 border-teal-600 pt-5" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+            <dt class="font-display text-h4 font-semibold text-teal-800">{v.title}</dt>
+            <dd class="mt-2 text-sm text-stone-700">{v.text}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Leadership: hidden until real people are added (src/content/team). TODO: leadership names, roles and photos. -->
+  {team.length > 0 && (
+    <section class="section bg-white" aria-labelledby="team-title">
+      <div class="container-site">
+        <SectionHeader id="team-title" eyebrow="Leadership" title="The people accountable for your project." />
+        <ul class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {team.map((p) => (
+            <li>
+              {p.data.photo && <Image src={p.data.photo} alt={p.data.name} width={480} height={560} class="aspect-[6/7] w-full rounded-xl object-cover" />}
+              <p class="mt-4 font-display text-h4 font-semibold text-ink">{p.data.name}</p>
+              <p class="text-sm text-muted">{p.data.role}</p>
+              {p.data.linkedin && <a class="link mt-2 inline-flex min-h-11 items-center text-sm" href={p.data.linkedin} rel="noopener">LinkedIn<span class="sr-only"> profile of {p.data.name}</span></a>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section class="on-dark section bg-teal-950 text-white" aria-labelledby="where-title">
+    <div class="container-site grid gap-12 lg:grid-cols-12 lg:gap-10">
+      <div class="lg:col-span-6">
+        <SectionHeader
+          id="where-title"
+          eyebrow="Where we work"
+          title="Based in India. Working in your hours."
+          intro="Our teams shift their day to keep at least 4 hours of overlap with Central Europe and 3–4 hours with US Eastern, so standups, reviews and demos happen live."
+        />
+        <!-- TODO: office address and real team/office photos. -->
+      </div>
+      <div class="lg:col-span-5 lg:col-start-8"><Clocks /></div>
+    </div>
+  </section>
+
+  <CtaBand edgeClass="text-teal-950" />
+</BaseLayout>

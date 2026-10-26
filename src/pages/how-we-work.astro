@@ -1,0 +1,76 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import ProcessTimeline from "../components/ProcessTimeline.astro";
+import EngagementModels from "../components/EngagementModels.astro";
+import TrustSection from "../components/TrustSection.astro";
+import FaqList from "../components/FaqList.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { faqPage } from "../lib/schema";
+
+const faq = (await getCollection("faq")).sort((a, b) => a.data.order - b.data.order).map((f) => f.data);
+const crumbs = [{ name: "How we work", path: "/how-we-work/" }];
+
+const principles = [
+  { title: "Senior by default", text: "Every engagement is led by an engineer with 8+ years of experience. No bait-and-switch after the sales call." },
+  { title: "Written communication", text: "Decisions, trade-offs and status are written down. Async-first, so time zones help rather than hurt." },
+  { title: "Security as a baseline", text: "Least-privilege access, client-managed credentials, encrypted devices and offboarding checklists on every project." },
+];
+---
+<BaseLayout
+  title="How we work"
+  description="Discovery, two-week build sprints and launch: how Winapps delivers, the engagement models we offer, and our commitments on IP, GDPR and security."
+  breadcrumbs={crumbs}
+  jsonLd={[faqPage(faq)]}
+>
+  <PageHero
+    breadcrumbs={crumbs}
+    eyebrow="How we work"
+    title="Low-risk to start. Predictable to scale."
+    lead="A fixed-fee Discovery, working software every two weeks, and a clean handover whenever you want one. Here is exactly how an engagement runs."
+  />
+
+  <section class="section bg-white" aria-labelledby="process-title">
+    <div class="container-site">
+      <SectionHeader id="process-title" eyebrow="Process" title="Three phases, no surprises." />
+      <div class="mt-14 lg:mt-20"><ProcessTimeline detailed /></div>
+    </div>
+  </section>
+
+  <section class="section-tight bg-paper" aria-labelledby="principles-title">
+    <div class="container-site grid gap-10 lg:grid-cols-12">
+      <SectionHeader id="principles-title" eyebrow="Principles" title="How our engineers work." class="lg:col-span-4" />
+      <dl class="grid gap-8 sm:grid-cols-3 lg:col-span-8">
+        {principles.map((p, i) => (
+          <div class="border-t-2 border-teal-600 pt-5" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+            <dt class="font-display text-h4 font-semibold text-teal-800">{p.title}</dt>
+            <dd class="mt-2 text-sm text-stone-700">{p.text}</dd>
+          </div>
+        ))}
+      </dl>
+      <!-- TODO: confirm "8+ years" is true for every engagement lead. -->
+    </div>
+  </section>
+
+  <TrustSection edgeClass="text-paper" />
+
+  <section class="section bg-paper" aria-labelledby="engage-title">
+    <div class="container-site">
+      <SectionHeader id="engage-title" eyebrow="Engagement models" title="Pick how we work together." intro="Clear terms, no lock-in. Most clients start with Discovery and move to a pod." />
+      <div class="mt-14 lg:mt-20"><EngagementModels /></div>
+    </div>
+  </section>
+
+  <section class="section bg-white" aria-labelledby="hww-faq-title">
+    <div class="container-site grid gap-10 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <SectionHeader id="hww-faq-title" eyebrow="Questions" title="Contracts, IP and logistics." />
+      </div>
+      <div class="lg:col-span-7 lg:col-start-6"><FaqList items={faq} /></div>
+    </div>
+  </section>
+
+  <CtaBand edgeClass="text-white" />
+</BaseLayout>

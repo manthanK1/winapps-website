@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Ribbon from "../components/Ribbon.astro";
+import Icon from "../components/Icon.astro";
+import { href } from "../lib/url";
+
+const links = [
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services/" },
+  { label: "Work", href: "/work/" },
+  { label: "Contact", href: "/contact/" },
+];
+---
+<BaseLayout title="Page not found" description="The page you were looking for doesn't exist or has moved." noindex>
+  <section class="relative overflow-hidden bg-paper">
+    <Ribbon variant="hero" class="pointer-events-none absolute right-0 top-0 hidden h-full w-[40%] lg:block xl:w-[44%]" />
+    <div class="container-site relative py-24 sm:py-32">
+      <p class="eyebrow">Error 404</p>
+      <h1 class="mt-5 max-w-2xl text-h1 font-semibold tracking-[-0.03em] text-teal-800">This page doesn't exist, or it has moved.</h1>
+      <p class="mt-6 max-w-xl text-lead text-stone-700">Check the address, or pick up from one of these:</p>
+      <ul class="mt-8 flex flex-wrap gap-3">
+        {links.map((l, i) => (
+          <li><a href={href(l.href)} class:list={["btn", i === 3 ? "btn-primary" : "btn-secondary"]}>{l.label}{i === 3 && <Icon name="arrow-right" size={18} class="icon-arrow" />}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

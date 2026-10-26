@@ -1,0 +1,15 @@
+# Netlify: serve from the domain root (no /winapps-website base path).
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+  BASE_PATH = "/"
+  # SITE_URL = "https://winapps.co.in"
+  # PUBLIC_WEB3FORMS_KEY = "set in the Netlify UI instead"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

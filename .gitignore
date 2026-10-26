@@ -1,12 +1,19 @@
-# OS files
+# Dependencies & build output
+node_modules/
+dist/
+.astro/
+
+# QA output
+screenshots/
+
+# Environment
+.env
+.env.*
+
+# OS / editor
 .DS_Store
 Thumbs.db
 desktop.ini
-
-# Editor
 .vscode/
 .idea/
-
-# Logs / env
 *.log
-.env
