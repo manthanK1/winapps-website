@@ -5,178 +5,182 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Winapps — Senior product & AI engineering for US and European teams</title>
   <meta name="description" content="Winapps builds and scales software for companies in the US and Europe: AI and machine learning, web and mobile products, cloud, and legacy modernization. Senior engineers, real time-zone overlap, your IP from day one." />
+  <meta name="theme-color" content="#efe9df" />
   <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
   <meta property="og:title" content="Winapps — Senior product & AI engineering" />
   <meta property="og:description" content="Senior engineering teams for US and European companies. AI, product, cloud and modernization. Since 2013." />
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..600,0..100;1,9..144,300..600,0..100&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
 
+  <a class="skip" href="#main">Skip to content</a>
+
   <!-- ============ NAV ============ -->
   <header class="nav" id="top">
-    <div class="container nav__inner">
-      <a href="#top" class="brand" aria-label="Winapps home">
-        <span class="brand__mark" aria-hidden="true"></span>
-        <span class="brand__word">Winapps</span>
-      </a>
+    <div class="wrap nav__inner">
+      <a href="#top" class="brand" aria-label="Winapps home">Winapps<sup>®</sup></a>
       <nav class="nav__links" aria-label="Primary">
-        <a href="#services">Services</a>
-        <a href="#work">Work</a>
-        <a href="#approach">Approach</a>
-        <a href="#engage">Engagement</a>
-        <a href="#faq">FAQ</a>
+        <a href="#services"><span class="mono">01</span>Practice</a>
+        <a href="#work"><span class="mono">02</span>Work</a>
+        <a href="#approach"><span class="mono">03</span>Method</a>
+        <a href="#engage"><span class="mono">04</span>Terms</a>
+        <a href="#faq"><span class="mono">05</span>Questions</a>
       </nav>
-      <a href="#contact" class="btn btn--sm btn--ink nav__cta">Book an intro call</a>
+      <a href="#contact" class="nav__cta">Book an intro call <span aria-hidden="true">↘</span></a>
       <button class="nav__toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span>
       </button>
     </div>
     <div class="mobile-menu" id="mobile-menu" hidden>
-      <a href="#services">Services</a>
-      <a href="#work">Work</a>
-      <a href="#approach">Approach</a>
-      <a href="#engage">Engagement</a>
-      <a href="#faq">FAQ</a>
-      <a href="#contact" class="btn btn--ink">Book an intro call</a>
+      <a href="#services"><span class="mono">01</span>Practice</a>
+      <a href="#work"><span class="mono">02</span>Work</a>
+      <a href="#approach"><span class="mono">03</span>Method</a>
+      <a href="#engage"><span class="mono">04</span>Terms</a>
+      <a href="#faq"><span class="mono">05</span>Questions</a>
+      <a href="#contact"><span class="mono">06</span>Contact</a>
     </div>
   </header>
 
-  <main>
+  <main id="main">
 
     <!-- ============ HERO ============ -->
-    <section class="hero">
-      <div class="container hero__grid">
-        <div class="hero__copy reveal">
-          <p class="eyebrow"><span class="dot"></span> Engineering partner to US &amp; European companies since 2013</p>
-          <h1 class="display">
-            Senior engineers for software that <em>has to work.</em>
-          </h1>
-          <p class="lead">
-            We design, build and scale AI systems, web and mobile products, and cloud platforms,
-            as an extension of your team. Same standards as your in-house engineers,
-            working hours that overlap with yours, and code that's yours from the first commit.
-          </p>
-          <div class="hero__actions">
-            <a href="#contact" class="btn btn--accent">Book a 30-minute intro call <span aria-hidden="true">→</span></a>
-            <a href="#work" class="btn btn--ghost">See selected work</a>
-          </div>
-          <ul class="hero__facts">
-            <li><strong>NDA</strong> before the first technical call</li>
-            <li><strong>Reply</strong> within one business day</li>
-            <li><strong>USD / EUR / GBP</strong> invoicing</li>
-          </ul>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div class="hero__rule mono reveal">
+          <span>Winapps — Engineering partner</span>
+          <span>Est. 2013</span>
+          <span>US · UK · EU</span>
         </div>
 
-        <aside class="hero__panel reveal" aria-label="Working hours overlap">
-          <div class="panel">
-            <div class="panel__head">
-              <span class="mono">LIVE · TEAM HOURS</span>
-              <span class="status"><span class="status__dot"></span>Online now</span>
-            </div>
-            <ul class="clocks">
-              <li class="clock" data-tz="America/New_York">
-                <span class="clock__city">New York</span>
-                <span class="clock__time mono">--:--</span>
-              </li>
-              <li class="clock" data-tz="Europe/London">
-                <span class="clock__city">London</span>
-                <span class="clock__time mono">--:--</span>
-              </li>
-              <li class="clock" data-tz="Europe/Berlin">
-                <span class="clock__city">Berlin · Stockholm</span>
-                <span class="clock__time mono">--:--</span>
-              </li>
-              <li class="clock clock--home" data-tz="Asia/Kolkata">
-                <span class="clock__city">Winapps · India</span>
-                <span class="clock__time mono">--:--</span>
-              </li>
-            </ul>
-            <div class="panel__foot">
-              <p>Every team keeps <strong>4+ hours of overlap</strong> with Central Europe and <strong>3–4 hours</strong> with US Eastern for standups, reviews and demos.</p>
+        <h1 class="hero__title" id="hero-title" data-split>
+          Senior engineers for software that <em>has&nbsp;to&nbsp;work.</em>
+        </h1>
+
+        <div class="hero__grid">
+          <div class="hero__meta reveal">
+            <p class="hero__lead">
+              We design, build and scale AI systems, web and mobile products, and cloud platforms,
+              as an extension of your team. Same standards as your in-house engineers,
+              working hours that overlap with yours, and code that's yours from the first commit.
+            </p>
+            <dl class="ledger-mini">
+              <div><dt class="mono">Before the first call</dt><dd>NDA signed</dd></div>
+              <div><dt class="mono">Response</dt><dd>Within one business day</dd></div>
+              <div><dt class="mono">Invoicing</dt><dd>USD · EUR · GBP</dd></div>
+            </dl>
+            <div class="hero__actions">
+              <a href="#contact" class="btn btn--ink">Book a 30-minute intro call <span aria-hidden="true">→</span></a>
+              <a href="#work" class="link-line">See selected work</a>
             </div>
           </div>
-        </aside>
+
+          <aside class="hero__mask" aria-label="Working hours overlap">
+            <div class="hero__mask-inner">
+              <div class="clocks__head mono">
+                <span>Live · Team hours</span>
+                <span class="status"><span class="status__dot"></span>Online now</span>
+              </div>
+              <ul class="clocks">
+                <li class="clock" data-tz="America/New_York">
+                  <span class="clock__city">New York</span>
+                  <span class="clock__time">--:--</span>
+                </li>
+                <li class="clock" data-tz="Europe/London">
+                  <span class="clock__city">London</span>
+                  <span class="clock__time">--:--</span>
+                </li>
+                <li class="clock" data-tz="Europe/Berlin">
+                  <span class="clock__city">Berlin · Stockholm</span>
+                  <span class="clock__time">--:--</span>
+                </li>
+                <li class="clock clock--home" data-tz="Asia/Kolkata">
+                  <span class="clock__city">Winapps · India</span>
+                  <span class="clock__time">--:--</span>
+                </li>
+              </ul>
+              <p class="clocks__foot">Every team keeps <strong>4+ hours of overlap</strong> with Central Europe and <strong>3–4 hours</strong> with US Eastern for standups, reviews and demos.</p>
+            </div>
+          </aside>
+        </div>
       </div>
     </section>
 
-    <!-- ============ COMMITMENTS STRIP ============ -->
+    <!-- ============ COMMITMENTS ============ -->
     <section class="commit" aria-label="Our commitments">
-      <div class="container commit__row">
-        <div class="commit__item"><span class="commit__k mono">01</span>Code lives in <strong>your repositories</strong> from day one</div>
-        <div class="commit__item"><span class="commit__k mono">02</span>Full <strong>IP assignment</strong> in every contract</div>
-        <div class="commit__item"><span class="commit__k mono">03</span><strong>GDPR-aligned</strong> data handling, DPA on request</div>
-        <div class="commit__item"><span class="commit__k mono">04</span>Engineers you <strong>interview and approve</strong></div>
+      <div class="wrap commit__row">
+        <p class="commit__label mono">Written into<br />every contract</p>
+        <ol class="commit__list">
+          <li class="reveal"><span class="mono">i.</span>Code lives in <em>your repositories</em> from day one</li>
+          <li class="reveal"><span class="mono">ii.</span>Full <em>IP assignment</em> to you</li>
+          <li class="reveal"><span class="mono">iii.</span><em>GDPR-aligned</em> data handling, DPA on request</li>
+          <li class="reveal"><span class="mono">iv.</span>Engineers you <em>interview and approve</em></li>
+        </ol>
       </div>
     </section>
 
     <!-- ============ SERVICES ============ -->
-    <section class="section" id="services">
-      <div class="container">
-        <div class="section__head reveal">
-          <p class="eyebrow">What we do</p>
-          <h2 class="h2">Six practices, <em>one standard</em> of engineering.</h2>
-          <p class="section__sub">We stay narrow on purpose. Each practice is run by people who have shipped it in production, more than once.</p>
-        </div>
+    <section class="section" id="services" aria-labelledby="services-title">
+      <div class="wrap">
+        <header class="head">
+          <p class="kicker mono reveal"><span>01</span>The practice</p>
+          <h2 class="h2" id="services-title" data-split>Six practices, <em>one standard</em> of engineering.</h2>
+          <p class="head__sub reveal">We stay narrow on purpose. Each practice is run by people who have shipped it in production, more than once.</p>
+        </header>
 
-        <div class="services">
-          <article class="service reveal">
-            <span class="service__num mono">/01</span>
-            <h3>AI &amp; machine learning</h3>
-            <p>LLM applications, retrieval and agent systems, predictive models and computer vision, built with evaluation, monitoring and cost controls from the start.</p>
-            <ul class="tags"><li>LLMs &amp; RAG</li><li>Agents</li><li>Computer vision</li><li>MLOps</li></ul>
-          </article>
-          <article class="service reveal">
-            <span class="service__num mono">/02</span>
-            <h3>Product engineering</h3>
-            <p>Web platforms and native or cross-platform mobile apps, from first release to scale. Product thinking included, not bolted on.</p>
-            <ul class="tags"><li>React / Next.js</li><li>iOS &amp; Android</li><li>Flutter</li><li>Node / Python</li></ul>
-          </article>
-          <article class="service reveal">
-            <span class="service__num mono">/03</span>
-            <h3>Cloud &amp; platform</h3>
-            <p>Cloud architecture, infrastructure as code, CI/CD and observability on AWS, Azure and GCP. Systems your own team can run after we hand over.</p>
-            <ul class="tags"><li>AWS · Azure · GCP</li><li>Kubernetes</li><li>Terraform</li></ul>
-          </article>
-          <article class="service reveal">
-            <span class="service__num mono">/04</span>
-            <h3>Legacy modernization</h3>
-            <p>Incremental migration of aging monoliths and on-prem systems. Strangler patterns, no big-bang rewrites, and the business keeps running throughout.</p>
-            <ul class="tags"><li>Re-platforming</li><li>Microservices</li><li>Data migration</li></ul>
-          </article>
-          <article class="service reveal">
-            <span class="service__num mono">/05</span>
-            <h3>Data &amp; analytics</h3>
-            <p>Pipelines, warehouses and dashboards that your teams trust: the foundation every serious AI initiative needs first.</p>
-            <ul class="tags"><li>ETL / ELT</li><li>Snowflake · BigQuery</li><li>BI</li></ul>
-          </article>
-          <article class="service reveal">
-            <span class="service__num mono">/06</span>
-            <h3>Dedicated teams</h3>
-            <p>A pod of senior engineers, a lead and QA that plugs into your tools, rituals and roadmap. Scales up or down with 30 days' notice.</p>
-            <ul class="tags"><li>Pods</li><li>Staff augmentation</li><li>Tech leads</li></ul>
-          </article>
-        </div>
+        <ol class="index">
+          <li class="index__row reveal">
+            <span class="index__num mono">/01</span>
+            <h3 class="index__title">AI &amp; machine learning</h3>
+            <p class="index__desc">LLM applications, retrieval and agent systems, predictive models and computer vision, built with evaluation, monitoring and cost controls from the start.</p>
+            <p class="index__tags mono">LLMs &amp; RAG · Agents · Computer vision · MLOps</p>
+          </li>
+          <li class="index__row reveal">
+            <span class="index__num mono">/02</span>
+            <h3 class="index__title">Product engineering</h3>
+            <p class="index__desc">Web platforms and native or cross-platform mobile apps, from first release to scale. Product thinking included, not bolted on.</p>
+            <p class="index__tags mono">React / Next.js · iOS &amp; Android · Flutter · Node / Python</p>
+          </li>
+          <li class="index__row reveal">
+            <span class="index__num mono">/03</span>
+            <h3 class="index__title">Cloud &amp; platform</h3>
+            <p class="index__desc">Cloud architecture, infrastructure as code, CI/CD and observability on AWS, Azure and GCP. Systems your own team can run after we hand over.</p>
+            <p class="index__tags mono">AWS · Azure · GCP · Kubernetes · Terraform</p>
+          </li>
+          <li class="index__row reveal">
+            <span class="index__num mono">/04</span>
+            <h3 class="index__title">Legacy modernization</h3>
+            <p class="index__desc">Incremental migration of aging monoliths and on-prem systems. Strangler patterns, no big-bang rewrites, and the business keeps running throughout.</p>
+            <p class="index__tags mono">Re-platforming · Microservices · Data migration</p>
+          </li>
+          <li class="index__row reveal">
+            <span class="index__num mono">/05</span>
+            <h3 class="index__title">Data &amp; analytics</h3>
+            <p class="index__desc">Pipelines, warehouses and dashboards that your teams trust: the foundation every serious AI initiative needs first.</p>
+            <p class="index__tags mono">ETL / ELT · Snowflake · BigQuery · BI</p>
+          </li>
+          <li class="index__row reveal">
+            <span class="index__num mono">/06</span>
+            <h3 class="index__title">Dedicated teams</h3>
+            <p class="index__desc">A pod of senior engineers, a lead and QA that plugs into your tools, rituals and roadmap. Scales up or down with 30 days' notice.</p>
+            <p class="index__tags mono">Pods · Staff augmentation · Tech leads</p>
+          </li>
+        </ol>
       </div>
     </section>
 
     <!-- ============ INDUSTRIES ============ -->
-    <section class="industries" aria-label="Industries">
-      <div class="container industries__inner">
-        <p class="mono industries__label">Domains we know well</p>
-        <ul class="industries__list">
-          <li>Healthcare &amp; life sciences</li>
-          <li>Fintech &amp; banking</li>
-          <li>Manufacturing</li>
-          <li>Logistics &amp; supply chain</li>
-          <li>Retail &amp; e-commerce</li>
-          <li>Media &amp; streaming</li>
-          <li>Education</li>
-          <li>Travel &amp; hospitality</li>
-        </ul>
+    <section class="domains" aria-label="Industries">
+      <div class="wrap domains__inner">
+        <p class="kicker mono reveal"><span>§</span>Domains we know well</p>
+        <p class="domains__text reveal">
+          Healthcare &amp; life sciences<i>,</i> fintech &amp; banking<i>,</i> manufacturing<i>,</i>
+          logistics &amp; supply chain<i>,</i> retail &amp; e-commerce<i>,</i> media &amp; streaming<i>,</i>
+          education<i>,</i> and travel &amp; hospitality.
+        </p>
       </div>
     </section>
 
@@ -186,203 +190,220 @@
       Replace the summaries and outcomes below with verified, client-approved results.
       If a client is under NDA, keep the description generic but the outcome real.
     -->
-    <section class="section section--dark" id="work">
-      <div class="container">
-        <div class="section__head reveal">
-          <p class="eyebrow eyebrow--light">Selected work</p>
-          <h2 class="h2">Problems we've been <em>trusted with.</em></h2>
-          <p class="section__sub">Most of our clients are under NDA. We share specifics, architecture and references on a call.</p>
-        </div>
+    <section class="section section--ink" id="work" aria-labelledby="work-title">
+      <div class="wrap">
+        <header class="head head--split">
+          <div>
+            <p class="kicker mono reveal"><span>02</span>Selected work</p>
+            <h2 class="h2" id="work-title" data-split>Problems we've been <em>trusted with.</em></h2>
+          </div>
+          <p class="head__sub reveal">Most of our clients are under NDA. We share specifics, architecture and references on a call.</p>
+        </header>
 
-        <div class="work">
-          <article class="case reveal">
-            <div class="case__meta mono"><span>Fitness · United Kingdom</span><span>Mobile · AI</span></div>
-            <h3>Member app for a multi-site fitness chain</h3>
-            <p>Native iOS and Android app with class booking, wearable sync and personalised training plans, replacing a white-label app the client didn't own.</p>
-            <div class="case__foot">
-              <span class="mono">Swift · Kotlin · Node.js · AWS</span>
+        <div class="ledger" role="list">
+          <div class="ledger__head mono" aria-hidden="true">
+            <span>No.</span><span>Engagement</span><span>Sector · Region</span><span>Discipline</span>
+          </div>
+
+          <article class="ledger__row reveal" role="listitem" data-stack="Swift · Kotlin · Node.js · AWS" data-tone="umber">
+            <span class="ledger__num mono">01</span>
+            <div class="ledger__main">
+              <h3>Member app for a multi-site fitness chain</h3>
+              <p>Native iOS and Android app with class booking, wearable sync and personalised training plans, replacing a white-label app the client didn't own.</p>
+              <p class="ledger__stack mono">Swift · Kotlin · Node.js · AWS</p>
             </div>
+            <span class="ledger__cell mono">Fitness · United Kingdom</span>
+            <span class="ledger__cell mono">Mobile · AI</span>
           </article>
 
-          <article class="case reveal">
-            <div class="case__meta mono"><span>Pharma · Global</span><span>Modernization</span></div>
-            <h3>Legacy SaaS re-platformed to cloud-native</h3>
-            <p>Incremental migration of a monolithic field-sales platform to containerised services, with mobile-first tools for reps and GDPR-compliant data handling.</p>
-            <div class="case__foot">
-              <span class="mono">Microservices · Kubernetes · PostgreSQL</span>
+          <article class="ledger__row reveal" role="listitem" data-stack="Microservices · Kubernetes · PostgreSQL" data-tone="sage">
+            <span class="ledger__num mono">02</span>
+            <div class="ledger__main">
+              <h3>Legacy SaaS re-platformed to cloud-native</h3>
+              <p>Incremental migration of a monolithic field-sales platform to containerised services, with mobile-first tools for reps and GDPR-compliant data handling.</p>
+              <p class="ledger__stack mono">Microservices · Kubernetes · PostgreSQL</p>
             </div>
+            <span class="ledger__cell mono">Pharma · Global</span>
+            <span class="ledger__cell mono">Modernization</span>
           </article>
 
-          <article class="case reveal">
-            <div class="case__meta mono"><span>Manufacturing · India</span><span>Computer vision</span></div>
-            <h3>Visual quality inspection on the production line</h3>
-            <p>Deep-learning inspection for castings and machined parts, with full traceability: every decision linked to its images, model version and confidence score.</p>
-            <div class="case__foot">
-              <span class="mono">PyTorch · Edge inference · MLOps</span>
+          <article class="ledger__row reveal" role="listitem" data-stack="PyTorch · Edge inference · MLOps" data-tone="gold">
+            <span class="ledger__num mono">03</span>
+            <div class="ledger__main">
+              <h3>Visual quality inspection on the production line</h3>
+              <p>Deep-learning inspection for castings and machined parts, with full traceability: every decision linked to its images, model version and confidence score.</p>
+              <p class="ledger__stack mono">PyTorch · Edge inference · MLOps</p>
             </div>
+            <span class="ledger__cell mono">Manufacturing · India</span>
+            <span class="ledger__cell mono">Computer vision</span>
           </article>
 
-          <article class="case reveal">
-            <div class="case__meta mono"><span>Logistics</span><span>Platform</span></div>
-            <h3>Fleet management and route optimisation</h3>
-            <p>Real-time tracking, geofencing and ETA prediction for a delivery fleet, unifying dispatch, drivers and customers on one platform.</p>
-            <div class="case__foot">
-              <span class="mono">React · Go · Kafka · ML</span>
+          <article class="ledger__row reveal" role="listitem" data-stack="React · Go · Kafka · ML" data-tone="clay">
+            <span class="ledger__num mono">04</span>
+            <div class="ledger__main">
+              <h3>Fleet management and route optimisation</h3>
+              <p>Real-time tracking, geofencing and ETA prediction for a delivery fleet, unifying dispatch, drivers and customers on one platform.</p>
+              <p class="ledger__stack mono">React · Go · Kafka · ML</p>
             </div>
+            <span class="ledger__cell mono">Logistics</span>
+            <span class="ledger__cell mono">Platform</span>
           </article>
         </div>
 
         <div class="work__cta reveal">
-          <a href="#contact" class="btn btn--light">Request case studies &amp; references <span aria-hidden="true">→</span></a>
+          <a href="#contact" class="link-line link-line--light">Request case studies &amp; references <span aria-hidden="true">→</span></a>
         </div>
+      </div>
+
+      <!-- Cursor-tracking preview plate (desktop, fine pointer only) -->
+      <div class="plate" aria-hidden="true">
+        <span class="plate__num"></span>
+        <span class="plate__stack mono"></span>
       </div>
     </section>
 
     <!-- ============ APPROACH ============ -->
-    <section class="section" id="approach">
-      <div class="container">
-        <div class="section__head reveal">
-          <p class="eyebrow">How we work</p>
-          <h2 class="h2">Low-risk to start. <em>Predictable</em> to scale.</h2>
-        </div>
+    <section class="section" id="approach" aria-labelledby="approach-title">
+      <div class="wrap">
+        <header class="head">
+          <p class="kicker mono reveal"><span>03</span>Method</p>
+          <h2 class="h2" id="approach-title" data-split>Low-risk to start. <em>Predictable</em> to scale.</h2>
+        </header>
 
         <ol class="steps">
           <li class="step reveal">
-            <div class="step__top">
-              <span class="step__num mono">01</span>
-              <span class="step__time mono">1–2 weeks</span>
-            </div>
+            <span class="step__num" data-speed="0.08" aria-hidden="true">1</span>
+            <p class="step__time mono">Phase one · 1–2 weeks</p>
             <h3>Discovery</h3>
             <p>A short, fixed-fee engagement. We map the problem, the risks and the architecture, and give you a plan and estimate you can take to any vendor.</p>
           </li>
           <li class="step reveal">
-            <div class="step__top">
-              <span class="step__num mono">02</span>
-              <span class="step__time mono">2-week sprints</span>
-            </div>
+            <span class="step__num" data-speed="0.14" aria-hidden="true">2</span>
+            <p class="step__time mono">Phase two · 2-week sprints</p>
             <h3>Build</h3>
             <p>Working software every sprint, demoed live in your time zone. Shared backlog, your tools, transparent burn against budget.</p>
           </li>
           <li class="step reveal">
-            <div class="step__top">
-              <span class="step__num mono">03</span>
-              <span class="step__time mono">Ongoing</span>
-            </div>
+            <span class="step__num" data-speed="0.2" aria-hidden="true">3</span>
+            <p class="step__time mono">Phase three · Ongoing</p>
             <h3>Launch &amp; scale</h3>
             <p>Production rollout, monitoring and SLAs. Then either we keep evolving the product, or we hand over cleanly to your team, with docs.</p>
           </li>
         </ol>
 
-        <div class="principles reveal">
-          <div class="principle">
-            <h4>Senior by default</h4>
-            <p>Every engagement is led by an engineer with 8+ years of experience. No bait-and-switch after the sales call.</p>
+        <dl class="principles">
+          <div class="reveal">
+            <dt>Senior by default</dt>
+            <dd>Every engagement is led by an engineer with 8+ years of experience. No bait-and-switch after the sales call.</dd>
           </div>
-          <div class="principle">
-            <h4>Written communication</h4>
-            <p>Decisions, trade-offs and status are written down. Async-first, so time zones help rather than hurt.</p>
+          <div class="reveal">
+            <dt>Written communication</dt>
+            <dd>Decisions, trade-offs and status are written down. Async-first, so time zones help rather than hurt.</dd>
           </div>
-          <div class="principle">
-            <h4>Security as baseline</h4>
-            <p>Least-privilege access, client-managed credentials, encrypted devices and offboarding checklists on every project.</p>
+          <div class="reveal">
+            <dt>Security as baseline</dt>
+            <dd>Least-privilege access, client-managed credentials, encrypted devices and offboarding checklists on every project.</dd>
           </div>
-        </div>
+        </dl>
       </div>
     </section>
 
     <!-- ============ ENGAGEMENT ============ -->
-    <section class="section section--tint" id="engage">
-      <div class="container">
-        <div class="section__head reveal">
-          <p class="eyebrow">Engagement models</p>
-          <h2 class="h2">Pick how we <em>work together.</em></h2>
-          <p class="section__sub">Clear terms, no lock-in. Most clients start with Discovery and move to a pod.</p>
-        </div>
+    <section class="section section--paper2" id="engage" aria-labelledby="engage-title">
+      <div class="wrap">
+        <header class="head head--split">
+          <div>
+            <p class="kicker mono reveal"><span>04</span>Terms of engagement</p>
+            <h2 class="h2" id="engage-title" data-split>Pick how we <em>work together.</em></h2>
+          </div>
+          <p class="head__sub reveal">Clear terms, no lock-in. Most clients start with Discovery and move to a pod.</p>
+        </header>
 
-        <div class="plans">
-          <article class="plan reveal">
-            <h3>Fixed-scope project</h3>
-            <p class="plan__fit">Best for a well-defined product or MVP</p>
-            <ul class="checks">
-              <li>Fixed price and timeline after Discovery</li>
-              <li>Milestone-based payments</li>
-              <li>30-day warranty after launch</li>
-            </ul>
-            <a href="#contact" class="btn btn--ghost btn--block">Discuss a project</a>
-          </article>
-
-          <article class="plan plan--featured reveal">
-            <span class="plan__badge mono">Most chosen</span>
+        <div class="tiers">
+          <article class="tier tier--lead reveal">
+            <div class="tier__top">
+              <p class="mono tier__badge">Most chosen</p>
+              <p class="mono">For an evolving roadmap</p>
+            </div>
             <h3>Dedicated pod</h3>
-            <p class="plan__fit">Best for an evolving roadmap</p>
-            <ul class="checks">
-              <li>3–8 engineers, tech lead and QA</li>
-              <li>Monthly rolling contract, 30 days' notice</li>
-              <li>You approve every team member</li>
-              <li>Monthly report on delivery and spend</li>
+            <ul class="tier__list">
+              <li><span class="mono">3–8</span>Engineers, tech lead and QA</li>
+              <li><span class="mono">30d</span>Monthly rolling contract, 30 days' notice</li>
+              <li><span class="mono">You</span>Approve every team member</li>
+              <li><span class="mono">Mo.</span>Report on delivery and spend</li>
             </ul>
-            <a href="#contact" class="btn btn--accent btn--block">Build a pod</a>
+            <a href="#contact" class="btn btn--paper">Build a pod <span aria-hidden="true">→</span></a>
           </article>
 
-          <article class="plan reveal">
-            <h3>Team extension</h3>
-            <p class="plan__fit">Best for filling specific skills fast</p>
-            <ul class="checks">
-              <li>Individual senior engineers</li>
-              <li>Work inside your team and processes</li>
-              <li>Start in as little as 2 weeks</li>
-            </ul>
-            <a href="#contact" class="btn btn--ghost btn--block">Extend your team</a>
-          </article>
+          <div class="tiers__side">
+            <article class="tier reveal">
+              <p class="mono tier__fit">For a well-defined product or MVP</p>
+              <h3>Fixed-scope project</h3>
+              <ul class="tier__list tier__list--plain">
+                <li>Fixed price and timeline after Discovery</li>
+                <li>Milestone-based payments</li>
+                <li>30-day warranty after launch</li>
+              </ul>
+              <a href="#contact" class="link-line">Discuss a project</a>
+            </article>
+            <article class="tier reveal">
+              <p class="mono tier__fit">For filling specific skills fast</p>
+              <h3>Team extension</h3>
+              <ul class="tier__list tier__list--plain">
+                <li>Individual senior engineers</li>
+                <li>Work inside your team and processes</li>
+                <li>Start in as little as 2 weeks</li>
+              </ul>
+              <a href="#contact" class="link-line">Extend your team</a>
+            </article>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ============ STACK ============ -->
     <section class="stack" aria-label="Technology">
-      <div class="container">
-        <p class="mono stack__label">Tools we use in production</p>
-        <div class="marquee" aria-hidden="true">
-          <div class="marquee__track">
-            <span>Python</span><span>TypeScript</span><span>React</span><span>Next.js</span><span>Node.js</span><span>Go</span><span>Swift</span><span>Kotlin</span><span>Flutter</span><span>PyTorch</span><span>LangGraph</span><span>PostgreSQL</span><span>Kafka</span><span>AWS</span><span>Azure</span><span>GCP</span><span>Kubernetes</span><span>Terraform</span>
-            <span>Python</span><span>TypeScript</span><span>React</span><span>Next.js</span><span>Node.js</span><span>Go</span><span>Swift</span><span>Kotlin</span><span>Flutter</span><span>PyTorch</span><span>LangGraph</span><span>PostgreSQL</span><span>Kafka</span><span>AWS</span><span>Azure</span><span>GCP</span><span>Kubernetes</span><span>Terraform</span>
-          </div>
+      <p class="kicker mono wrap"><span>§</span>Tools we use in production</p>
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span>Python</span><span>TypeScript</span><span>React</span><span>Next.js</span><span>Node.js</span><span>Go</span><span>Swift</span><span>Kotlin</span><span>Flutter</span><span>PyTorch</span><span>LangGraph</span><span>PostgreSQL</span><span>Kafka</span><span>AWS</span><span>Azure</span><span>GCP</span><span>Kubernetes</span><span>Terraform</span>
+          <span>Python</span><span>TypeScript</span><span>React</span><span>Next.js</span><span>Node.js</span><span>Go</span><span>Swift</span><span>Kotlin</span><span>Flutter</span><span>PyTorch</span><span>LangGraph</span><span>PostgreSQL</span><span>Kafka</span><span>AWS</span><span>Azure</span><span>GCP</span><span>Kubernetes</span><span>Terraform</span>
         </div>
-        <p class="sr-only">Python, TypeScript, React, Next.js, Node.js, Go, Swift, Kotlin, Flutter, PyTorch, LangGraph, PostgreSQL, Kafka, AWS, Azure, GCP, Kubernetes, Terraform.</p>
       </div>
+      <p class="sr-only">Python, TypeScript, React, Next.js, Node.js, Go, Swift, Kotlin, Flutter, PyTorch, LangGraph, PostgreSQL, Kafka, AWS, Azure, GCP, Kubernetes, Terraform.</p>
     </section>
 
     <!-- ============ FAQ ============ -->
-    <section class="section" id="faq">
-      <div class="container faq__grid">
-        <div class="section__head reveal">
-          <p class="eyebrow">Questions</p>
-          <h2 class="h2">What buyers <em>usually ask.</em></h2>
-          <p class="section__sub">Something else? <a href="mailto:sales@winapps.co.in" class="link">sales@winapps.co.in</a></p>
-        </div>
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="wrap faq__grid">
+        <header class="head faq__head">
+          <p class="kicker mono reveal"><span>05</span>Questions</p>
+          <h2 class="h2" id="faq-title" data-split>What buyers <em>usually ask.</em></h2>
+          <p class="head__sub reveal">Something else? <a href="mailto:sales@winapps.co.in" class="link-line">sales@winapps.co.in</a></p>
+        </header>
 
-        <div class="faq reveal">
-          <details>
+        <div class="faq">
+          <details class="reveal">
             <summary>Who owns the code and IP?</summary>
             <p>You do. Our contracts assign all intellectual property to you, and code is committed to repositories you control from the first day of the engagement.</p>
           </details>
-          <details>
+          <details class="reveal">
             <summary>How do you handle GDPR and data protection?</summary>
             <p>We sign a Data Processing Agreement on request, work in your environments with access you grant and revoke, and avoid copying production personal data to local machines. We're happy to complete your vendor security questionnaire.</p>
           </details>
-          <details>
+          <details class="reveal">
             <summary>How does the time difference work in practice?</summary>
             <p>Teams shift their day to keep at least 4 hours of overlap with Central European time and 3–4 hours with US Eastern. Standups, reviews and demos happen live; the rest is async, so work often moves forward while you sleep.</p>
           </details>
-          <details>
+          <details class="reveal">
             <summary>Can we interview the engineers?</summary>
             <p>Yes, and we encourage it. You see profiles, run your own technical interview and approve every person before they join. If someone isn't the right fit, we replace them at no cost.</p>
           </details>
-          <details>
+          <details class="reveal">
             <summary>How do contracts and payments work?</summary>
             <p>We invoice monthly in USD, EUR or GBP. We can work under your MSA or ours. Discovery is fixed-fee; projects are milestone-based; pods are monthly with 30 days' notice.</p>
           </details>
-          <details>
+          <details class="reveal">
             <summary>How quickly can you start?</summary>
             <p>An intro call can usually happen within the week. Discovery typically starts within 1–2 weeks, and a full pod within 2–4 weeks of signing.</p>
           </details>
@@ -391,53 +412,55 @@
     </section>
 
     <!-- ============ CONTACT ============ -->
-    <section class="section section--dark contact" id="contact">
-      <div class="container contact__grid">
-        <div class="contact__copy reveal">
-          <p class="eyebrow eyebrow--light">Start a conversation</p>
-          <h2 class="h2">Tell us what you're <em>building.</em></h2>
-          <p class="section__sub">A senior engineer, not a salesperson, will reply within one business day with questions or a time to talk.</p>
+    <section class="section section--ink contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <p class="kicker mono reveal"><span>06</span>Start a conversation</p>
+        <h2 class="contact__title" id="contact-title" data-split>Tell us what you're <em>building.</em></h2>
 
-          <dl class="contact__details">
-            <div><dt class="mono">Email</dt><dd><a href="mailto:sales@winapps.co.in">sales@winapps.co.in</a></dd></div>
-            <div><dt class="mono">Phone / WhatsApp</dt><dd><a href="tel:+917015796830">+91 70157 96830</a></dd></div>
-            <div><dt class="mono">Elsewhere</dt><dd><a href="https://www.linkedin.com/company/winapps.co.in/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.instagram.com/winapps_software/" target="_blank" rel="noopener">Instagram</a></dd></div>
-          </dl>
+        <div class="contact__grid">
+          <div class="contact__copy reveal">
+            <p class="head__sub">A senior engineer, not a salesperson, will reply within one business day with questions or a time to talk.</p>
+            <dl class="contact__details">
+              <div><dt class="mono">Email</dt><dd><a href="mailto:sales@winapps.co.in">sales@winapps.co.in</a></dd></div>
+              <div><dt class="mono">Phone / WhatsApp</dt><dd><a href="tel:+917015796830">+91 70157 96830</a></dd></div>
+              <div><dt class="mono">Elsewhere</dt><dd><a href="https://www.linkedin.com/company/winapps.co.in/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.instagram.com/winapps_software/" target="_blank" rel="noopener">Instagram</a></dd></div>
+            </dl>
+          </div>
+
+          <form class="form reveal" id="contact-form" novalidate>
+            <div class="form__row">
+              <label>Name<input type="text" name="name" autocomplete="name" required /></label>
+              <label>Work email<input type="email" name="email" autocomplete="email" required /></label>
+            </div>
+            <div class="form__row">
+              <label>Company<input type="text" name="company" autocomplete="organization" /></label>
+              <label>Country
+                <select name="country">
+                  <option>United States</option>
+                  <option>United Kingdom</option>
+                  <option>Germany</option>
+                  <option>Netherlands</option>
+                  <option>Sweden</option>
+                  <option>France</option>
+                  <option>Other in Europe</option>
+                  <option>Other</option>
+                </select>
+              </label>
+            </div>
+            <fieldset class="chips">
+              <legend>What do you need?</legend>
+              <label><input type="checkbox" name="need" value="AI / ML" /><span>AI / ML</span></label>
+              <label><input type="checkbox" name="need" value="Web or mobile product" /><span>Web or mobile product</span></label>
+              <label><input type="checkbox" name="need" value="Cloud" /><span>Cloud</span></label>
+              <label><input type="checkbox" name="need" value="Modernization" /><span>Modernization</span></label>
+              <label><input type="checkbox" name="need" value="Dedicated team" /><span>Dedicated team</span></label>
+            </fieldset>
+            <label>Project details<textarea name="message" rows="4" placeholder="What are you building, and where are you stuck?"></textarea></label>
+            <button type="submit" class="btn btn--paper btn--block">Send inquiry <span aria-hidden="true">→</span></button>
+            <p class="form__note">We'll only use your details to reply to this inquiry. NDA available before any detailed discussion.</p>
+            <p class="form__status" role="status" aria-live="polite"></p>
+          </form>
         </div>
-
-        <form class="form reveal" id="contact-form" novalidate>
-          <div class="form__row">
-            <label>Name<input type="text" name="name" autocomplete="name" required /></label>
-            <label>Work email<input type="email" name="email" autocomplete="email" required /></label>
-          </div>
-          <div class="form__row">
-            <label>Company<input type="text" name="company" autocomplete="organization" /></label>
-            <label>Country
-              <select name="country">
-                <option>United States</option>
-                <option>United Kingdom</option>
-                <option>Germany</option>
-                <option>Netherlands</option>
-                <option>Sweden</option>
-                <option>France</option>
-                <option>Other in Europe</option>
-                <option>Other</option>
-              </select>
-            </label>
-          </div>
-          <fieldset class="chips">
-            <legend>What do you need?</legend>
-            <label><input type="checkbox" name="need" value="AI / ML" /><span>AI / ML</span></label>
-            <label><input type="checkbox" name="need" value="Web or mobile product" /><span>Web or mobile product</span></label>
-            <label><input type="checkbox" name="need" value="Cloud" /><span>Cloud</span></label>
-            <label><input type="checkbox" name="need" value="Modernization" /><span>Modernization</span></label>
-            <label><input type="checkbox" name="need" value="Dedicated team" /><span>Dedicated team</span></label>
-          </fieldset>
-          <label>Project details<textarea name="message" rows="4" placeholder="What are you building, and where are you stuck?"></textarea></label>
-          <button type="submit" class="btn btn--accent btn--block">Send inquiry <span aria-hidden="true">→</span></button>
-          <p class="form__note">We'll only use your details to reply to this inquiry. NDA available before any detailed discussion.</p>
-          <p class="form__status" role="status" aria-live="polite"></p>
-        </form>
       </div>
     </section>
 
@@ -445,43 +468,38 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
-    <div class="container">
+    <div class="wrap">
       <div class="footer__top">
-        <div>
-          <a href="#top" class="brand brand--light" aria-label="Winapps home">
-            <span class="brand__mark" aria-hidden="true"></span>
-            <span class="brand__word">Winapps</span>
-          </a>
-          <p class="footer__tag">Senior product &amp; AI engineering for US and European companies.</p>
-        </div>
+        <p class="footer__tag">Senior product &amp; AI engineering for US and European companies.</p>
         <div class="footer__cols">
           <div>
-            <h5 class="mono">Services</h5>
+            <h2 class="mono">Practice</h2>
             <a href="#services">AI &amp; machine learning</a>
             <a href="#services">Product engineering</a>
             <a href="#services">Cloud &amp; platform</a>
             <a href="#services">Modernization</a>
           </div>
           <div>
-            <h5 class="mono">Company</h5>
+            <h2 class="mono">Company</h2>
             <a href="#work">Work</a>
-            <a href="#approach">Approach</a>
-            <a href="#engage">Engagement</a>
-            <a href="#faq">FAQ</a>
+            <a href="#approach">Method</a>
+            <a href="#engage">Terms</a>
+            <a href="#faq">Questions</a>
           </div>
           <div>
-            <h5 class="mono">Contact</h5>
+            <h2 class="mono">Contact</h2>
             <a href="mailto:sales@winapps.co.in">sales@winapps.co.in</a>
             <a href="tel:+917015796830">+91 70157 96830</a>
             <a href="https://www.linkedin.com/company/winapps.co.in/" target="_blank" rel="noopener">LinkedIn</a>
           </div>
         </div>
       </div>
-      <div class="footer__bottom">
-        <span>© 2013–<span id="year">2026</span> Winapps. All rights reserved.</span>
-        <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
-      </div>
       <p class="footer__giant" aria-hidden="true">Winapps</p>
+      <div class="footer__bottom mono">
+        <span>© 2013–<span id="year">2026</span> Winapps</span>
+        <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+        <a href="#top">Back to top ↑</a>
+      </div>
     </div>
   </footer>
 
