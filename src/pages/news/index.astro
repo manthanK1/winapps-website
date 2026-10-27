@@ -1,0 +1,32 @@
+---
+// News index. On the live site these posts had no index and no inbound
+// links (orphaned); here they're linked from Insights, the header and footer.
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import PostCard from "../../components/PostCard.astro";
+import Icon from "../../components/Icon.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { href } from "../../lib/url";
+
+const news = (await getCollection("news")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const crumbs = [{ name: "News", path: "/news/" }];
+---
+<BaseLayout title="News" description="Short updates from Winapps on AI, modernization and where software delivery is heading." breadcrumbs={crumbs}>
+  <PageHero breadcrumbs={crumbs} eyebrow="News" title="Short updates" accent="from the industry." lead="Where AI, modernization and delivery practice are heading, in a few lines each." theme="amber" />
+
+  <section class="section" aria-label="News posts">
+    <div class="container-site">
+      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {news.map((p, i) => (
+          <li data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}><PostCard post={p} tone={(["amber", "stone", "teal"] as const)[i % 3]} headingLevel="h2" /></li>
+        ))}
+      </ul>
+      <p class="mt-10 text-center">
+        <a href={href("/blog/")} class="line-link"><span>Looking for in-depth guides? Read the blog</span> <Icon name="arrow-right" size={18} /></a>
+      </p>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

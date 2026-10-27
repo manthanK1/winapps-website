@@ -1,0 +1,89 @@
+---
+// "What do you want to build?" (CLAY-STYLE.md §5 "Prompt input"). A plain GET
+// form to the contact page: the message and chosen needs arrive pre-filled,
+// so the visitor never has to type twice. Works without JavaScript.
+import Icon from "./Icon.astro";
+import { NEEDS } from "../lib/site";
+import { href } from "../lib/url";
+---
+<form action={href("/contact/")} method="get" class="mx-auto max-w-2xl" aria-labelledby="build-title">
+  <div class="build-box">
+    <label for="build-message" class="sr-only">Describe what you want to build</label>
+    <textarea
+      id="build-message"
+      name="message"
+      rows="4"
+      class="build-input"
+      placeholder="For example: replace our dispatch spreadsheets with a real-time app for drivers and customers"
+    ></textarea>
+  </div>
+  <div class="build-tray">
+    <fieldset class="min-w-0 flex-1">
+      <legend class="sr-only">What does it involve? (optional)</legend>
+      <div class="flex flex-wrap gap-2">
+        {NEEDS.map((n, i) => (
+          <label class="build-chip">
+            <input type="checkbox" name="interest" value={n.label} id={`build-need-${i}`} class="sr-only" />
+            <span>{n.label}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+    <button type="submit" class="btn btn-dark h-11 min-h-11 w-11 shrink-0 self-end p-0" aria-label="Continue to the contact form">
+      <Icon name="arrow-right" size={20} />
+    </button>
+  </div>
+  <p class="mt-4 text-center text-sm text-muted">Continues to the contact form with this filled in. Nothing is sent yet.</p>
+</form>
+
+<style>
+  .build-box {
+    position: relative;
+    z-index: 1;
+    border-radius: 1.25rem;
+    background: var(--color-white);
+    box-shadow: var(--shadow-float);
+    transition: box-shadow 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .build-box:focus-within { box-shadow: var(--shadow-float), 0 0 0 3px var(--color-teal-200); }
+  .build-input {
+    display: block;
+    width: 100%;
+    min-height: 9rem;
+    resize: vertical;
+    padding: 1rem 1.25rem;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    color: var(--color-ink);
+    font: inherit;
+    font-size: 1.0625rem;
+    line-height: 1.4;
+  }
+  .build-input:focus { outline: none; }
+  .build-input::placeholder { color: var(--color-stone-500); }
+  .build-tray {
+    display: flex;
+    gap: 0.75rem;
+    margin-inline: 0.625rem;
+    padding: 0.75rem;
+    border-radius: 0 0 1.25rem 1.25rem;
+    background: var(--color-paper);
+  }
+  .build-chip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: 0.75rem;
+    background: var(--color-stone-50);
+    color: var(--color-stone-700);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s var(--ease-expo), color 0.15s linear;
+  }
+  .build-chip:hover span { background: var(--color-white); color: var(--color-ink); }
+  .build-chip input:checked + span { background: var(--color-teal-700); color: var(--color-white); }
+  .build-chip input:focus-visible + span { outline: 3px solid var(--color-teal-600); outline-offset: 2px; }
+</style>

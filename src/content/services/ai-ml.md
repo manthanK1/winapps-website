@@ -2,6 +2,7 @@
 title: AI & machine learning
 order: 1
 icon: brain-circuit
+tagline: built for production, not the pilot.
 summary: LLM applications, retrieval and agent systems, predictive models and computer vision, built with evaluation, monitoring and cost controls from the start.
 outcome: A production AI system with evaluation, monitoring and cost controls built in, not a demo that stalls after the pilot.
 deliverables:
@@ -22,6 +23,7 @@ delivery:
     text: We keep improving the system, or hand it to your team with documentation.
 tech: [Python, PyTorch, LangGraph, PostgreSQL, AWS, Azure, GCP, Kubernetes]
 relatedWork: ai-visual-inspection
+relatedPosts: [building-agentic-ai-applications-problem-first-approach-2026]
 faq:
   - question: How do we know if an AI use case is worth building?
     answer: That's what Discovery is for. In a short, fixed-fee engagement we look at the problem, the data and the risks, and agree how success will be measured before you commit to a build.

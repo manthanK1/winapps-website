@@ -26,7 +26,25 @@ export function organization(site: URL | undefined, logoUrl: string) {
         availableLanguage: ["English"],
       },
     ],
-    sameAs: [SITE.linkedin, SITE.instagram],
+    sameAs: [SITE.linkedin, SITE.instagram, SITE.facebook],
+  };
+}
+
+export function article(
+  site: URL | undefined,
+  a: { type: "BlogPosting" | "NewsArticle"; headline: string; description: string; path: string; date: Date; author?: string }
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": a.type,
+    headline: a.headline,
+    description: a.description,
+    url: absolute(a.path, site),
+    mainEntityOfPage: absolute(a.path, site),
+    datePublished: a.date.toISOString().slice(0, 10),
+    dateModified: a.date.toISOString().slice(0, 10),
+    author: a.author ? { "@type": "Person", name: a.author } : { "@id": absolute("/", site) + "#organization" },
+    publisher: { "@id": absolute("/", site) + "#organization" },
   };
 }
 

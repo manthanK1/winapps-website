@@ -3,105 +3,156 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
-import Ribbon from "../components/Ribbon.astro";
+import Hills from "../components/Hills.astro";
+import ClayMark from "../components/ClayMark.astro";
 import SectionHeader from "../components/SectionHeader.astro";
-import PracticesExplorer from "../components/PracticesExplorer.astro";
+import PracticeStack from "../components/PracticeStack.astro";
+import BuildPrompt from "../components/BuildPrompt.astro";
 import CaseCard from "../components/CaseCard.astro";
 import ProcessTimeline from "../components/ProcessTimeline.astro";
 import TrustSection from "../components/TrustSection.astro";
 import EngagementModels from "../components/EngagementModels.astro";
 import TechStack from "../components/TechStack.astro";
+import PostCard from "../components/PostCard.astro";
 import FaqList from "../components/FaqList.astro";
 import CtaBand from "../components/CtaBand.astro";
+import type { IconName } from "../lib/icons";
 import { PROMISES, SITE } from "../lib/site";
 import { href } from "../lib/url";
 import { faqPage } from "../lib/schema";
 
+const services = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
 const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
 const faq = (await getCollection("faq")).sort((a, b) => a.data.order - b.data.order).map((f) => f.data);
+const blog = (await getCollection("blog")).sort((a, b) => b.data.updated.valueOf() - a.data.updated.valueOf()).slice(0, 3);
+const news = (await getCollection("news")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 2);
 const clients = await getCollection("clients");
 const testimonials = await getCollection("testimonials");
+const tones = ["teal", "orange", "amber"] as const;
 ---
 <BaseLayout
   title={SITE.name}
   description="Senior engineers for software that has to work. Winapps builds AI, web and mobile products, cloud platforms and modernization for companies in India, the US, the UK and Europe. Est. 2013."
   jsonLd={[faqPage(faq)]}
+  underHeader
 >
-  <!-- 2. Hero -->
-  <section class="relative overflow-hidden bg-paper" aria-labelledby="hero-title">
-    <Ribbon variant="hero" class="pointer-events-none absolute right-0 top-0 hidden h-full w-[40%] lg:block xl:w-[44%]" />
-    <div class="container-site relative pb-14 pt-14 sm:pt-20 lg:pb-20 lg:pt-28">
-      <div class="max-w-4xl lg:max-w-[60%]">
-        <p class="eyebrow">Software engineering partner since {SITE.founded}</p>
-        <h1 id="hero-title" class="mt-5 text-display font-semibold tracking-[-0.035em] text-teal-800">
-          Senior engineers for software that <span class="text-ink">has to work.</span>
-        </h1>
-        <p class="mt-7 max-w-2xl text-lead text-stone-700">
-          We design, build and scale AI systems, web and mobile products and cloud platforms for companies in India, the US, the UK and Europe, as an extension of your team.
-        </p>
-        <div class="mt-9 flex flex-col gap-3 xs:flex-row xs:flex-wrap xs:items-center">
-          <a href={href("/contact/")} class="btn btn-primary">
-            Book a 30-min intro call <Icon name="arrow-right" size={18} class="icon-arrow" />
-          </a>
-          <a href={href("/work/")} class="btn btn-secondary">See our work</a>
+  <!-- Hero: sky, hills and the clay mark; the headline sits on the front hill. -->
+  <section class="relative overflow-hidden" aria-labelledby="hero-title">
+    <div class="relative bg-gradient-to-b from-teal-100 to-teal-50 pt-20 lg:pt-24">
+      <Hills variant="hero" class="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] w-full" />
+      <div class="relative mx-auto flex h-[17rem] max-w-[30rem] items-end justify-center sm:h-[21rem] lg:h-[26rem]">
+        <ClayMark size={384} eager class="block w-[14rem] sm:w-[18rem] lg:w-[24rem]" />
+      </div>
+    </div>
+    <div class="on-dark bg-teal-800 text-white">
+      <div class="container-site grid gap-8 pb-28 pt-4 lg:grid-cols-12 lg:items-end lg:gap-10 lg:pb-36">
+        <div class="lg:col-span-7">
+          <p class="eyebrow">Software engineering partner since {SITE.founded}</p>
+          <h1 id="hero-title" class="mt-4 text-display text-white">
+            Senior engineers for software that <span class="text-accent">has to work.</span>
+          </h1>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8 xl:col-span-4 xl:col-start-9">
+          <p class="text-lead text-teal-50">
+            We design, build and scale AI systems, web and mobile products and cloud platforms for companies in India, the US, the UK and Europe.
+          </p>
+          <div class="mt-7 flex flex-col gap-3 xs:flex-row xs:flex-wrap">
+            <a href={href("/contact/")} class="btn btn-primary">
+              Book a 30-min intro call <Icon name="arrow-right" size={18} class="icon-arrow" />
+            </a>
+            <a href={href("/work/")} class="btn btn-light">See our work <Icon name="arrow-right" size={18} class="icon-arrow" /></a>
+          </div>
+          <p class="mt-4 text-sm text-teal-100">
+            or message us on <a class="font-semibold text-white underline underline-offset-4 hover:no-underline" href={SITE.whatsappHref} rel="noopener">WhatsApp</a>
+          </p>
         </div>
       </div>
-
-      <ul class="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line lg:mt-20 lg:grid-cols-4" aria-label="Our commitments">
-        {PROMISES.map((p) => (
-          <li class="flex items-center gap-3 bg-paper px-4 py-4 text-sm font-semibold text-stone-800 sm:px-5">
-            <Icon name={p.icon} size={20} class="shrink-0 text-teal-600" />
-            <span>{p.label}</span>
-          </li>
-        ))}
-      </ul>
     </div>
   </section>
 
-  <!-- 3. Client logos: hidden until real logos with written permission exist (src/content/clients). -->
+  <!-- Intro panel overlapping the hero: where to go next, and what we promise. -->
+  <section class="relative z-10 -mt-20 lg:-mt-24" aria-labelledby="intro-title">
+    <div class="container-site">
+      <div class="panel theme-stone">
+        <h2 id="intro-title" class="mx-auto max-w-3xl text-center text-h3 text-ink">
+          Since {SITE.founded}, senior engineers for companies in <strong class="font-semibold">India, the US, the UK and Europe</strong>. Six practices, one standard, and <strong class="font-semibold">every commitment in writing</strong>.
+        </h2>
+        <div class="mt-8 grid gap-2 lg:mt-10 lg:grid-cols-12">
+          <ul class="grid grid-cols-2 gap-2 lg:col-span-8 lg:grid-cols-3" aria-label="Services">
+            {services.map((s) => (
+              <li>
+                <a href={href(`/services/${s.id}/`)} class="tile card-interactive flex h-full flex-col gap-3 p-4 sm:gap-4 sm:p-5">
+                  <Icon name="arrow-up-right" size={18} class="corner-arrow" />
+                  <span class="grid h-10 w-10 place-items-center rounded-xl bg-teal-50 text-teal-700"><Icon name={s.data.icon as IconName} size={20} /></span>
+                  <span>
+                    <span class="block font-display text-h4 font-medium text-ink">{s.data.title}</span>
+                    <span class="mt-1 hidden text-sm text-muted sm:block">{s.data.tagline.replace(/^./, (c) => c.toUpperCase())}</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <ul class="grid grid-cols-2 gap-2 lg:col-span-4 lg:grid-cols-1" aria-label="Our commitments">
+            {PROMISES.map((p) => (
+              <li class="tile flex items-center gap-3 px-4 py-4 text-sm font-semibold text-ink sm:px-5">
+                <Icon name={p.icon} size={20} class="shrink-0 text-teal-600" />
+                <span>{p.label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client logos: hidden until real logos with written permission exist (src/content/clients). -->
   {clients.length > 0 && (
-    <section class="border-y border-line bg-white" aria-label="Clients">
-      <div class="container-site flex flex-wrap items-center justify-center gap-x-12 gap-y-6 py-10">
+    <section class="section-tight" aria-label="Clients">
+      <div class="container-site flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
         {clients.map((c) => <Image src={c.data.logo} alt={c.data.name} height={36} class="h-9 w-auto opacity-80 grayscale" />)}
       </div>
     </section>
   )}
 
-  <!-- 4. What we do → what you get -->
-  <section class="section bg-white" aria-labelledby="practices-title">
+  <!-- What we do: stacked practice panels -->
+  <section class="section defer-render" aria-labelledby="practices-title">
     <div class="container-site">
-      <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
-        <SectionHeader
-          id="practices-title"
-          eyebrow="What we do → what you get"
-          title="Six practices. One standard of engineering."
-          class="lg:col-span-7"
-        />
-        <p class="text-stone-700 lg:col-span-4 lg:col-start-9" data-reveal>
-          We stay narrow on purpose. Each practice is run by people who have shipped it in production, more than once.
-        </p>
-      </div>
-      <div class="mt-12 lg:mt-16">
-        <PracticesExplorer />
-      </div>
+      <SectionHeader
+        id="practices-title"
+        center
+        eyebrow="What we do"
+        title="Six practices."
+        accent="One standard of engineering."
+        intro="We stay narrow on purpose. Each practice is run by people who have shipped it in production, more than once."
+      />
+      <div class="mt-12 lg:mt-16"><PracticeStack /></div>
     </div>
   </section>
 
-  <!-- 5. Selected work -->
-  <section class="section bg-paper" aria-labelledby="work-title">
+  <!-- What do you want to build? → contact form, pre-filled -->
+  <section class="section-tight defer-render" aria-labelledby="build-title">
+    <div class="container-site">
+      <h2 id="build-title" class="text-center text-h2 text-teal-950" data-reveal>What do you want to build?</h2>
+      <div class="mt-8"><BuildPrompt /></div>
+    </div>
+  </section>
+
+  <div class="frame-line" aria-hidden="true"></div>
+
+  <!-- Selected work -->
+  <section class="section defer-render" aria-labelledby="work-title">
     <div class="container-site">
       <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <SectionHeader
           id="work-title"
           eyebrow="Selected work"
-          title="Problems we've been trusted with."
+          title="Problems we've been"
+          accent="trusted with."
           intro="Our clients are under NDA, so we describe the work without naming them. We share specifics and references on a call."
         />
-        <a href={href("/work/")} class="link inline-flex min-h-11 shrink-0 items-center gap-1.5 font-semibold" data-reveal>
-          All case studies <Icon name="arrow-right" size={18} />
-        </a>
+        <a href={href("/work/")} class="line-link shrink-0" data-reveal><span>All case studies</span> <Icon name="arrow-right" size={18} /></a>
       </div>
-      <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <ul class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {work.map((item, i) => (
           <li class:list={[{ "lg:col-span-2": i === 0 || i === 3 }]} data-reveal style={`--reveal-delay:${(i % 2) * 80}ms`}>
             <CaseCard item={item} featured={i === 0 || i === 3} />
@@ -111,45 +162,50 @@ const testimonials = await getCollection("testimonials");
     </div>
   </section>
 
-  <!-- 6. How we work -->
-  <section class="section bg-white" aria-labelledby="process-title">
+  <!-- How we work -->
+  <section class="defer-render pb-[clamp(3.5rem,2.5rem+3.5vw,6rem)]" aria-labelledby="process-title">
     <div class="container-site">
-      <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
-        <SectionHeader id="process-title" eyebrow="How we work" title="Low-risk to start. Predictable to scale." class="lg:col-span-7" />
-        <p class="text-stone-700 lg:col-span-4 lg:col-start-9" data-reveal>
-          Most clients start with a fixed-fee Discovery, then move to a dedicated pod.{" "}
-          <a href={href("/how-we-work/")} class="link font-semibold">How we work in detail</a>
-        </p>
+      <div class="panel theme-stone">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <SectionHeader id="process-title" eyebrow="How we work" title="Low-risk to start." accent="Predictable to scale." />
+          </div>
+          <div class="lg:col-span-4 lg:col-start-9" data-reveal>
+            <p class="text-lead text-stone-700">Most clients start with a fixed-fee Discovery, then move to a dedicated pod.</p>
+            <a href={href("/how-we-work/")} class="line-link mt-3"><span>How we work in detail</span> <Icon name="arrow-right" size={18} /></a>
+          </div>
+        </div>
+        <div class="mt-10 rounded-[1.5rem] bg-white p-6 sm:p-10 lg:mt-14"><ProcessTimeline /></div>
       </div>
-      <div class="mt-14 lg:mt-20"><ProcessTimeline /></div>
     </div>
   </section>
 
-  <!-- 7. Why trust us -->
-  <TrustSection edgeClass="text-white" />
+  <!-- Why trust us -->
+  <TrustSection />
 
-  <!-- 8. Engagement models -->
-  <section class="section bg-paper" aria-labelledby="engage-title">
+  <!-- Engagement models -->
+  <section class="section defer-render pt-0" aria-labelledby="engage-title">
     <div class="container-site">
       <SectionHeader
         id="engage-title"
         eyebrow="Engagement models"
-        title="Pick how we work together."
+        title="Pick how we"
+        accent="work together."
         intro="Clear terms, no lock-in. Every model starts with the same senior engineers and the same commitments."
       />
-      <div class="mt-14 lg:mt-20"><EngagementModels /></div>
+      <div class="mt-12 lg:mt-16"><EngagementModels /></div>
     </div>
   </section>
 
-  <!-- 9. Testimonials: hidden until real, approved quotes exist (src/content/testimonials). -->
+  <!-- Testimonials: hidden until real, approved quotes exist (src/content/testimonials). -->
   {testimonials.length > 0 && (
-    <section class="section bg-white" aria-labelledby="testimonials-title">
+    <section class="section pt-0" aria-labelledby="testimonials-title">
       <div class="container-site">
         <SectionHeader id="testimonials-title" eyebrow="Clients" title="In their words." />
-        <ul class="mt-12 grid gap-6 md:grid-cols-2">
+        <ul class="mt-12 grid gap-4 md:grid-cols-2">
           {testimonials.map((t) => (
             <li>
-              <figure class="card h-full p-8">
+              <figure class="card-tint h-full p-8">
                 <blockquote class="font-display text-h4 font-medium text-ink">“{t.data.quote}”</blockquote>
                 <figcaption class="mt-6 text-sm text-muted"><strong class="text-ink">{t.data.name}</strong>, {t.data.role}, {t.data.company}</figcaption>
               </figure>
@@ -160,31 +216,55 @@ const testimonials = await getCollection("testimonials");
     </section>
   )}
 
-  <!-- 10. Tech stack -->
-  <section class="section-tight bg-white" aria-labelledby="stack-title">
+  <div class="frame-line" aria-hidden="true"></div>
+
+  <!-- Tech stack -->
+  <section class="section-tight defer-render" aria-labelledby="stack-title">
     <div class="container-site">
       <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
-        <SectionHeader id="stack-title" eyebrow="Technology" title="Tools we use in production." class="lg:col-span-7" />
+        <SectionHeader id="stack-title" eyebrow="Technology" title="Tools we use" accent="in production." class="lg:col-span-7" />
         <p class="text-stone-700 lg:col-span-4 lg:col-start-9" data-reveal>Languages, frameworks and platforms our engineers work with in production.</p>
       </div>
       <div class="mt-10"><TechStack /></div>
     </div>
   </section>
 
-  <!-- 11. FAQ -->
-  <section class="section bg-paper" aria-labelledby="faq-title">
-    <div class="container-site grid gap-10 lg:grid-cols-12">
-      <div class="lg:col-span-4">
-        <SectionHeader id="faq-title" eyebrow="Questions" title="What buyers usually ask." class="lg:sticky lg:top-28">
-          <p class="mt-5 text-stone-700">Something else? <a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
-        </SectionHeader>
+  <div class="frame-line" aria-hidden="true"></div>
+
+  <!-- Latest insights: the live site's "Latest News & Insights" journey -->
+  <section class="section defer-render" aria-labelledby="insights-title">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <SectionHeader id="insights-title" eyebrow="Insights" title="Latest guides" accent="and news." />
+        <a href={href("/blog/")} class="line-link shrink-0" data-reveal><span>All insights</span> <Icon name="arrow-right" size={18} /></a>
       </div>
-      <div class="lg:col-span-7 lg:col-start-6" data-reveal>
-        <FaqList items={faq} />
+      <ul class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+        {blog.map((p, i) => (
+          <li class="lg:col-span-2" data-reveal style={`--reveal-delay:${i * 70}ms`}><PostCard post={p} tone={tones[i % tones.length]} /></li>
+        ))}
+        {news.map((p, i) => (
+          <li class="lg:col-span-3" data-reveal style={`--reveal-delay:${i * 70}ms`}><PostCard post={p} /></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="defer-render pb-[clamp(3.5rem,2.5rem+3.5vw,6rem)]" aria-labelledby="faq-title">
+    <div class="container-site">
+      <div class="panel theme-stone grid gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <SectionHeader id="faq-title" eyebrow="Questions" title="What buyers" accent="usually ask." class="lg:sticky lg:top-28">
+            <p class="mt-5 text-stone-700">Something else? <a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+          </SectionHeader>
+        </div>
+        <div class="lg:col-span-7 lg:col-start-6" data-reveal>
+          <FaqList items={faq} />
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 12. Final CTA -->
-  <CtaBand edgeClass="text-paper" />
+  <!-- Final CTA -->
+  <CtaBand />
 </BaseLayout>

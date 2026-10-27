@@ -1,7 +1,7 @@
 // Site QA on the built output:
 //  1. every internal link / asset resolves, and every #fragment exists
 //  2. one <h1> per page and no skipped heading levels
-//  3. keyboard & interaction checks (skip link, mobile menu, practices, FAQ, form)
+//  3. keyboard & interaction checks (skip link, menus, prompt box → form, FAQ, form)
 // Usage: npm run build && node scripts/qa.mjs [--browser chromium|firefox|webkit]
 import { readdir, readFile, stat } from "node:fs/promises";
 import { join, relative, sep } from "node:path";
@@ -33,8 +33,10 @@ for (const f of htmlFiles) {
 }
 
 for (const [url, html] of pages) {
+  // Redirect stubs for old winapps.co.in URLs: only their link is checked.
+  const isRedirect = html.includes('http-equiv="refresh"');
   const h1s = (html.match(/<h1[\s>]/g) ?? []).length;
-  if (h1s !== 1) fail(`${url}: ${h1s} <h1> elements`);
+  if (!isRedirect && h1s !== 1) fail(`${url}: ${h1s} <h1> elements`);
   const levels = [...html.replace(/<dialog[\s\S]*?<\/dialog>/, "").matchAll(/<h([1-6])[\s>]/g)].map((m) => Number(m[1]));
   levels.forEach((l, i) => { if (i && l > levels[i - 1] + 1) fail(`${url}: heading jumps h${levels[i - 1]} → h${l}`); });
 
@@ -91,17 +93,16 @@ const assert = (cond, msg) => { if (!cond) throw new Error(msg); };
     await page.waitForFunction(() => document.activeElement?.hasAttribute("data-menu-open"), null, { timeout: 2000 })
       .catch(() => { throw new Error("focus not returned to the Menu button"); });
   });
-  await check("practices accordion toggles on mobile", async () => {
-    const first = page.locator("[data-practice-trigger]").first();
-    await first.click();
-    assert((await first.getAttribute("aria-expanded")) === "false", "open item did not collapse");
-    const second = page.locator("[data-practice-trigger]").nth(1);
-    await second.click();
-    assert((await second.getAttribute("aria-expanded")) === "true", "second item did not open");
-    assert(await page.locator("#" + (await second.getAttribute("aria-controls"))).isVisible(), "second panel not visible");
+  await check("home prompt box pre-fills the contact form", async () => {
+    await page.fill("#build-message", "A booking app for our clinics");
+    await page.click("label.build-chip:has-text('Cloud')");
+    await page.click("form[aria-labelledby=build-title] button[type=submit]");
+    await page.waitForURL(/\/contact\//);
+    assert((await page.inputValue("#cf-message")) === "A booking app for our clinics", "message not carried over");
+    assert(await page.isChecked("input[name=needs][value=Cloud]"), "need not pre-selected");
   });
   await check("no horizontal scroll at 390px", async () => {
-    for (const p of ["/", "/contact/", "/work/fitness-member-app/"]) {
+    for (const p of ["/", "/contact/", "/work/fitness-member-app/", "/blog/building-agentic-ai-applications-problem-first-approach-2026/", "/news/"]) {
       await page.goto(origin + p);
       const over = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
       assert(over <= 0, `${p} overflows by ${over}px`);
@@ -115,16 +116,26 @@ const assert = (cond, msg) => { if (!cond) throw new Error(msg); };
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
   await page.goto(origin + "/");
-  await check("practices list shows one panel at a time on desktop", async () => {
-    const t = page.locator("[data-practice-trigger]");
-    await t.nth(2).click();
-    assert((await t.nth(2).getAttribute("aria-expanded")) === "true", "third practice not selected");
-    assert((await t.nth(0).getAttribute("aria-expanded")) === "false", "first practice still selected");
-    await t.nth(2).focus();
-    await page.keyboard.press("ArrowDown");
-    assert(await page.evaluate(() => document.activeElement === document.querySelectorAll("[data-practice-trigger]")[3]), "ArrowDown did not move focus");
+  await check("header dropdown opens with keyboard, closes on Esc", async () => {
+    const trigger = page.locator("[data-menu-trigger]").first();
+    await trigger.focus();
+    await page.keyboard.press("Enter");
+    assert((await trigger.getAttribute("aria-expanded")) === "true", "menu did not open");
+    assert(await page.locator("#menu-what-we-do a[href$='/services/ai-ml/']").isVisible(), "service link not visible");
+    // WebKit skips links on Tab (see the skip-link check), which would leave the menu.
+    if (name !== "webkit") await page.keyboard.press("Tab");
+    await page.keyboard.press("Escape");
+    assert((await trigger.getAttribute("aria-expanded")) === "false", "Esc did not close the menu");
+    assert(await trigger.evaluate((el) => el === document.activeElement), "focus not returned to the menu button");
+  });
+  await check("service CTA pre-selects the need on the contact form", async () => {
+    await page.goto(origin + "/services/data-analytics/");
+    await page.click("main a.btn-dark:has-text('Book a 30-min intro call')");
+    await page.waitForURL(/\/contact\//);
+    assert(await page.isChecked("input[name=needs][value='Data & analytics']"), "need not pre-selected");
   });
   await check("FAQ opens with keyboard", async () => {
+    await page.goto(origin + "/");
     const s = page.locator("details.faq-item summary").first();
     await s.focus();
     await page.keyboard.press("Enter");

@@ -3,11 +3,12 @@
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 export function href(path = "/"): string {
-  const [pathPart, hash] = path.split("#");
+  const [beforeHash, hash] = path.split("#");
+  const [pathPart, query] = beforeHash.split("?");
   let p = pathPart || "/";
   if (!p.startsWith("/")) p = "/" + p;
   if (!p.endsWith("/") && !/\.[a-z0-9]+$/i.test(p)) p += "/";
-  return BASE + p + (hash ? "#" + hash : "");
+  return BASE + p + (query ? "?" + query : "") + (hash ? "#" + hash : "");
 }
 
 export function absolute(path: string, site: URL | undefined): string {

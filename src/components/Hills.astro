@@ -1,0 +1,24 @@
+---
+// Soft rolling hills in brand teal with rounded "clay" trees: the backdrop
+// for the home hero and the footer. Pre-rendered by scripts/build-hills.mjs
+// (inline SVG was too costly to paint on phones). Decorative only.
+import { Picture } from "astro:assets";
+import hero from "../assets/images/hills-hero.png";
+import footer from "../assets/images/hills-footer.png";
+
+interface Props {
+  variant: "hero" | "footer";
+  class?: string;
+}
+const { variant, class: className = "" } = Astro.props;
+---
+<Picture
+  src={variant === "hero" ? hero : footer}
+  alt=""
+  formats={["avif", "webp"]}
+  widths={[640, 960, 1440, 2160, 2880]}
+  sizes="(max-width: 640px) 1280px, 100vw"
+  loading={variant === "hero" ? "eager" : "lazy"}
+  decoding="async"
+  class={`object-cover object-bottom ${className}`}
+/>

@@ -13,12 +13,14 @@ const services = defineCollection({
     title: z.string(),
     order: z.number(),
     icon: iconName,
+    tagline: z.string(), // accent second line of two-tone headings, e.g. "shipped every two weeks."
     summary: z.string(), // one line under the title
     outcome: z.string(), // "What you get" headline outcome
     deliverables: z.array(z.string()).min(1),
     delivery: z.array(z.object({ title: z.string(), text: z.string() })).min(1),
     tech: z.array(z.string()),
     relatedWork: reference("work").optional(),
+    relatedPosts: z.array(reference("blog")).default([]), // "Related guides" on the service page
     faq: z.array(z.object({ question: z.string(), answer: z.string() })).default([]),
     seoDescription: z.string().max(170),
   }),
@@ -101,4 +103,28 @@ const team = defineCollection({
     }),
 });
 
-export const collections = { services, work, faq, industries, testimonials, clients, team };
+// Blog and news posts migrated from www.winapps.co.in. File names are the live
+// URL slugs, so /blog/<slug>/ and /news/<slug>/ keep working after the switch.
+const blog = defineCollection({
+  loader: glob({ pattern: "[!_]*.md", base: "./src/content/blog" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().max(170),
+    updated: z.coerce.date(),
+    readMinutes: z.number(),
+    author: z.string(),
+    faq: z.array(z.object({ question: z.string(), answer: z.string() })).default([]),
+  }),
+});
+
+const news = defineCollection({
+  loader: glob({ pattern: "[!_]*.md", base: "./src/content/news" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().max(170),
+    date: z.coerce.date(),
+    dateLabel: z.string(), // as published, e.g. "Feb 2026"
+  }),
+});
+
+export const collections = { services, work, faq, industries, testimonials, clients, team, blog, news };

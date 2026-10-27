@@ -1,35 +1,31 @@
 ---
+// Pre-footer call to action, centred on white just above the footer hills
+// (CLAY-STYLE.md §5). Every page ends here, so every journey has a next step.
 import Icon from "./Icon.astro";
-import Ribbon from "./Ribbon.astro";
 import { SITE } from "../lib/site";
 import { href } from "../lib/url";
 
 interface Props {
   title?: string;
   text?: string;
-  edgeClass?: string;
 }
 const {
   title = "Tell us what you're building.",
-  text = "A senior engineer, not a salesperson, replies within one business day with questions or a time to talk. NDA available before any detailed discussion.",
-  edgeClass = "text-paper",
+  text = "A senior engineer, not a salesperson, replies within one business day. NDA available before any detailed discussion.",
 } = Astro.props;
 ---
-<section class="on-dark relative overflow-hidden bg-teal-800 text-white" aria-labelledby="cta-title">
-  <Ribbon variant="edge" class={`absolute inset-x-0 -top-px h-8 w-full rotate-180 sm:h-12 ${edgeClass}`} />
-  <div class="container-site section relative grid gap-10 lg:grid-cols-12 lg:items-end">
-    <div class="lg:col-span-7" data-reveal>
-      <h2 id="cta-title" class="text-h1 font-semibold tracking-[-0.03em] text-white">{title}</h2>
-      <p class="mt-6 max-w-xl text-lead text-teal-100">{text}</p>
-    </div>
-    <div class="flex flex-col gap-4 lg:col-span-4 lg:col-start-9" data-reveal style="--reveal-delay:100ms">
-      <a href={href("/contact/")} class="btn btn-primary w-full">
+<section class="section defer-render pb-4 text-center sm:pb-6" aria-labelledby="cta-title">
+  <div class="container-site" data-reveal>
+    <h2 id="cta-title" class="mx-auto max-w-3xl text-h2 text-teal-950">{title}</h2>
+    <p class="mx-auto mt-5 max-w-xl text-lead text-stone-700">{text}</p>
+    <div class="mt-8 flex flex-col items-center justify-center gap-3 xs:flex-row">
+      <a href={href("/contact/")} class="btn btn-dark">
         Book a 30-min intro call <Icon name="arrow-right" size={18} class="icon-arrow" />
       </a>
-      <div class="grid grid-cols-1 gap-2 text-sm xs:grid-cols-2">
-        <a href={`mailto:${SITE.email}`} class="inline-flex min-h-11 items-center gap-2 text-teal-100 hover:text-white"><Icon name="mail" size={18} /> Email us</a>
-        <a href={SITE.whatsappHref} rel="noopener" class="inline-flex min-h-11 items-center gap-2 text-teal-100 hover:text-white"><Icon name="message-circle" size={18} /> WhatsApp</a>
-      </div>
+      <a href={`mailto:${SITE.email}`} class="btn btn-outline">Email us <Icon name="arrow-right" size={18} class="icon-arrow" /></a>
     </div>
+    <p class="mt-4 text-sm text-muted">
+      Or message us on <a class="link" href={SITE.whatsappHref} rel="noopener">WhatsApp</a>, or call <a class="link whitespace-nowrap" href={SITE.phoneHref}>{SITE.phone}</a>.
+    </p>
   </div>
 </section>

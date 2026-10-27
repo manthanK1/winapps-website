@@ -6,6 +6,7 @@ Nothing below has been invented on the site. Until each item exists, the related
 - [ ] **Logo as SVG** (or a transparent PNG at 2000px or more). The current logo is a keyed-out ~860px PNG and looks soft on large screens.
 - [ ] **Horizontal logo lockup** (mark beside wordmark) for the header; the stacked logo makes "WINAPPS" small at header size.
 - [ ] **Reversed (white) logo** if you want it on dark sections or the dark footer band.
+- [ ] **Clay mark render source** (`render.py`, `assemble.sh`, `lockup.py`) into `brand/clay/source/`, to re-render and refine the swoosh (see `brand/clay/README.md`).
 
 ## Company facts (`src/lib/site.ts`)
 - [ ] Registered legal entity name (`legalName`).
@@ -23,7 +24,16 @@ Nothing below has been invented on the site. Until each item exists, the related
 - [ ] More detail on each **challenge** and **approach** that you can stand behind on a reference call.
 - [ ] Confirm each **architecture diagram** reflects the real system (simplified is fine).
 - [ ] Region for the logistics case study, if it can be shared.
-- [ ] More case studies as they are cleared for publication.
+- [ ] More case studies as they are cleared for publication. The live site has **16 more**: confirm which are real, approved Winapps work (they redirect to `/work/` until then, see `src/lib/legacy-redirects.ts`).
+
+## From the live site (see PAGE-JOURNEYS.md §8)
+- [ ] **AI Center of Excellence**: content you can stand behind, if it should be its own page (now redirects to AI & ML).
+- [ ] **Counters and awards** from the live home page (1,300+ projects, 100+ sectors, 4 badges): source and permission, or leave out.
+- [ ] Industries **On-demand** and **Real Estate**: add or drop.
+- [ ] **Careers** page (the live footer links "Career").
+- [ ] **Clutch** profile URL ("Rated on Clutch").
+- [ ] Permission to use the **Facebook testimonial video**.
+- [ ] Blog: confirm author and dates; licensed hero images if wanted.
 
 ## Claims to confirm are true
 - [ ] Engagement leads have **8+ years** of experience (How we work page).
@@ -33,7 +43,7 @@ Nothing below has been invented on the site. Until each item exists, the related
 - [ ] Industry summaries and focus areas (`src/content/industries.yaml`).
 
 ## Legal
-- [ ] Legal review of **/privacy/** and **/terms/** (governing law, retention periods, legal entity).
+- [ ] Legal review of **/privacy/**, **/terms/** and **/disclaimer/** (governing law, retention periods, legal entity).
 
 ## Setup
 - [ ] **Web3Forms access key** so the form submits on-page instead of opening the visitor's email app (see DEPLOY.md).

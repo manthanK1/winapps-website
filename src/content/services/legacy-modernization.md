@@ -2,6 +2,7 @@
 title: Legacy modernization
 order: 4
 icon: refresh-ccw
+tagline: without the big-bang rewrite.
 summary: Incremental migration of aging monoliths and on-prem systems. Strangler patterns, no big-bang rewrites, and the business keeps running throughout.
 outcome: A modern, cloud-ready system, migrated piece by piece while the business keeps running.
 deliverables:

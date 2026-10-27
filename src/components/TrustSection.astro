@@ -1,15 +1,9 @@
 ---
+// Commitments + live clocks, in the site's one dark panel.
 import Icon from "./Icon.astro";
 import Clocks from "./Clocks.astro";
 import SectionHeader from "./SectionHeader.astro";
-import Ribbon from "./Ribbon.astro";
 import type { IconName } from "../lib/icons";
-
-interface Props {
-  /** Text colour class matching the section above, for the curved top edge. */
-  edgeClass?: string;
-}
-const { edgeClass = "text-white" } = Astro.props;
 
 const commitments: { icon: IconName; title: string; text: string }[] = [
   { icon: "key-round", title: "You own the code and IP", text: "Full IP assignment in every contract. Code lives in your repositories from day one." },
@@ -19,25 +13,25 @@ const commitments: { icon: IconName; title: string; text: string }[] = [
   { icon: "globe", title: "Real time-zone overlap", text: "Standups, reviews and demos happen live in your working hours. The rest is written down and async." },
 ];
 ---
-<section class="on-dark relative bg-teal-950 text-white" aria-labelledby="trust-title">
-  <Ribbon variant="edge" class={`absolute inset-x-0 -top-px h-8 w-full rotate-180 sm:h-12 ${edgeClass}`} />
-  <div class="container-site section relative">
-    <div class="grid gap-12 lg:grid-cols-12 lg:gap-10">
+<section class="pb-[clamp(3.5rem,2.5rem+3.5vw,6rem)]" aria-labelledby="trust-title">
+  <div class="container-site">
+    <div class="on-dark panel-dark grid gap-12 lg:grid-cols-12 lg:gap-10">
       <div class="lg:col-span-7">
         <SectionHeader
           id="trust-title"
           eyebrow="Why teams trust us"
-          title="Low risk is designed in, not promised."
+          title="Low risk is designed in,"
+          accent="not promised."
           intro="The commitments that procurement, legal and engineering teams ask about first, written into how we work."
         />
         <ul class="mt-12 grid gap-x-8 gap-y-8 sm:grid-cols-2">
           {commitments.map((c, i) => (
             <li class="flex gap-4" data-reveal style={`--reveal-delay:${(i % 2) * 80}ms`}>
-              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-white/[0.06] text-amber-300">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-[0.875rem] bg-white/[0.08] text-amber-300">
                 <Icon name={c.icon} size={22} />
               </span>
               <div>
-                <h3 class="font-display text-h4 font-semibold text-white">{c.title}</h3>
+                <h3 class="text-h4 text-white">{c.title}</h3>
                 <p class="mt-1.5 text-sm text-teal-100">{c.text}</p>
               </div>
             </li>
