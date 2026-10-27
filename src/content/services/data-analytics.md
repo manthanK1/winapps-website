@@ -2,6 +2,7 @@
 title: Data & analytics
 order: 5
 icon: database
+tagline: that your teams trust.
 summary: Pipelines, warehouses and dashboards that your teams trust, the foundation every serious AI initiative needs first.
 outcome: Data pipelines and dashboards your teams trust, ready to power reporting and AI.
 deliverables:
@@ -20,6 +21,7 @@ delivery:
     text: Quality checks and monitoring so problems are caught before they reach a report.
 tech: [Python, Snowflake, BigQuery, PostgreSQL, Kafka]
 relatedWork: fleet-route-optimisation
+relatedPosts: [leading-strategies-cutting-logistics-costs-software-automation-2026]
 faq:
   - question: Do we need a data platform before starting an AI project?
     answer: Not always, but AI is only as good as the data behind it. Discovery shows whether your data is ready or what needs to be fixed first.

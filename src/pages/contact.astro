@@ -21,46 +21,48 @@ const next = [
   <PageHero
     breadcrumbs={crumbs}
     eyebrow="Contact"
-    title="Tell us what you're building."
+    title="Tell us what"
+    accent="you're building."
     lead="A senior engineer, not a salesperson, replies within one business day. NDA available before any detailed discussion."
+    theme="orange"
   />
 
-  <section class="section bg-white" aria-label="Contact form and details">
+  <section class="section" aria-label="Contact form and details">
     <div class="container-site grid gap-14 lg:grid-cols-12 lg:gap-10">
       <div class="lg:col-span-7">
-        <h2 class="text-h3 font-semibold tracking-tight text-teal-800">Send us an inquiry</h2>
+        <h2 class="text-h3 text-teal-950">Send us an inquiry</h2>
         <div class="mt-8"><ContactForm /></div>
       </div>
 
       <aside class="space-y-10 lg:col-span-4 lg:col-start-9">
-        <div class="card p-7">
-          <h2 class="text-h4 font-semibold text-teal-800">Talk to us directly</h2>
+        <div class="card-tint p-7">
+          <h2 class="text-h4 text-teal-950">Talk to us directly</h2>
           <ul class="mt-5 space-y-1">
             <li><a class="flex min-h-11 items-center gap-3 text-stone-800 hover:text-teal-800" href={`mailto:${SITE.email}`}><Icon name="mail" size={20} class="text-teal-600" />{SITE.email}</a></li>
             <li><a class="flex min-h-11 items-center gap-3 text-stone-800 hover:text-teal-800" href={SITE.phoneHref}><Icon name="phone" size={20} class="text-teal-600" />{SITE.phone}</a></li>
             <li><a class="flex min-h-11 items-center gap-3 text-stone-800 hover:text-teal-800" href={SITE.whatsappHref} rel="noopener"><Icon name="message-circle" size={20} class="text-teal-600" />WhatsApp</a></li>
           </ul>
-          <p class="mt-5 border-t border-line pt-5 text-sm text-muted">
+          <p class="mt-5 border-t border-stone-300 pt-5 text-sm text-muted">
             Also on <a class="link" href={SITE.linkedin} rel="noopener">LinkedIn</a> and <a class="link" href={SITE.instagram} rel="noopener">Instagram</a>.
           </p>
           {SITE.address ? (
-            <address class="mt-5 border-t border-line pt-5 text-sm not-italic text-stone-700">
+            <address class="mt-5 border-t border-stone-300 pt-5 text-sm not-italic text-stone-700">
               {SITE.address.street}<br />{SITE.address.city} {SITE.address.postalCode}<br />{SITE.address.country}
             </address>
           ) : (
             <>
               <!-- TODO: registered office address (set SITE.address in src/lib/site.ts). -->
-              <p class="mt-5 border-t border-line pt-5 text-sm text-stone-700">Based in India, working with clients in India, the US, the UK and Europe.</p>
+              <p class="mt-5 border-t border-stone-300 pt-5 text-sm text-stone-700">Based in India, working with clients in India, the US, the UK and Europe.</p>
             </>
           )}
         </div>
 
         <div>
-          <h2 class="text-h4 font-semibold text-teal-800">What happens next</h2>
+          <h2 class="text-h4 text-teal-950">What happens next</h2>
           <ol class="mt-5 space-y-5">
             {next.map((s, i) => (
               <li class="flex gap-4">
-                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border-2 border-teal-600 text-sm font-semibold text-teal-800">{i + 1}</span>
+                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-teal-700 text-sm font-semibold text-white">{i + 1}</span>
                 <div>
                   <p class="font-semibold text-ink">{s.title}</p>
                   <p class="mt-0.5 text-sm text-stone-700">{s.text}</p>

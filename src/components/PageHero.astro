@@ -1,24 +1,35 @@
 ---
+// Inner-page hero: a rounded, themed panel (CLAY-STYLE.md §4) with a
+// two-tone title. The capsules echo the clay mark's rounded strokes.
 import Breadcrumbs from "./Breadcrumbs.astro";
-import Ribbon from "./Ribbon.astro";
 
 interface Props {
   title: string;
+  /** Second phrase of the title, set in the theme accent. */
+  accent?: string;
   lead?: string;
   eyebrow?: string;
   breadcrumbs: { name: string; path: string }[];
+  theme?: "teal" | "orange" | "amber" | "stone";
 }
-const { title, lead, eyebrow, breadcrumbs } = Astro.props;
+const { title, accent, lead, eyebrow, breadcrumbs, theme = "teal" } = Astro.props;
 ---
-<section class="relative overflow-hidden border-b border-line bg-paper">
-  <Ribbon variant="page" class="pointer-events-none absolute right-0 top-0 hidden h-full w-[46%] md:block" />
-  <div class="container-site relative py-12 sm:py-16 lg:py-20">
-    <Breadcrumbs items={breadcrumbs} />
-    <div class="mt-8 max-w-3xl">
-      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-      <h1 class="mt-4 text-h1 font-semibold tracking-[-0.03em] text-teal-800">{title}</h1>
-      {lead && <p class="mt-6 max-w-2xl text-lead text-stone-700">{lead}</p>}
-      <slot />
+<section class="container-site pt-3 sm:pt-5">
+  <div class={`panel theme-${theme} relative overflow-hidden`}>
+    <svg class="pointer-events-none absolute -bottom-6 right-4 hidden h-56 w-72 md:block lg:right-10 lg:h-64 lg:w-80" viewBox="0 0 320 256" fill="none" aria-hidden="true" focusable="false">
+      <rect x="58" y="40" width="54" height="210" rx="27" transform="rotate(-18 85 145)" fill="var(--theme-tint)" />
+      <rect x="150" y="70" width="54" height="190" rx="27" transform="rotate(16 177 165)" fill="var(--theme-tint)" opacity="0.6" />
+      <circle cx="252" cy="70" r="22" fill="var(--color-orange-300)" />
+      <ellipse cx="252" cy="106" rx="18" ry="4" fill="var(--theme-ink)" opacity="0.08" />
+    </svg>
+    <div class="relative">
+      <Breadcrumbs items={breadcrumbs} />
+      <div class="mt-10 max-w-4xl sm:mt-14 md:pr-56 lg:pr-72">
+        {eyebrow && <p class="eyebrow-pill">{eyebrow}</p>}
+        <h1 class:list={["text-h1", { "mt-6": eyebrow }]}>{title}{accent && <> <span class="text-accent">{accent}</span></>}</h1>
+        {lead && <p class="mt-6 max-w-2xl text-lead text-stone-700">{lead}</p>}
+        <slot />
+      </div>
     </div>
   </div>
 </section>

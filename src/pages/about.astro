@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import SectionHeader from "../components/SectionHeader.astro";
-import Logo from "../components/Logo.astro";
+import ClayMark from "../components/ClayMark.astro";
 import Clocks from "../components/Clocks.astro";
 import CtaBand from "../components/CtaBand.astro";
 import { SITE } from "../lib/site";
@@ -27,15 +27,16 @@ const values = [
   <PageHero
     breadcrumbs={crumbs}
     eyebrow={`About Winapps · Est. ${SITE.founded}`}
-    title="A senior engineering partner, since 2013."
+    title="A senior engineering partner,"
+    accent={`since ${SITE.founded}.`}
     lead="We build and scale software for companies in India, the US, the UK and Europe: AI systems, web and mobile products, cloud platforms and the modernization of systems that run the business."
   />
 
-  <section class="section bg-white" aria-labelledby="story-title">
+  <section class="section" aria-labelledby="story-title">
     <div class="container-site grid gap-12 lg:grid-cols-12 lg:gap-10">
       <div class="lg:col-span-7">
         <p class="eyebrow">Our story</p>
-        <h2 id="story-title" class="mt-4 text-h2 font-semibold tracking-tight text-teal-800">Built on engineers clients can rely on.</h2>
+        <h2 id="story-title" class="mt-4 text-h2 text-teal-950">Built on engineers <span class="text-accent">clients can rely on.</span></h2>
         <div class="prose-site mt-6 text-stone-700">
           <p>
             Winapps® was founded in India in {SITE.founded}. Since then we have worked as an engineering partner to companies in India, the US, the UK and Europe, across AI and machine learning, product engineering, cloud, legacy modernization and data.
@@ -46,29 +47,31 @@ const values = [
           <!-- TODO: founding story in your own words: who started Winapps, why, and the milestones since 2013. -->
         </div>
       </div>
-      <div class="flex items-start justify-center rounded-2xl border border-line bg-paper p-10 lg:col-span-4 lg:col-start-9">
-        <Logo height={180} class="h-auto w-full max-w-64" />
+      <div class="panel theme-teal flex items-center justify-center lg:col-span-4 lg:col-start-9">
+        <ClayMark size={288} class="block w-full max-w-72" />
       </div>
     </div>
   </section>
 
-  <section class="section bg-paper" aria-labelledby="values-title">
+  <section class="pb-[clamp(3.5rem,2.5rem+3.5vw,6rem)]" aria-labelledby="values-title">
     <div class="container-site">
-      <SectionHeader id="values-title" eyebrow="What we value" title="Principles that show up in the work." />
-      <dl class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        {values.map((v, i) => (
-          <div class="border-t-2 border-teal-600 pt-5" data-reveal style={`--reveal-delay:${i * 70}ms`}>
-            <dt class="font-display text-h4 font-semibold text-teal-800">{v.title}</dt>
-            <dd class="mt-2 text-sm text-stone-700">{v.text}</dd>
-          </div>
-        ))}
-      </dl>
+      <div class="panel theme-stone">
+        <SectionHeader id="values-title" eyebrow="What we value" title="Principles that" accent="show up in the work." />
+        <dl class="mt-10 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {values.map((v, i) => (
+            <div class="tile p-6" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+              <dt class="font-display text-h4 text-teal-950">{v.title}</dt>
+              <dd class="mt-2 text-sm text-stone-700">{v.text}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </div>
   </section>
 
   <!-- Leadership: hidden until real people are added (src/content/team). TODO: leadership names, roles and photos. -->
   {team.length > 0 && (
-    <section class="section bg-white" aria-labelledby="team-title">
+    <section class="section" aria-labelledby="team-title">
       <div class="container-site">
         <SectionHeader id="team-title" eyebrow="Leadership" title="The people accountable for your project." />
         <ul class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -85,20 +88,23 @@ const values = [
     </section>
   )}
 
-  <section class="on-dark section bg-teal-950 text-white" aria-labelledby="where-title">
-    <div class="container-site grid gap-12 lg:grid-cols-12 lg:gap-10">
-      <div class="lg:col-span-6">
-        <SectionHeader
-          id="where-title"
-          eyebrow="Where we work"
-          title="Based in India. Working in your hours."
-          intro="Our teams shift their day to keep at least 4 hours of overlap with Central Europe and 3–4 hours with US Eastern, so standups, reviews and demos happen live."
-        />
-        <!-- TODO: office address and real team/office photos. -->
+  <section class="pb-[clamp(3.5rem,2.5rem+3.5vw,6rem)]" aria-labelledby="where-title">
+    <div class="container-site">
+      <div class="on-dark panel-dark grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-6">
+          <SectionHeader
+            id="where-title"
+            eyebrow="Where we work"
+            title="Based in India."
+            accent="Working in your hours."
+            intro="Our teams shift their day to keep at least 4 hours of overlap with Central Europe and 3–4 hours with US Eastern, so standups, reviews and demos happen live."
+          />
+          <!-- TODO: office address and real team/office photos. -->
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8"><Clocks /></div>
       </div>
-      <div class="lg:col-span-5 lg:col-start-8"><Clocks /></div>
     </div>
   </section>
 
-  <CtaBand edgeClass="text-teal-950" />
+  <CtaBand />
 </BaseLayout>

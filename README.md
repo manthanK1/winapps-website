@@ -1,6 +1,8 @@
 # Winapps website
 
-Marketing site for Winapps®, built with [Astro](https://astro.build) and Tailwind CSS. Every page is pre-rendered static HTML; JavaScript is limited to a few small scripts (mobile menu, practice tabs, live clocks, contact form, scroll reveal).
+Marketing site for Winapps®, built with [Astro](https://astro.build) and Tailwind CSS. Every page is pre-rendered static HTML; JavaScript is limited to a few small scripts (header menus, live clocks, contact form, blog tables, scroll reveal).
+
+The visual language follows [CLAY-STYLE.md](CLAY-STYLE.md) (rounded panels, tight display type, flat cards) in Winapps colours. How the old www.winapps.co.in pages and journeys map onto this site is in [PAGE-JOURNEYS.md](PAGE-JOURNEYS.md).
 
 ## Editing content
 
@@ -10,12 +12,15 @@ Most text lives in `src/content/` and can be edited without touching code:
 | --- | --- |
 | The six services | `src/content/services/*.md` |
 | Case studies | `src/content/work/*.md` |
+| Blog guides (slugs match the old site) | `src/content/blog/*.md` |
+| News posts (slugs match the old site) | `src/content/news/*.md` |
 | Home page FAQ | `src/content/faq.yaml` |
 | Industries | `src/content/industries.yaml` |
 | Testimonials (hidden until one exists) | `src/content/testimonials/`: copy `_TEMPLATE.md` |
 | Client logos (hidden until one exists) | `src/content/clients/`: copy `_TEMPLATE.md` |
 | Leadership (hidden until one exists) | `src/content/team/`: copy `_TEMPLATE.md` |
-| Company facts: email, phone, address, socials | `src/lib/site.ts` |
+| Company facts: email, phone, address, socials; navigation; contact-form options | `src/lib/site.ts` |
+| Redirects from old winapps.co.in URLs | `src/lib/legacy-redirects.ts` |
 
 The build checks every content file against a schema (`src/content.config.ts`) and stops with a clear error if a field is missing.
 
@@ -29,6 +34,7 @@ npm run dev          # local preview at http://localhost:4321/winapps-website/
 npm run build        # production build into dist/
 npm run brand        # regenerate logo, favicon and font assets
 node scripts/og-image.mjs   # regenerate the social preview image
+node scripts/build-hills.mjs  # re-render the hero/footer hills after editing their shapes
 ```
 
 Quality checks are listed in [DEPLOY.md](DEPLOY.md#before-every-release).
@@ -45,6 +51,7 @@ src/
   lib/            site facts, URL helper, icons, structured data
   assets/         logo and self-hosted fonts
 brand/source/     original logo as supplied
+brand/clay/       3D clay mark: notes and frame preview (web files in public/brand/clay/)
 scripts/          brand assets, screenshots, Lighthouse, QA
 ```
 

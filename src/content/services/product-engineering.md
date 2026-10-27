@@ -2,6 +2,7 @@
 title: Product engineering
 order: 2
 icon: app-window
+tagline: shipped every two weeks.
 summary: Web platforms and native or cross-platform mobile apps, from first release to scale. Product thinking included, not bolted on.
 outcome: A web or mobile product your users rely on, shipped as working software every two weeks.
 deliverables:
@@ -20,6 +21,7 @@ delivery:
     text: Production rollout, monitoring and SLAs, then continued development or handover to your team.
 tech: [TypeScript, React, Next.js, Node.js, Python, Swift, Kotlin, Flutter, PostgreSQL, AWS]
 relatedWork: fitness-member-app
+relatedPosts: [mobile-app-development-cost-in-sweden-2026, web-application-development-cost-in-sweden-2026, android-app-development-cost-in-sweden-2026]
 faq:
   - question: Can you take over an existing product?
     answer: We start with Discovery to understand the codebase, the architecture and the risks, then agree a plan with you before we change anything.

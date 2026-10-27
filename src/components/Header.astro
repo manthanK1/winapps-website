@@ -1,70 +1,164 @@
 ---
+// Floating white bar with rounded bottom corners (CLAY-STYLE.md §5). Two
+// dropdowns replace the live site's "WHAT WE DO" mega menu and its dead
+// RESOURCES / COMPANY links: every item is a real page.
+import { getCollection } from "astro:content";
 import Logo from "./Logo.astro";
 import Icon from "./Icon.astro";
-import { NAV, SITE } from "../lib/site";
+import type { IconName } from "../lib/icons";
+import { INSIGHTS, NAV, SITE } from "../lib/site";
 import { href, isActive } from "../lib/url";
 
 const current = Astro.url.pathname;
+const services = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
+const industries = (await getCollection("industries")).sort((a, b) => a.data.order - b.data.order);
+const insightIcons: Record<string, IconName> = { "/blog/": "book-open", "/news/": "newspaper" };
+const activeMenu = (menu: string) =>
+  menu === "what-we-do"
+    ? isActive(current, "/services/") || isActive(current, "/industries/")
+    : INSIGHTS.some((i) => isActive(current, i.href));
 ---
-<header class="site-header fixed inset-x-0 top-0 z-50 border-b border-transparent bg-paper transition-[border-color,box-shadow] duration-300" data-site-header>
-  <div class="container-site flex h-16 items-center gap-6 transition-[height] duration-300 lg:h-20 [[data-scrolled]_&]:lg:h-16">
+<header class="site-header fixed inset-x-0 top-0 z-50 px-2 sm:px-4 lg:px-6" data-site-header>
+  <div class="header-bar mx-auto flex h-16 max-w-[86rem] items-center gap-2 rounded-b-3xl bg-white pl-4 pr-2 sm:pl-6 sm:pr-3">
     <a href={href("/")} class="-my-1 flex shrink-0 items-center rounded-sm">
-      <Logo height={52} eager class="logo-img h-11 w-auto origin-left transition-transform duration-300 lg:h-[52px] [[data-scrolled]_&]:lg:scale-[0.85]" />
+      <Logo height={44} eager class="h-10 w-auto lg:h-11" />
     </a>
 
-    <nav aria-label="Primary" class="ml-auto hidden lg:block">
-      <ul class="flex items-center gap-1">
-        {NAV.map((item) => (
+    <nav aria-label="Primary" class="ml-6 hidden lg:block">
+      <ul class="flex items-center gap-0.5">
+        {NAV.map((item) => "menu" in item ? (
+          <li class="relative" data-menu>
+            <button
+              type="button"
+              class="nav-link"
+              aria-expanded="false"
+              aria-controls={`menu-${item.menu}`}
+              data-active={activeMenu(item.menu) ? "" : undefined}
+              data-menu-trigger
+            >
+              {item.label} <Icon name="chevron-down" size={16} class="nav-chevron" />
+            </button>
+            <div id={`menu-${item.menu}`} class:list={["nav-panel", item.menu === "what-we-do" ? "w-[46rem]" : "w-[24rem]"]} hidden data-menu-panel>
+              {item.menu === "what-we-do" ? (
+                <div class="grid grid-cols-[1.45fr_1fr] gap-2">
+                  <div class="rounded-2xl bg-paper p-3">
+                    <p class="eyebrow px-3 pt-2">Services</p>
+                    <ul class="mt-2 grid gap-0.5">
+                      {services.map((s) => (
+                        <li>
+                          <a class="menu-item" href={href(`/services/${s.id}/`)} aria-current={isActive(current, `/services/${s.id}/`) ? "page" : undefined}>
+                            <span class="menu-icon"><Icon name={s.data.icon as IconName} size={18} /></span>
+                            <span class="min-w-0">
+                              <span class="block text-sm font-semibold text-ink">{s.data.title}</span>
+                              <span class="block truncate text-xs text-muted">{s.data.summary.split(". ")[0]}</span>
+                            </span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                    <a class="line-link ml-3 text-sm" href={href("/services/")}><span>All services</span> <Icon name="arrow-right" size={16} /></a>
+                  </div>
+                  <div class="p-3">
+                    <p class="eyebrow px-3 pt-2">Industries</p>
+                    <ul class="mt-2 grid gap-0.5">
+                      {industries.map((i) => (
+                        <li><a class="menu-item py-2 text-sm font-semibold text-ink" href={href(`/industries/#${i.id}`)}>{i.data.name}</a></li>
+                      ))}
+                    </ul>
+                    <a class="line-link ml-3 text-sm" href={href("/industries/")}><span>All industries</span> <Icon name="arrow-right" size={16} /></a>
+                  </div>
+                </div>
+              ) : (
+                <ul class="grid gap-0.5 p-1">
+                  {INSIGHTS.map((i) => (
+                    <li>
+                      <a class="menu-item" href={href(i.href)} aria-current={isActive(current, i.href) ? "page" : undefined}>
+                        <span class="menu-icon"><Icon name={insightIcons[i.href]} size={18} /></span>
+                        <span>
+                          <span class="block text-sm font-semibold text-ink">{i.label}</span>
+                          <span class="block text-xs text-muted">{i.text}</span>
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </li>
+        ) : (
           <li>
-            <a
-              href={href(item.href)}
-              aria-current={isActive(current, item.href) ? "page" : undefined}
-              class="relative inline-flex min-h-11 items-center rounded-md px-3 text-sm font-semibold text-stone-800 transition-colors hover:text-teal-800 aria-[current=page]:text-teal-800 aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3 aria-[current=page]:after:bottom-1.5 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-orange-500"
-            >{item.label}</a>
+            <a href={href(item.href)} class="nav-link" aria-current={isActive(current, item.href) ? "page" : undefined}>{item.label}</a>
           </li>
         ))}
       </ul>
     </nav>
 
-    <a href={href("/contact/")} class="btn btn-primary btn-sm hidden lg:inline-flex">Book a call</a>
-
-    <button
-      type="button"
-      class="ml-auto inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-semibold text-teal-800 hover:bg-teal-50 lg:hidden"
-      aria-haspopup="dialog"
-      aria-controls="mobile-menu"
-      data-menu-open
-    >
-      <Icon name="menu" size={22} /> Menu
-    </button>
+    <div class="ml-auto flex items-center gap-2">
+      <a href={SITE.whatsappHref} rel="noopener" class="btn btn-secondary btn-sm px-3 sm:px-4" aria-label="Chat on WhatsApp">
+        <Icon name="message-circle" size={18} /><span class="hidden sm:inline">WhatsApp</span>
+      </a>
+      <a href={href("/contact/")} class="btn btn-dark btn-sm hidden lg:inline-flex">Book a call</a>
+      <button
+        type="button"
+        class="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-ink hover:bg-paper lg:hidden"
+        aria-haspopup="dialog"
+        aria-controls="mobile-menu"
+        data-menu-open
+      >
+        <Icon name="menu" size={22} /> Menu
+      </button>
+    </div>
   </div>
 </header>
 
-<dialog id="mobile-menu" aria-label="Site menu" class="mobile-menu m-0 h-dvh max-h-none w-full max-w-none bg-paper p-0 text-ink backdrop:bg-ink/40">
+<dialog id="mobile-menu" aria-label="Site menu" class="mobile-menu m-0 h-dvh max-h-none w-full max-w-none bg-white p-0 text-ink backdrop:bg-ink/40">
   <div class="container-site flex h-16 items-center justify-between">
-    <a href={href("/")} class="flex items-center rounded-sm"><Logo height={44} class="h-11 w-auto" /></a>
-    <button type="button" class="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-semibold text-teal-800 hover:bg-teal-50" data-menu-close>
+    <a href={href("/")} class="flex items-center rounded-sm"><Logo height={40} class="h-10 w-auto" /></a>
+    <button type="button" class="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-ink hover:bg-paper" data-menu-close>
       <Icon name="x" size={22} /> Close
     </button>
   </div>
-  <nav aria-label="Mobile" class="container-site pt-6 pb-10">
-    <ul class="border-t border-line">
-      {[...NAV, { label: "Contact", href: "/contact/" }].map((item) => (
-        <li class="border-b border-line">
+  <nav aria-label="Mobile" class="container-site pb-10 pt-4">
+    <div class="rounded-3xl bg-paper p-4">
+      <p class="eyebrow px-2">Services</p>
+      <ul class="mt-2 grid gap-0.5 sm:grid-cols-2">
+        {services.map((s) => (
+          <li>
+            <a class="menu-item" href={href(`/services/${s.id}/`)} aria-current={isActive(current, `/services/${s.id}/`) ? "page" : undefined}>
+              <span class="menu-icon"><Icon name={s.data.icon as IconName} size={18} /></span>
+              <span class="text-sm font-semibold">{s.data.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <ul class="mt-4">
+      {[
+        { label: "Industries", href: "/industries/" },
+        { label: "Work", href: "/work/" },
+        { label: "How we work", href: "/how-we-work/" },
+        ...INSIGHTS.map((i) => ({ label: i.label, href: i.href })),
+        { label: "About", href: "/about/" },
+        { label: "Contact", href: "/contact/" },
+      ].map((item) => (
+        <li class="border-b border-stone-200">
           <a
             href={href(item.href)}
             aria-current={isActive(current, item.href) ? "page" : undefined}
-            class="flex min-h-14 items-center justify-between py-3 font-display text-h3 font-semibold tracking-tight text-ink aria-[current=page]:text-teal-700"
+            class="flex min-h-14 items-center justify-between py-2 font-display text-h3 font-medium text-ink aria-[current=page]:text-teal-700"
           >
             {item.label}
-            <Icon name="arrow-right" size={22} class="text-teal-600" />
+            <Icon name="arrow-right" size={20} class="text-stone-500" />
           </a>
         </li>
       ))}
     </ul>
-    <a href={href("/contact/")} class="btn btn-primary mt-8 w-full">Book a 30-min intro call</a>
+    <div class="mt-8 grid gap-3 xs:grid-cols-2">
+      <a href={href("/contact/")} class="btn btn-dark w-full">Book a 30-min intro call</a>
+      <a href={SITE.whatsappHref} rel="noopener" class="btn btn-secondary w-full"><Icon name="message-circle" size={18} /> WhatsApp</a>
+    </div>
     <p class="mt-3 text-center text-sm text-muted">Reply within 1 business day · NDA before the first call</p>
-    <div class="mt-10 space-y-2 text-sm">
+    <div class="mt-8 space-y-2 text-sm">
       <a class="link block" href={`mailto:${SITE.email}`}>{SITE.email}</a>
       <a class="link block" href={SITE.phoneHref}>{SITE.phone}</a>
     </div>
@@ -72,14 +166,81 @@ const current = Astro.url.pathname;
 </dialog>
 
 <style>
-  [data-scrolled] .site-header,
-  .site-header[data-scrolled] {
-    border-color: var(--color-line);
-    box-shadow: 0 6px 24px -18px rgb(20 34 36 / 0.35);
+  .header-bar {
+    box-shadow: 0 0 0 1px rgb(20 34 36 / 0.06);
+    transition: box-shadow 0.3s var(--ease-out);
   }
+  [data-scrolled] .header-bar { box-shadow: var(--shadow-float); }
+
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-height: 2.75rem;
+    padding: 0 0.75rem;
+    border-radius: 0.625rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    transition: background-color 0.25s var(--ease-expo);
+  }
+  .nav-link:hover, .nav-link[aria-expanded="true"] { background: var(--color-paper); }
+  .nav-link[aria-current="page"]::after,
+  .nav-link[data-active]::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0.75rem;
+    bottom: 0.45rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-orange-500);
+  }
+  .nav-link :global(.nav-chevron) { color: var(--color-stone-500); transition: transform 0.3s var(--ease-quart); }
+  .nav-link[aria-expanded="true"] :global(.nav-chevron) { transform: rotate(180deg); }
+
+  .nav-panel {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 0.75rem);
+    padding: 0.5rem;
+    border-radius: 1.5rem;
+    background: var(--color-white);
+    box-shadow: var(--shadow-float);
+  }
+  /* Invisible bridge so the pointer can travel from the button to the panel. */
+  .nav-panel::before { content: ""; position: absolute; inset: -0.75rem 0 100% 0; }
+  :global(.js) .nav-panel:not([hidden]) { animation: panel-in 0.25s var(--ease-out); }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(-4px); } }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.875rem;
+    transition: background-color 0.25s var(--ease-expo);
+  }
+  .menu-item:hover, .menu-item[aria-current="page"] { background: var(--color-white); }
+  .nav-panel :global(.menu-item:hover) { background: var(--color-paper); }
+  .nav-panel .bg-paper :global(.menu-item:hover) { background: var(--color-white); }
+  .menu-icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.75rem;
+    background: var(--color-teal-50);
+    color: var(--color-teal-700);
+  }
+
   .mobile-menu[open] { animation: menu-in 0.28s var(--ease-out); }
   @keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } }
-  @media (prefers-reduced-motion: reduce) { .mobile-menu[open] { animation: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu[open], :global(.js) .nav-panel:not([hidden]) { animation: none; }
+  }
 </style>
 
 <script>
@@ -87,6 +248,50 @@ const current = Astro.url.pathname;
   const onScroll = () => header.toggleAttribute("data-scrolled", window.scrollY > 24);
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  // Desktop dropdowns: disclosure buttons. Open on click or hover, close on
+  // Escape, outside click, or when focus leaves the menu.
+  const menus = [...document.querySelectorAll<HTMLElement>("[data-menu]")];
+  const parts = (m: HTMLElement) => ({
+    trigger: m.querySelector<HTMLButtonElement>("[data-menu-trigger]")!,
+    panel: m.querySelector<HTMLElement>("[data-menu-panel]")!,
+  });
+  const setOpen = (m: HTMLElement, open: boolean) => {
+    const { trigger, panel } = parts(m);
+    trigger.setAttribute("aria-expanded", String(open));
+    panel.hidden = !open;
+  };
+  const canHover = matchMedia("(hover: hover) and (pointer: fine)");
+  for (const m of menus) {
+    const { trigger } = parts(m);
+    let timer: number | undefined;
+    trigger.addEventListener("click", () => {
+      const open = trigger.getAttribute("aria-expanded") !== "true";
+      menus.forEach((o) => setOpen(o, o === m && open));
+    });
+    m.addEventListener("pointerenter", () => {
+      if (!canHover.matches) return;
+      clearTimeout(timer);
+      timer = window.setTimeout(() => menus.forEach((o) => setOpen(o, o === m)), 80);
+    });
+    m.addEventListener("pointerleave", () => {
+      if (!canHover.matches) return;
+      clearTimeout(timer);
+      timer = window.setTimeout(() => setOpen(m, false), 180);
+    });
+    m.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && trigger.getAttribute("aria-expanded") === "true") {
+        setOpen(m, false);
+        trigger.focus();
+      }
+    });
+    m.addEventListener("focusout", (e) => {
+      if (!m.contains(e.relatedTarget as Node | null)) setOpen(m, false);
+    });
+  }
+  document.addEventListener("click", (e) => {
+    for (const m of menus) if (!m.contains(e.target as Node)) setOpen(m, false);
+  });
 
   // Mobile menu: a modal <dialog> gives focus trapping and Esc-to-close natively.
   const dialog = document.getElementById("mobile-menu") as HTMLDialogElement;

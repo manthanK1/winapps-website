@@ -1,0 +1,58 @@
+---
+// The 3D "clay" Winapps mark: an illustration variant, not a logo
+// replacement (the header keeps the flat logo). Renders the 21 KB still
+// first, then swaps in the animated loop (~490 KB) once the page has loaded
+// and the mark is near the viewport, so it never delays the first paint.
+// No JS or prefers-reduced-motion: the still stays. Notes: brand/clay/README.md.
+import { href } from "../lib/url";
+
+interface Props {
+  /** Rendered width in CSS px; the art is square. */
+  size?: number;
+  class?: string;
+  eager?: boolean;
+  /** Decorative by default. Pass alt text when the mark carries meaning. */
+  alt?: string;
+}
+const { size = 360, class: className = "", eager = false, alt = "" } = Astro.props;
+const src = (f: string) => href(`/brand/clay/${f}`);
+---
+<img
+  src={src("winapps-clay-mark-still-480.webp")}
+  srcset={`${src("winapps-clay-mark-still-480.webp")} 480w, ${src("winapps-clay-mark-1024.webp")} 1024w`}
+  sizes={`${size}px`}
+  data-clay-animated={src("winapps-clay-mark-480.webp")}
+  alt={alt}
+  width={size}
+  height={size}
+  loading={eager ? "eager" : "lazy"}
+  decoding="async"
+  fetchpriority={eager ? "high" : undefined}
+  class={`h-auto select-none ${className}`}
+  draggable="false"
+/>
+
+<script>
+  const marks = document.querySelectorAll<HTMLImageElement>("img[data-clay-animated]");
+  const animate = (img: HTMLImageElement) => {
+    const loop = new Image();
+    // Swap via srcset with a width descriptor so the browser sizes it correctly.
+    loop.onload = () => { img.srcset = `${loop.src} 480w`; };
+    loop.src = img.dataset.clayAnimated!;
+  };
+  const start = () => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        io.unobserve(e.target);
+        animate(e.target as HTMLImageElement);
+      }
+    }, { rootMargin: "200px" });
+    marks.forEach((m) => io.observe(m));
+  };
+  if (marks.length) {
+    if (document.readyState === "complete") start();
+    else addEventListener("load", start, { once: true });
+  }
+</script>

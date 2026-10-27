@@ -2,14 +2,16 @@
 // Contact form. With PUBLIC_WEB3FORMS_KEY set, it posts to Web3Forms (works
 // without JS too: Web3Forms redirects back here). Without a key it falls
 // back to composing an email. Honeypot field blocks simple bots.
+// Links can pre-fill it: ?interest=<need>&message=<text> (service pages and
+// the home "What do you want to build?" box use this).
 import Icon from "./Icon.astro";
-import { SITE } from "../lib/site";
+import { BUDGETS, NEEDS, SITE } from "../lib/site";
 import { absolute } from "../lib/url";
 
 const key = import.meta.env.PUBLIC_WEB3FORMS_KEY as string | undefined;
 const action = key ? "https://api.web3forms.com/submit" : `mailto:${SITE.email}`;
 const redirect = absolute("/contact/?sent=1", Astro.site);
-const needs = ["AI / ML", "Web or mobile product", "Cloud", "Modernization", "Data & analytics", "Dedicated team"];
+const needs = NEEDS.map((n) => n.label);
 const countries = ["United States", "United Kingdom", "Germany", "Netherlands", "Sweden", "France", "Other in Europe", "India", "Other"];
 ---
 <form
@@ -55,13 +57,23 @@ const countries = ["United States", "United Kingdom", "Germany", "Netherlands", 
         {countries.map((c) => <option>{c}</option>)}
       </select>
     </div>
+    <div>
+      <label class="field-label" for="cf-phone">Phone or WhatsApp <span class="field-hint">(optional)</span></label>
+      <input class="field" id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+    </div>
+    <div>
+      <label class="field-label" for="cf-budget">Budget <span class="field-hint">(optional)</span></label>
+      <select class="field" id="cf-budget" name="budget">
+        {BUDGETS.map((b) => <option>{b}</option>)}
+      </select>
+    </div>
   </div>
 
   <fieldset>
     <legend class="field-label">What do you need? <span class="field-hint">(optional)</span></legend>
     <div class="mt-1 flex flex-wrap gap-2">
       {needs.map((n, i) => (
-        <label class="need-chip">
+        <label class="choice-chip">
           <input type="checkbox" name="needs" value={n} id={`cf-need-${i}`} class="peer sr-only" />
           <span>{n}</span>
         </label>
@@ -87,24 +99,6 @@ const countries = ["United States", "United Kingdom", "Germany", "Netherlands", 
 
   <div role="status" aria-live="polite" class="text-sm" data-form-status></div>
 </form>
-
-<style>
-  .need-chip span {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.75rem;
-    padding: 0.5rem 1rem;
-    border-radius: 999px;
-    border: 1.5px solid var(--color-stone-400);
-    background: var(--color-white);
-    font-size: var(--text-sm);
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
-  }
-  .need-chip:hover span { border-color: var(--color-teal-600); }
-  .need-chip input:checked + span { background: var(--color-teal-700); border-color: var(--color-teal-700); color: var(--color-white); }
-  .need-chip input:focus-visible + span { outline: 3px solid var(--color-teal-600); outline-offset: 2px; }
-</style>
 
 <script>
   import { SITE } from "../lib/site";
@@ -146,6 +140,8 @@ const countries = ["United States", "United Kingdom", "Germany", "Netherlands", 
         `Email: ${data.get("email")}`,
         `Company: ${data.get("company") || "-"}`,
         `Country: ${data.get("country")}`,
+        `Phone: ${data.get("phone") || "-"}`,
+        `Budget: ${data.get("budget")}`,
         `Needs: ${needs}`,
         "",
         String(data.get("message")),
@@ -174,8 +170,19 @@ const countries = ["United States", "United Kingdom", "Germany", "Netherlands", 
       }
     });
 
-    if (new URLSearchParams(location.search).has("sent")) {
+    const params = new URLSearchParams(location.search);
+    if (params.has("sent")) {
       setStatus("ok", "<strong>Thanks, your inquiry is in.</strong> A senior engineer will reply within one business day.");
+    }
+
+    // Pre-fill from links: service pages pass ?interest=, the home prompt box
+    // also passes ?message=.
+    const message = form.elements.namedItem("message") as HTMLTextAreaElement;
+    const prefill = params.get("message")?.trim();
+    if (prefill && !message.value) message.value = prefill.slice(0, 5000);
+    const wanted = params.getAll("interest");
+    for (const box of form.querySelectorAll<HTMLInputElement>('input[name="needs"]')) {
+      if (wanted.includes(box.value)) box.checked = true;
     }
   }
 </script>

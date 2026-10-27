@@ -12,22 +12,23 @@ interface Props {
 const { item, featured = false, headingLevel: H = "h3" } = Astro.props;
 const d = item.data;
 ---
-<article class="card card-interactive group flex h-full flex-col overflow-hidden">
-  <div class:list={["overflow-hidden bg-teal-50", featured ? "aspect-[2/1]" : "aspect-[16/9]"]}>
+<!-- Clay resource card: tinted fill, 24px radius, photo inset, no shadow. -->
+<article class="card-tint card-interactive group flex h-full flex-col overflow-hidden p-2">
+  <div class:list={["overflow-hidden rounded-[1.125rem] bg-teal-50", featured ? "aspect-[2/1]" : "aspect-[16/9]"]}>
     <Picture
       src={d.image}
       alt={d.imageAlt}
       formats={["avif", "webp"]}
       widths={[400, 640, 960]}
       sizes={featured ? "(min-width: 1024px) 800px, (min-width: 768px) 50vw, 100vw" : "(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"}
-      class="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-[1.03]"
+      class="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-quart)] group-hover:scale-[1.03]"
     />
   </div>
-  <div class:list={["flex flex-1 flex-col p-6 sm:p-8", { "lg:px-10": featured }]}>
-    <p class="text-xs font-semibold uppercase tracking-[0.08em] text-teal-700">
+  <div class:list={["flex flex-1 flex-col p-4 sm:p-6", { "lg:px-8": featured }]}>
+    <p class="eyebrow">
       {d.sector}{d.region && <> · {d.region}</>}
     </p>
-    <H class:list={["mt-3 font-semibold tracking-tight text-ink", featured ? "text-h3" : "text-h4"]}>
+    <H class:list={["mt-3 text-ink", featured ? "text-h3" : "text-h4"]}>
       <a href={href(`/work/${item.id}/`)} class="after:absolute after:inset-0 after:rounded-[inherit] focus-visible:outline-none">
         {d.title}
       </a>
@@ -44,10 +45,10 @@ const d = item.data;
     </dl>
     <!-- TODO: client-approved outcome metric (results field in the case study file) -->
     <ul class="mt-6 flex flex-wrap gap-2" aria-label="Technology">
-      {d.stack.map((t) => <li class="chip">{t}</li>)}
+      {d.stack.map((t) => <li class="chip bg-white">{t}</li>)}
     </ul>
-    <p class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-teal-700" aria-hidden="true">
-      Read the case study <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+    <p class="line-link mt-auto pt-6 text-sm" aria-hidden="true">
+      <span>Read the case study</span> <Icon name="arrow-right" size={16} />
     </p>
   </div>
 </article>

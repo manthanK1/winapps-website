@@ -1,11 +1,17 @@
 ---
 // Internal design-system reference. Not indexed, not in the sitemap.
+// Layout language: CLAY-STYLE.md. Tokens: src/styles/global.css.
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Logo from "../components/Logo.astro";
+import ClayMark from "../components/ClayMark.astro";
 import Icon from "../components/Icon.astro";
 import SectionHeader from "../components/SectionHeader.astro";
 import FaqList from "../components/FaqList.astro";
-import Ribbon from "../components/Ribbon.astro";
+import PostCard from "../components/PostCard.astro";
+import { href } from "../lib/url";
+
+const [samplePost] = await getCollection("blog");
 
 // Mirrors the @theme values in global.css (inline here so the swatch
 // classes don't ship in every page's CSS).
@@ -19,44 +25,66 @@ const scales = Object.keys(palette);
 const steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 const anchors: Record<string, number[]> = { teal: [600, 800, 950], orange: [500], amber: [400] };
 const semantic = [
-  { name: "paper", hex: "#F7F5F0", use: "Page background" },
-  { name: "white", hex: "#FFFFFF", use: "Cards, alternate sections" },
+  { name: "white", hex: "#FFFFFF", use: "Page background" },
+  { name: "paper", hex: "#F7F5F0", use: "Panels, tinted cards, oat buttons" },
   { name: "line", hex: "#E3E0D8", use: "Borders, dividers" },
   { name: "muted", hex: "#5B6B6C", use: "Secondary text (5.1:1 on paper)" },
-  { name: "ink", hex: "#142224", use: "Body text (15.0:1 on paper)" },
+  { name: "ink", hex: "#142224", use: "Body text, dark buttons (15.0:1 on paper)" },
 ];
 const type = [
-  { token: "text-display", sample: "Senior engineers for software", cls: "text-display font-semibold tracking-[-0.035em]" },
-  { token: "text-h1", sample: "Tell us what you're building.", cls: "text-h1 font-semibold tracking-[-0.03em]" },
-  { token: "text-h2", sample: "Six practices, one standard.", cls: "text-h2 font-semibold tracking-tight" },
-  { token: "text-h3", sample: "Dedicated pod", cls: "text-h3 font-semibold tracking-tight" },
-  { token: "text-h4", sample: "Who owns the code and IP?", cls: "text-h4 font-semibold tracking-tight" },
+  { token: "text-display", sample: "Senior engineers for software", cls: "text-display font-display font-medium" },
+  { token: "text-h1", sample: "Tell us what you're building.", cls: "text-h1 font-display font-medium" },
+  { token: "text-h2", sample: "Six practices, one standard.", cls: "text-h2 font-display font-medium" },
+  { token: "text-h3", sample: "Dedicated pod", cls: "text-h3 font-display font-medium" },
+  { token: "text-h4", sample: "Who owns the code and IP?", cls: "text-h4 font-display font-medium" },
   { token: "text-lead", sample: "We design, build and scale AI systems, web and mobile products and cloud platforms.", cls: "text-lead text-stone-700" },
-  { token: "text-base", sample: "Body copy at 17–18px with a 1.6 line height, kept under 70 characters per line for comfortable reading.", cls: "text-base text-stone-700" },
+  { token: "text-base", sample: "Body copy at 16–17px with a 1.55 line height, kept under 70 characters per line for comfortable reading.", cls: "text-base text-stone-700" },
   { token: "text-sm", sample: "Supporting text, card details and form hints.", cls: "text-sm text-stone-700" },
+];
+const themes = ["teal", "orange", "amber", "stone"] as const;
+const clayFiles = [
+  ["winapps-clay-mark-480.webp", "Animated, transparent, 48 frames / 2.4 s loop: swapped in after load"],
+  ["winapps-clay-mark-still-480.webp", "Still: first paint, no JS and prefers-reduced-motion"],
+  ["winapps-clay-mark-1024.webp", "Still, large (reduced motion on high-density screens)"],
+  ["winapps-clay-lockup.png", "Still mark with the WINAPPS wordmark (not used on the site yet)"],
 ];
 ---
 <BaseLayout title="Styleguide" description="Winapps design system reference." noindex>
   <div class="container-site space-y-24 py-16">
     <header>
       <p class="eyebrow">Design system</p>
-      <h1 class="mt-4 text-h1 font-semibold text-teal-800">Winapps styleguide</h1>
-      <p class="mt-4 max-w-2xl text-lead text-stone-700">Tokens and components used across the site. Source: <code>src/styles/global.css</code>.</p>
+      <h1 class="mt-4 text-h1 text-teal-950">Winapps <span class="text-accent">styleguide</span></h1>
+      <p class="mt-4 max-w-2xl text-lead text-stone-700">Tokens and components used across the site. Source: <code>src/styles/global.css</code>. Layout language: <code>CLAY-STYLE.md</code>.</p>
     </header>
 
     <section aria-labelledby="sg-logo">
-      <h2 id="sg-logo" class="text-h3 font-semibold text-teal-800">Logo</h2>
-      <p class="mt-2 text-sm text-muted">Supplied PNG, background keyed out, never redrawn or recoloured. Light backgrounds only until a reversed version is supplied.</p>
-      <div class="mt-6 flex flex-wrap items-end gap-8">
-        <div class="rounded-xl border border-line bg-paper p-8"><Logo height={120} /></div>
-        <div class="rounded-xl border border-line bg-white p-8"><Logo height={64} /></div>
-        <div class="rounded-xl border border-line bg-white p-8"><Logo height={44} /></div>
+      <h2 id="sg-logo" class="text-h3 text-teal-950">Logo</h2>
+      <p class="mt-2 text-sm text-muted">Supplied PNG, background keyed out, never redrawn or recoloured. Light backgrounds only until a reversed version is supplied. The header and footer always use this flat logo.</p>
+      <div class="mt-6 flex flex-wrap items-end gap-6">
+        <div class="rounded-[1.5rem] bg-paper p-8"><Logo height={120} /></div>
+        <div class="rounded-[1.5rem] border border-line bg-white p-8"><Logo height={64} /></div>
+        <div class="rounded-[1.5rem] border border-line bg-white p-8"><Logo height={44} /></div>
       </div>
     </section>
 
+    <section aria-labelledby="sg-clay">
+      <h2 id="sg-clay" class="text-h3 text-teal-950">Clay mark</h2>
+      <p class="mt-2 max-w-3xl text-sm text-muted">3D "clay" illustration of the mark: a bouncing coral ball over the W. An illustration variant, not a logo replacement: home hero, About and the 404 page. <code>&lt;ClayMark /&gt;</code> paints the still first, then swaps in the animated WebP once the page has loaded and the mark is near the viewport. Reduced motion and no-JS keep the still. Notes: <code>brand/clay/README.md</code>.</p>
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <div class="panel theme-stone grid place-items-center"><ClayMark size={240} class="block w-60" /><p class="mt-2 text-xs text-muted">On paper</p></div>
+        <div class="panel theme-teal grid place-items-center"><ClayMark size={240} class="block w-60" /><p class="mt-2 text-xs text-muted">On teal-50</p></div>
+        <div class="grid place-items-center rounded-panel bg-gradient-to-b from-teal-100 to-teal-50 p-6"><ClayMark size={240} class="block w-60" /><p class="mt-2 text-xs text-muted">Hero sky</p></div>
+      </div>
+      <ul class="mt-6 divide-y divide-line border-y border-line text-sm">
+        {clayFiles.map(([f, use]) => (
+          <li class="grid gap-1 py-3 sm:grid-cols-[18rem_1fr]"><a class="link" href={href(`/brand/clay/${f}`)}><code>{f}</code></a><span class="text-stone-700">{use}</span></li>
+        ))}
+      </ul>
+    </section>
+
     <section aria-labelledby="sg-color">
-      <h2 id="sg-color" class="text-h3 font-semibold text-teal-800">Colour</h2>
-      <p class="mt-2 max-w-3xl text-sm text-muted">Teal leads; orange and amber are accents only. Teal-600 is 3.8:1 on paper, so it is used for large text, icons, borders and focus rings, never small text. Links use teal-700 (5.3:1). Orange buttons carry ink text (7.4:1). Run <code>node scripts/contrast.mjs</code> to re-check. Ringed swatches are the fixed brand values.</p>
+      <h2 id="sg-color" class="text-h3 text-teal-950">Colour</h2>
+      <p class="mt-2 max-w-3xl text-sm text-muted">Teal leads; orange is the one loud CTA colour (Clay's lime role) and always carries ink text (7.4:1). Teal-600 is 3.8:1 on paper, so it is used for large text, icons, borders and focus rings, never small text. Links use teal-700 (5.3:1). Run <code>node scripts/contrast.mjs</code> to re-check. Ringed swatches are the fixed brand values.</p>
       <div class="mt-8 grid gap-3 sm:grid-cols-5">
         {semantic.map((s) => (
           <div class="overflow-hidden rounded-lg border border-line">
@@ -80,13 +108,26 @@ const type = [
           </div>
         ))}
       </div>
-      <div class="mt-8 h-3 max-w-md rounded-full" style="background:linear-gradient(135deg,#F39A2B,#F6C21E)"></div>
-      <p class="mt-2 text-sm text-muted">Signature gradient: primary button hover and the hero ribbon stroke only.</p>
+    </section>
+
+    <section aria-labelledby="sg-themes">
+      <h2 id="sg-themes" class="text-h3 text-teal-950">Themes &amp; panels</h2>
+      <p class="mt-2 max-w-3xl text-sm text-muted">Add <code>theme-teal | theme-orange | theme-amber | theme-stone</code> to a <code>.panel</code>: the eyebrow pill, accent text and <code>btn-theme</code> inside pick up its colours. Panels are 28→48px radius inside the container.</p>
+      <div class="mt-6 grid gap-4 md:grid-cols-2">
+        {themes.map((t) => (
+          <div class={`panel theme-${t}`}>
+            <p class="eyebrow-pill">{t}</p>
+            <p class="mt-5 text-h2 font-display font-medium">Two-tone heading, <span class="text-accent">accent phrase.</span></p>
+            <div class="mt-5 flex flex-wrap gap-2"><a href="#sg-themes" class="btn btn-theme">Theme button</a><a href="#sg-themes" class="btn btn-light">Light</a></div>
+          </div>
+        ))}
+        <div class="on-dark panel-dark md:col-span-2"><SectionHeader eyebrow="Dark panel" title="Trust and" accent="clocks." /></div>
+      </div>
     </section>
 
     <section aria-labelledby="sg-type">
-      <h2 id="sg-type" class="text-h3 font-semibold text-teal-800">Typography</h2>
-      <p class="mt-2 max-w-3xl text-sm text-muted">Schibsted Grotesk 500/600 for headings, Inter 400/600 for text. Self-hosted woff2, metric-matched fallbacks to prevent layout shift.</p>
+      <h2 id="sg-type" class="text-h3 text-teal-950">Typography</h2>
+      <p class="mt-2 max-w-3xl text-sm text-muted">Schibsted Grotesk 500 for headings, at line-height 1 with -0.035 to -0.045em tracking on the large sizes (the Clay look). Inter 400/600 for text. Self-hosted woff2, metric-matched fallbacks to prevent layout shift.</p>
       <div class="mt-8 divide-y divide-line border-y border-line">
         {type.map((t) => (
           <div class="grid gap-2 py-5 sm:grid-cols-[10rem_1fr] sm:items-baseline">
@@ -98,51 +139,46 @@ const type = [
     </section>
 
     <section aria-labelledby="sg-buttons">
-      <h2 id="sg-buttons" class="text-h3 font-semibold text-teal-800">Buttons, links, chips</h2>
-      <div class="mt-6 flex flex-wrap items-center gap-4">
-        <a href="#sg-buttons" class="btn btn-primary">Primary action <Icon name="arrow-right" size={18} class="icon-arrow" /></a>
+      <h2 id="sg-buttons" class="text-h3 text-teal-950">Buttons, links, chips</h2>
+      <p class="mt-2 max-w-3xl text-sm text-muted">12px radius. Pair one strong button with one weak one: dark + secondary, primary + light, theme + light.</p>
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <a href="#sg-buttons" class="btn btn-primary">Primary <Icon name="arrow-right" size={18} class="icon-arrow" /></a>
+        <a href="#sg-buttons" class="btn btn-dark">Dark <Icon name="arrow-right" size={18} class="icon-arrow" /></a>
         <a href="#sg-buttons" class="btn btn-secondary">Secondary</a>
-        <a href="#sg-buttons" class="btn btn-primary btn-sm">Small</a>
+        <a href="#sg-buttons" class="btn btn-outline">Outline</a>
+        <a href="#sg-buttons" class="btn btn-dark btn-sm">Small</a>
+        <a href="#sg-buttons" class="line-link"><span>Line link</span> <Icon name="arrow-right" size={18} /></a>
         <a href="#sg-buttons" class="link">Text link</a>
         <span class="chip">Kubernetes</span>
       </div>
-      <div class="on-dark mt-6 flex flex-wrap items-center gap-4 rounded-xl bg-teal-950 p-6">
+      <div class="on-dark mt-6 flex flex-wrap items-center gap-3 rounded-[1.5rem] bg-teal-800 p-6">
         <a href="#sg-buttons" class="btn btn-primary">On dark</a>
+        <a href="#sg-buttons" class="btn btn-light">Light</a>
         <a href="#sg-buttons" class="btn btn-secondary">Secondary on dark</a>
-        <a href="#sg-buttons" class="link">Link on dark</a>
+        <a href="#sg-buttons" class="line-link"><span>Line link</span> <Icon name="arrow-right" size={18} /></a>
         <span class="chip">Chip</span>
       </div>
     </section>
 
     <section aria-labelledby="sg-cards">
-      <h2 id="sg-cards" class="text-h3 font-semibold text-teal-800">Cards &amp; surfaces</h2>
-      <div class="mt-6 grid gap-6 md:grid-cols-3">
-        <div class="card p-6"><p class="font-semibold">Card</p><p class="mt-1 text-sm text-muted">White, 1px line border, soft shadow.</p></div>
-        <div class="card card-interactive card-ribbon p-6"><p class="font-semibold">Interactive + ribbon corner</p><p class="mt-1 text-sm text-muted">Lifts on hover.</p></div>
-        <div class="on-dark rounded-2xl bg-teal-800 p-6 text-white"><p class="font-semibold">Feature surface</p><p class="mt-1 text-sm text-teal-100">Teal-800, used once per section at most.</p></div>
-      </div>
-    </section>
-
-    <section aria-labelledby="sg-sections">
-      <h2 id="sg-sections" class="text-h3 font-semibold text-teal-800">Section patterns</h2>
+      <h2 id="sg-cards" class="text-h3 text-teal-950">Cards &amp; surfaces</h2>
+      <p class="mt-2 max-w-3xl text-sm text-muted">Flat: tinted fill or a hairline, never a drop shadow. The one soft shadow (<code>--shadow-float</code>) is for floating UI: header, menus, the prompt box.</p>
       <div class="mt-6 grid gap-4 md:grid-cols-3">
-        <div class="rounded-xl border border-line bg-paper p-6"><SectionHeader eyebrow="Paper" title="Default section" /></div>
-        <div class="rounded-xl border border-line bg-white p-6"><SectionHeader eyebrow="White" title="Alternate section" /></div>
-        <div class="on-dark rounded-xl bg-teal-950 p-6"><SectionHeader eyebrow="Deep teal" title="Trust / CTA" /></div>
+        <div class="card p-6"><p class="font-semibold">.card</p><p class="mt-1 text-sm text-muted">White, 1px hairline, 24px radius.</p></div>
+        <div class="card-tint p-6"><p class="font-semibold">.card-tint</p><p class="mt-1 text-sm text-muted">Paper fill on the white page.</p></div>
+        <div class="panel theme-stone p-4"><div class="tile card-interactive relative p-5"><Icon name="arrow-up-right" size={18} class="corner-arrow" /><p class="font-semibold">.tile</p><p class="mt-1 text-sm text-muted">Bevelled tile for panels.</p></div></div>
       </div>
-      <div class="relative mt-6 h-48 overflow-hidden rounded-xl border border-line bg-paper">
-        <Ribbon variant="hero" class="absolute right-0 top-0 h-full w-1/2" />
-        <p class="relative p-6 text-sm text-muted">Ribbon motif: abstract curves echoing the logo, never the logo itself.</p>
-      </div>
+      {samplePost && <div class="mt-4 max-w-md"><PostCard post={samplePost} tone="teal" /></div>}
     </section>
 
     <section aria-labelledby="sg-faq">
-      <h2 id="sg-faq" class="text-h3 font-semibold text-teal-800">Accordion &amp; form fields</h2>
+      <h2 id="sg-faq" class="text-h3 text-teal-950">Accordion &amp; form fields</h2>
       <div class="mt-6 grid gap-10 lg:grid-cols-2">
         <FaqList items={[{ question: "Native details/summary accordion", answer: "Keyboard accessible with no JavaScript. Height animates where the browser supports it." }]} />
         <div class="space-y-4">
           <div><label class="field-label" for="sg-field">Label</label><input id="sg-field" type="text" class="field" placeholder="Placeholder" /></div>
           <div><label class="field-label" for="sg-field-err">With error</label><input id="sg-field-err" type="email" class="field" aria-invalid="true" value="not-an-email" /><p class="field-error">Please enter a valid email address.</p></div>
+          <label class="choice-chip"><input type="checkbox" class="sr-only" checked /><span>Choice chip</span></label>
         </div>
       </div>
     </section>

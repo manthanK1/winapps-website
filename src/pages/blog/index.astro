@@ -1,0 +1,69 @@
+---
+// Insights hub: blog guides first, news below. The live site linked these
+// from the home page only; here they also sit in the header and footer.
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import PostCard from "../../components/PostCard.astro";
+import SectionHeader from "../../components/SectionHeader.astro";
+import Icon from "../../components/Icon.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { href } from "../../lib/url";
+
+const posts = (await getCollection("blog")).sort((a, b) => b.data.updated.valueOf() - a.data.updated.valueOf());
+const news = (await getCollection("news")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const [featured, ...rest] = posts;
+const tones = ["orange", "amber", "stone", "teal"] as const;
+const crumbs = [{ name: "Blog", path: "/blog/" }];
+---
+<BaseLayout
+  title="Blog"
+  description="Guides from Winapps on software development costs, agentic AI and logistics automation, plus short industry news."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    breadcrumbs={crumbs}
+    eyebrow="Insights"
+    title="Guides for"
+    accent="planning your build."
+    lead="Cost ranges, delivery stages and the questions to ask before you scope a project, written by the people who estimate them."
+  />
+
+  <section class="section" aria-labelledby="guides-title">
+    <div class="container-site">
+      <h2 id="guides-title" class="sr-only">Guides</h2>
+      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {featured && (
+          <li class="md:col-span-2 lg:col-span-3"><PostCard post={featured} tone="teal" headingLevel="h3" featured /></li>
+        )}
+        {rest.map((p, i) => (
+          <li data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}><PostCard post={p} tone={tones[i % tones.length]} /></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="pb-[clamp(3.5rem,2.5rem+3.5vw,6rem)]" aria-labelledby="news-title">
+    <div class="container-site">
+      <div class="panel theme-stone">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <SectionHeader id="news-title" eyebrow="News" title="Short updates" accent="from the industry." />
+          <a href={href("/news/")} class="line-link shrink-0"><span>All news</span> <Icon name="arrow-right" size={18} /></a>
+        </div>
+        <ul class="mt-10 grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+          {news.slice(0, 3).map((p) => (
+            <li>
+              <a href={href(`/news/${p.id}/`)} class="tile card-interactive flex h-full flex-col p-5">
+                <Icon name="arrow-up-right" size={18} class="corner-arrow" />
+                <span class="text-xs text-muted">{p.data.dateLabel}</span>
+                <span class="mt-2 pr-6 font-display text-h4 text-ink">{p.data.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title="Want a number for your project?" text="Every guide gives ranges. A fixed-fee Discovery gives you a plan and estimate you own, whoever builds it." />
+</BaseLayout>

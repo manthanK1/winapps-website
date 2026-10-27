@@ -2,6 +2,7 @@
 title: Cloud & platform
 order: 3
 icon: cloud
+tagline: that your team can run.
 summary: Cloud architecture, infrastructure as code, CI/CD and observability on AWS, Azure and GCP. Systems your own team can run after we hand over.
 outcome: Cloud infrastructure defined as code, observable end to end, and simple enough for your own team to run.
 deliverables:

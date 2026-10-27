@@ -1,64 +1,89 @@
 ---
+// Clay-style footer: an illustrated band with a paper card on top. Every
+// item is a real page; the live site's footer pointed everything at "/".
 import { getCollection } from "astro:content";
 import Logo from "./Logo.astro";
-import { SITE } from "../lib/site";
+import Hills from "./Hills.astro";
+import { INSIGHTS, SITE } from "../lib/site";
 import { href } from "../lib/url";
 
 const services = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
-const company = [
+const explore = [
   { label: "Work", href: "/work/" },
   { label: "Industries", href: "/industries/" },
   { label: "How we work", href: "/how-we-work/" },
+  ...INSIGHTS.map((i) => ({ label: i.label, href: i.href })),
+];
+const company = [
   { label: "About", href: "/about/" },
   { label: "Contact", href: "/contact/" },
 ];
+const legal = [
+  { label: "Privacy", href: "/privacy/" },
+  { label: "Terms", href: "/terms/" },
+  { label: "Disclaimer", href: "/disclaimer/" },
+];
 const year = new Date().getFullYear();
-const linkClass = "inline-flex min-h-11 items-center text-sm text-stone-700 transition-colors hover:text-teal-800 lg:min-h-9";
+const headClass = "text-xs font-semibold uppercase tracking-[0.12em] text-ink";
+const linkClass = "inline-flex min-h-11 items-center text-sm text-stone-700 transition-colors duration-100 hover:text-ink lg:min-h-9";
 ---
-<footer class="border-t border-line bg-paper">
-  <!-- Light band: the logo only sits on light backgrounds (no reversed version supplied yet). -->
-  <div class="container-site grid gap-12 py-16 lg:grid-cols-12 lg:gap-8 lg:py-20">
-    <div class="lg:col-span-4">
-      <a href={href("/")} class="inline-flex rounded-sm"><Logo height={64} class="h-16 w-auto" /></a>
-      <p class="mt-6 max-w-sm text-sm text-stone-700">
-        Senior software engineering partner to companies in India, the US, the UK and Europe. Est. {SITE.founded}.
-      </p>
-      <p class="mt-4 text-sm text-muted">Reply within 1 business day. NDA before the first call.</p>
-    </div>
+<!-- Sky and hills on top; below them the footer is the front hill's teal-800. -->
+<footer class="defer-render relative overflow-hidden bg-teal-800 pt-32 sm:pt-44 lg:pt-52">
+  <div class="pointer-events-none absolute inset-x-0 top-0 h-[24rem] bg-gradient-to-b from-white to-teal-50 sm:h-[30rem]" aria-hidden="true"></div>
+  <Hills variant="footer" class="pointer-events-none absolute inset-x-0 top-0 h-[24rem] w-full sm:h-[30rem]" />
+  <div class="relative mx-2 sm:mx-4 lg:mx-auto lg:max-w-[80rem]">
+    <div class="rounded-t-panel bg-paper px-5 pt-10 sm:px-10 sm:pt-12 lg:px-12">
+      <nav aria-label="Footer" class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 lg:grid-cols-5">
+        <div class="col-span-2 md:col-span-4 lg:col-span-1">
+          <a href={href("/")} class="inline-flex rounded-sm"><Logo height={64} class="h-16 w-auto" /></a>
+          <p class="mt-5 max-w-xs text-sm text-stone-700">
+            Senior software engineering partner to companies in India, the US, the UK and Europe. Est. {SITE.founded}.
+          </p>
+        </div>
+        <div>
+          <h2 class={headClass}>Services</h2>
+          <ul class="mt-3">
+            {services.map((s) => <li><a class={linkClass} href={href(`/services/${s.id}/`)}>{s.data.title}</a></li>)}
+          </ul>
+        </div>
+        <div>
+          <h2 class={headClass}>Explore</h2>
+          <ul class="mt-3">
+            {explore.map((c) => <li><a class={linkClass} href={href(c.href)}>{c.label}</a></li>)}
+          </ul>
+        </div>
+        <div>
+          <h2 class={headClass}>Company</h2>
+          <ul class="mt-3">
+            {company.map((c) => <li><a class={linkClass} href={href(c.href)}>{c.label}</a></li>)}
+          </ul>
+          <h2 class:list={[headClass, "mt-8"]}>Legal</h2>
+          <ul class="mt-3">
+            {legal.map((c) => <li><a class={linkClass} href={href(c.href)}>{c.label}</a></li>)}
+          </ul>
+        </div>
+        <div>
+          <h2 class={headClass}>Contact</h2>
+          <ul class="mt-3">
+            <li><a class={linkClass} href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+            <li><a class={linkClass} href={SITE.phoneHref}>{SITE.phone}</a></li>
+            <li><a class={linkClass} href={SITE.whatsappHref} rel="noopener">WhatsApp</a></li>
+          </ul>
+        </div>
+      </nav>
 
-    <nav aria-label="Footer" class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:col-span-8 lg:col-start-6">
-      <div>
-        <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-teal-700">Services</h2>
-        <ul class="mt-3">
-          {services.map((s) => <li><a class={linkClass} href={href(`/services/${s.id}/`)}>{s.data.title}</a></li>)}
+      <div class="mt-12 flex flex-col gap-4 border-t border-stone-300 py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-stone-700">© {SITE.founded}–{year} {SITE.name}®. All rights reserved.</p>
+        <ul class="flex flex-wrap gap-2" aria-label="Social">
+          {[
+            { label: "LinkedIn", href: SITE.linkedin },
+            { label: "Instagram", href: SITE.instagram },
+            { label: "Facebook", href: SITE.facebook },
+          ].map((s) => (
+            <li><a class="btn btn-secondary btn-sm" href={s.href} rel="noopener">{s.label}</a></li>
+          ))}
         </ul>
       </div>
-      <div>
-        <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-teal-700">Company</h2>
-        <ul class="mt-3">
-          {company.map((c) => <li><a class={linkClass} href={href(c.href)}>{c.label}</a></li>)}
-        </ul>
-      </div>
-      <div class="col-span-2 sm:col-span-1">
-        <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-teal-700">Contact</h2>
-        <ul class="mt-3">
-          <li><a class={linkClass} href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
-          <li><a class={linkClass} href={SITE.phoneHref}>{SITE.phone}</a></li>
-          <li><a class={linkClass} href={SITE.whatsappHref} rel="noopener">WhatsApp</a></li>
-          <li><a class={linkClass} href={SITE.linkedin} rel="noopener">LinkedIn</a></li>
-          <li><a class={linkClass} href={SITE.instagram} rel="noopener">Instagram</a></li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-
-  <div class="on-dark bg-teal-950 text-teal-100">
-    <div class="container-site flex flex-col gap-3 py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
-      <p>© {SITE.founded}–{year} {SITE.name}®. All rights reserved.</p>
-      <ul class="flex gap-6">
-        <li><a class="inline-flex min-h-11 items-center hover:text-white" href={href("/privacy/")}>Privacy</a></li>
-        <li><a class="inline-flex min-h-11 items-center hover:text-white" href={href("/terms/")}>Terms</a></li>
-      </ul>
     </div>
   </div>
 </footer>

@@ -6,15 +6,15 @@ interface Props {
 }
 const { layers } = Astro.props;
 ---
-<figure class="rounded-2xl border border-line bg-white p-5 sm:p-8">
+<figure class="rounded-[1.5rem] bg-paper p-5 sm:p-8">
   <ol class="space-y-0">
     {layers.map((l, i) => (
       <li class="relative">
         <div class="grid gap-3 sm:grid-cols-[9rem_1fr] sm:items-center sm:gap-6">
-          <p class="text-xs font-semibold uppercase tracking-[0.08em] text-teal-700">{l.layer}</p>
+          <p class="eyebrow">{l.layer}</p>
           <ul class="flex flex-wrap gap-2.5">
             {l.nodes.map((n) => (
-              <li class="rounded-lg border border-teal-200 bg-teal-50 px-3.5 py-2.5 text-sm font-semibold text-teal-900">{n}</li>
+              <li class="tile px-3.5 py-2.5 text-sm font-semibold text-teal-950">{n}</li>
             ))}
           </ul>
         </div>
@@ -29,7 +29,7 @@ const { layers } = Astro.props;
       </li>
     ))}
   </ol>
-  <figcaption class="mt-6 border-t border-line pt-4 text-sm text-muted">
+  <figcaption class="mt-6 border-t border-stone-300 pt-4 text-sm text-muted">
     Illustrative architecture, simplified to protect client confidentiality.
   </figcaption>
 </figure>

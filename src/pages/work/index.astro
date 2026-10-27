@@ -16,12 +16,13 @@ const crumbs = [{ name: "Work", path: "/work/" }];
   <PageHero
     breadcrumbs={crumbs}
     eyebrow="Selected work"
-    title="Problems we've been trusted with."
+    title="Problems we've been"
+    accent="trusted with."
     lead="Most of our clients are under NDA, so we describe the work without naming them. We share specifics, architecture and references on a call."
   />
-  <section class="section bg-white" aria-label="Case studies">
+  <section class="section" aria-label="Case studies">
     <div class="container-site">
-      <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {work.map((item, i) => (
           <li class:list={[{ "lg:col-span-2": i === 0 || i === 3 }]} data-reveal style={`--reveal-delay:${(i % 2) * 80}ms`}>
             <CaseCard item={item} featured={i === 0 || i === 3} headingLevel="h2" />
@@ -31,5 +32,5 @@ const crumbs = [{ name: "Work", path: "/work/" }];
       <!-- TODO: add more case studies as they are cleared for publication (src/content/work). -->
     </div>
   </section>
-  <CtaBand edgeClass="text-white" title="Want the details behind these?" text="We walk through architecture, team shape and references on a call, under NDA if you need one. A senior engineer replies within one business day." />
+  <CtaBand title="Want the details behind these?" text="We walk through architecture, team shape and references on a call, under NDA if you need one. A senior engineer replies within one business day." />
 </BaseLayout>

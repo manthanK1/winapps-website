@@ -2,6 +2,7 @@
 title: Dedicated teams
 order: 6
 icon: users
+tagline: inside your tools and rituals.
 summary: A pod of senior engineers, a lead and QA that plugs into your tools, rituals and roadmap. Scales up or down with 30 days' notice.
 outcome: A senior team working inside your tools and rituals, which you approve person by person and can scale with 30 days' notice.
 deliverables:

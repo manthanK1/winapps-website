@@ -1,54 +1,58 @@
 ---
 // Service detail: What it is → What you get → How we deliver →
-// Related case study → Tech used → FAQ → CTA.
-import { getCollection, getEntry, render } from "astro:content";
+// Related case study → Tech used → Related guides → FAQ → CTA.
+import { getCollection, getEntries, getEntry, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
 import Icon from "../../components/Icon.astro";
 import CaseCard from "../../components/CaseCard.astro";
+import PostCard from "../../components/PostCard.astro";
 import FaqList from "../../components/FaqList.astro";
 import CtaBand from "../../components/CtaBand.astro";
 import SectionHeader from "../../components/SectionHeader.astro";
 import { faqPage, service as serviceSchema } from "../../lib/schema";
+import { contactFor } from "../../lib/site";
 import { href } from "../../lib/url";
 
 export async function getStaticPaths() {
-  const services = await getCollection("services");
-  return services.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  const services = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
+  const themes = ["teal", "orange", "amber", "stone"] as const;
+  return services.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, theme: themes[i % themes.length] } }));
 }
 
-const { entry } = Astro.props;
+const { entry, theme } = Astro.props;
 const d = entry.data;
 const { Content } = await render(entry);
 const related = d.relatedWork ? await getEntry(d.relatedWork) : undefined;
+const posts = await getEntries(d.relatedPosts);
 const path = `/services/${entry.id}/`;
 const crumbs = [{ name: "Services", path: "/services/" }, { name: d.title, path }];
 const schemas: object[] = [serviceSchema(Astro.site, { name: d.title, description: d.seoDescription, path })];
 if (d.faq.length) schemas.push(faqPage(d.faq));
 ---
 <BaseLayout title={d.title} description={d.seoDescription} breadcrumbs={crumbs} jsonLd={schemas}>
-  <PageHero breadcrumbs={crumbs} eyebrow="Service" title={d.title} lead={d.summary}>
-    <div class="mt-9 flex flex-col gap-3 xs:flex-row">
-      <a href={href("/contact/")} class="btn btn-primary">Book a 30-min intro call <Icon name="arrow-right" size={18} class="icon-arrow" /></a>
-      <p class="self-center text-sm text-muted">Reply within 1 business day</p>
+  <PageHero breadcrumbs={crumbs} eyebrow="Service" title={d.title} accent={d.tagline} lead={d.summary} theme={theme}>
+    <div class="mt-9 flex flex-col gap-3 xs:flex-row xs:items-center">
+      <a href={href(contactFor(entry.id))} class="btn btn-dark">Book a 30-min intro call <Icon name="arrow-right" size={18} class="icon-arrow" /></a>
+      <p class="text-sm text-stone-700">Reply within 1 business day</p>
     </div>
   </PageHero>
 
   <!-- What it is + What you get -->
-  <section class="section bg-white" aria-labelledby="get-title">
+  <section class="section" aria-labelledby="get-title">
     <div class="container-site grid gap-12 lg:grid-cols-12 lg:gap-10">
       <div class="lg:col-span-5">
         <p class="eyebrow">What it is</p>
         <div class="prose-site mt-5 text-lead text-stone-700"><Content /></div>
       </div>
       <div class="lg:col-span-6 lg:col-start-7" data-reveal>
-        <div class="card card-ribbon p-7 sm:p-9">
-          <p class="eyebrow">What you get</p>
-          <h2 id="get-title" class="mt-4 text-h3 font-semibold tracking-tight text-teal-800">{d.outcome}</h2>
+        <div class={`panel theme-${theme}`}>
+          <p class="eyebrow-pill">What you get</p>
+          <h2 id="get-title" class="mt-6 text-h3">{d.outcome}</h2>
           <ul class="mt-7 space-y-3.5">
             {d.deliverables.map((item) => (
               <li class="flex gap-3 text-stone-700">
-                <Icon name="check" size={20} class="mt-0.5 shrink-0 text-teal-600" />
+                <Icon name="check" size={20} class="mt-0.5 shrink-0 text-[var(--theme-accent)]" />
                 <span>{item}</span>
               </li>
             ))}
@@ -59,23 +63,25 @@ if (d.faq.length) schemas.push(faqPage(d.faq));
   </section>
 
   <!-- How we deliver -->
-  <section class="section bg-paper" aria-labelledby="deliver-title">
+  <section class="pb-[clamp(3.5rem,2.5rem+3.5vw,6rem)]" aria-labelledby="deliver-title">
     <div class="container-site">
-      <SectionHeader id="deliver-title" eyebrow="How we deliver" title="Small, verified steps. Your tools, your time zone." />
-      <ol class="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
-        {d.delivery.map((step, i) => (
-          <li class="bg-white p-7" data-reveal style={`--reveal-delay:${i * 70}ms`}>
-            <span class="grid h-10 w-10 place-items-center rounded-full border-2 border-teal-600 font-display font-semibold text-teal-800">{i + 1}</span>
-            <h3 class="mt-5 text-h4 font-semibold tracking-tight text-teal-800">{step.title}</h3>
-            <p class="mt-2 text-sm text-stone-700">{step.text}</p>
-          </li>
-        ))}
-      </ol>
+      <div class="panel theme-stone">
+        <SectionHeader id="deliver-title" eyebrow="How we deliver" title="Small, verified steps." accent="Your tools, your time zone." />
+        <ol class="mt-10 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {d.delivery.map((step, i) => (
+            <li class="tile p-6" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+              <span class="grid h-10 w-10 place-items-center rounded-full bg-teal-700 font-display font-semibold text-white">{i + 1}</span>
+              <h3 class="mt-5 text-h4 text-teal-950">{step.title}</h3>
+              <p class="mt-2 text-sm text-stone-700">{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
     </div>
   </section>
 
   <!-- Related case study + tech -->
-  <section class="section bg-white" aria-label="Related work and technology">
+  <section class="pb-[clamp(3.5rem,2.5rem+3.5vw,6rem)]" aria-label="Related work and technology">
     <div class="container-site grid gap-12 lg:grid-cols-12 lg:gap-10">
       {related && (
         <div class="lg:col-span-7">
@@ -86,7 +92,7 @@ if (d.faq.length) schemas.push(faqPage(d.faq));
       <div class:list={[related ? "lg:col-span-4 lg:col-start-9" : "lg:col-span-12"]}>
         <p class="eyebrow">Technology we use</p>
         <h2 class="sr-only">Technology</h2>
-        <ul class="mt-6 flex flex-wrap gap-2.5">
+        <ul class="mt-6 flex flex-wrap gap-2">
           {d.tech.map((t) => <li class="chip text-sm">{t}</li>)}
         </ul>
         <p class="mt-6 text-sm text-muted">We work in your cloud accounts and repositories, with access you grant and can revoke.</p>
@@ -94,16 +100,32 @@ if (d.faq.length) schemas.push(faqPage(d.faq));
     </div>
   </section>
 
-  {d.faq.length > 0 && (
-    <section class="section bg-paper" aria-labelledby="service-faq-title">
-      <div class="container-site grid gap-10 lg:grid-cols-12">
-        <div class="lg:col-span-4">
-          <SectionHeader id="service-faq-title" eyebrow="Questions" title={`About ${d.title.toLowerCase()}`} />
+  {posts.length > 0 && (
+    <section class="pb-[clamp(3.5rem,2.5rem+3.5vw,6rem)]" aria-labelledby="guides-title">
+      <div class="container-site">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <SectionHeader id="guides-title" eyebrow="Related guides" title="Read before" accent="you scope it." />
+          <a href={href("/blog/")} class="line-link shrink-0"><span>All guides</span> <Icon name="arrow-right" size={18} /></a>
         </div>
-        <div class="lg:col-span-7 lg:col-start-6"><FaqList items={d.faq} /></div>
+        <ul class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {posts.map((p) => <li><PostCard post={p} tone={theme} /></li>)}
+        </ul>
       </div>
     </section>
   )}
 
-  <CtaBand edgeClass={d.faq.length ? "text-paper" : "text-white"} />
+  {d.faq.length > 0 && (
+    <section class="pb-[clamp(3.5rem,2.5rem+3.5vw,6rem)]" aria-labelledby="service-faq-title">
+      <div class="container-site">
+        <div class="panel theme-stone grid gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-4">
+            <SectionHeader id="service-faq-title" eyebrow="Questions" title={`About ${d.title.toLowerCase()}`} />
+          </div>
+          <div class="lg:col-span-7 lg:col-start-6"><FaqList items={d.faq} /></div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CtaBand />
 </BaseLayout>

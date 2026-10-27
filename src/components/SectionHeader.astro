@@ -2,15 +2,20 @@
 interface Props {
   eyebrow?: string;
   title: string;
+  /** Second phrase of the title, set in the theme accent (two-tone heading). */
+  accent?: string;
   intro?: string;
   id?: string;
   class?: string;
+  center?: boolean;
 }
-const { eyebrow, title, intro, id, class: className = "" } = Astro.props;
+const { eyebrow, title, accent, intro, id, class: className = "", center = false } = Astro.props;
 ---
-<div class={`max-w-3xl ${className}`} data-reveal>
+<div class:list={["max-w-3xl", { "mx-auto text-center": center }, className]} data-reveal>
   {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-  <h2 id={id} class="mt-4 text-h2 font-semibold tracking-tight text-teal-800 [.on-dark_&]:text-white">{title}</h2>
-  {intro && <p class="mt-5 max-w-2xl text-lead text-stone-700 [.on-dark_&]:text-teal-100">{intro}</p>}
+  <h2 id={id} class:list={["text-h2 text-teal-950 [.on-dark_&]:text-white", { "mt-4": eyebrow }]}>
+    {title}{accent && <> <span class="text-accent">{accent}</span></>}
+  </h2>
+  {intro && <p class:list={["mt-5 max-w-2xl text-lead text-stone-700 [.on-dark_&]:text-teal-100", { "mx-auto": center }]}>{intro}</p>}
   <slot />
 </div>

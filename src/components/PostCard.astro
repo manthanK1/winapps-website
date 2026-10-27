@@ -1,0 +1,38 @@
+---
+// Blog / news card in the Clay resource-card style: tinted fill, coloured
+// eyebrow, title, line link. The whole card is the link.
+import type { CollectionEntry } from "astro:content";
+import Icon from "./Icon.astro";
+import { href } from "../lib/url";
+
+type Post = CollectionEntry<"blog"> | CollectionEntry<"news">;
+interface Props {
+  post: Post;
+  tone?: "teal" | "orange" | "amber" | "stone";
+  headingLevel?: "h2" | "h3";
+  featured?: boolean;
+}
+const { post, tone = "stone", headingLevel: H = "h3", featured = false } = Astro.props;
+const isBlog = post.collection === "blog";
+const date = isBlog ? (post as CollectionEntry<"blog">).data.updated : (post as CollectionEntry<"news">).data.date;
+const dateText = isBlog
+  ? date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })
+  : (post as CollectionEntry<"news">).data.dateLabel;
+const meta = isBlog ? `Guide · ${(post as CollectionEntry<"blog">).data.readMinutes} min read` : "News";
+---
+<article class={`theme-${tone} card-interactive group relative flex h-full flex-col rounded-[1.5rem] bg-[var(--theme-bg)] p-6 sm:p-8`}>
+  <Icon name="arrow-up-right" size={18} class="corner-arrow" />
+  <p class="eyebrow pr-8">{meta}</p>
+  <H class:list={["mt-3 text-ink", featured ? "text-h2" : "text-h3"]}>
+    <a href={href(`/${post.collection}/${post.id}/`)} class="after:absolute after:inset-0 after:rounded-[inherit] focus-visible:outline-none">{post.data.title}</a>
+  </H>
+  <p class:list={["mt-3 text-stone-700", featured ? "text-lead" : "text-sm"]}>{post.data.description}</p>
+  <p class="mt-auto flex flex-wrap items-center justify-between gap-x-4 pt-6 text-sm">
+    <time datetime={date.toISOString().slice(0, 10)} class="text-muted">{isBlog ? `Updated ${dateText}` : dateText}</time>
+    <span class="line-link" aria-hidden="true"><span>Read {isBlog ? "the guide" : "more"}</span> <Icon name="arrow-right" size={16} /></span>
+  </p>
+</article>
+
+<style>
+  article:has(a:focus-visible) { outline: 3px solid var(--color-teal-600); outline-offset: 3px; }
+</style>

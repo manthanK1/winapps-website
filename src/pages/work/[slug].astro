@@ -27,10 +27,10 @@ const crumbs = [{ name: "Work", path: "/work/" }, { name: d.title, path }];
 <BaseLayout title={d.title} description={d.seoDescription} breadcrumbs={crumbs}>
   <PageHero breadcrumbs={crumbs} eyebrow={`${d.sector}${d.region ? ` · ${d.region}` : ""}`} title={d.title} lead={d.delivered} />
 
-  <section class="section bg-white" aria-label="Case study">
+  <section class="section" aria-label="Case study">
     <div class="container-site grid gap-12 lg:grid-cols-12 lg:gap-10">
       <aside class="lg:col-span-4 lg:order-2 lg:col-start-9">
-        <dl class="card divide-y divide-line p-6 text-sm lg:sticky lg:top-28">
+        <dl class="card-tint divide-y divide-stone-300 p-6 text-sm lg:sticky lg:top-28">
           <div class="pb-4">
             <dt class="font-semibold text-stone-800">Sector</dt>
             <dd class="mt-1 text-stone-700">{d.sector}</dd>
@@ -76,21 +76,21 @@ const crumbs = [{ name: "Work", path: "/work/" }, { name: d.title, path }];
           />
           <figcaption class="mt-3 text-sm text-muted">Illustrative photo. Client details are under NDA.</figcaption>
         </figure>
-        <article class="prose-site text-stone-700 [&_h2]:text-teal-800 [&>h2:first-child]:mt-0">
+        <article class="prose-site text-stone-700 [&>h2:first-child]:mt-0">
           <Content />
         </article>
 
-        <h2 class="mt-16 text-h3 font-semibold tracking-tight text-teal-800">Architecture</h2>
+        <h2 class="mt-16 text-h3 text-teal-950">Architecture</h2>
         <div class="mt-6"><ArchitectureDiagram layers={d.architecture} /></div>
         <!-- TODO: confirm the architecture diagram reflects the real system (simplified is fine). -->
 
-        <h2 class="mt-16 text-h3 font-semibold tracking-tight text-teal-800">Results</h2>
+        <h2 class="mt-16 text-h3 text-teal-950">Results</h2>
         {d.results ? (
           <dl class="mt-6 grid gap-4 sm:grid-cols-3">
             {d.results.map((r) => (
-              <div class="card p-6">
+              <div class="card-tint p-6">
                 <dt class="text-sm text-muted">{r.label}</dt>
-                <dd class="mt-1 font-display text-h2 font-semibold text-teal-800">{r.value}</dd>
+                <dd class="mt-1 font-display text-h2 text-teal-950">{r.value}</dd>
               </div>
             ))}
           </dl>
@@ -103,7 +103,7 @@ const crumbs = [{ name: "Work", path: "/work/" }, { name: d.title, path }];
           </>
         )}
 
-        <h2 class="mt-16 text-h3 font-semibold tracking-tight text-teal-800">Stack</h2>
+        <h2 class="mt-16 text-h3 text-teal-950">Stack</h2>
         <ul class="mt-5 flex flex-wrap gap-2.5">
           {d.stack.map((t) => <li class="chip text-sm">{t}</li>)}
         </ul>
@@ -111,7 +111,7 @@ const crumbs = [{ name: "Work", path: "/work/" }, { name: d.title, path }];
         <nav aria-label="Next case study" class="mt-16 border-t border-line pt-8">
           <a href={href(`/work/${next.id}/`)} class="group inline-flex flex-col gap-1">
             <span class="text-sm text-muted">Next case study</span>
-            <span class="inline-flex items-center gap-2 font-display text-h4 font-semibold text-teal-800 group-hover:text-teal-900">
+            <span class="inline-flex items-center gap-2 font-display text-h4 text-teal-950 group-hover:text-teal-900">
               {next.data.title} <Icon name="arrow-right" size={20} class="transition-transform duration-300 group-hover:translate-x-1" />
             </span>
           </a>
@@ -120,5 +120,5 @@ const crumbs = [{ name: "Work", path: "/work/" }, { name: d.title, path }];
     </div>
   </section>
 
-  <CtaBand edgeClass="text-white" title="Facing something similar?" />
+  <CtaBand title="Facing something similar?" />
 </BaseLayout>

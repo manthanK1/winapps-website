@@ -1,0 +1,11 @@
+# Redirect stubs Astro generates from src/lib/legacy-redirects.ts. Their
+# markup is Astro's, not ours. Keep this list in step with that file.
+dist/case-studies/
+dist/contact-us/
+dist/services/ai-center-of-excellence/
+dist/services/artificial-intelligence-development-company/
+dist/blog/ai-transforming-construction/
+dist/blog/ai-powered-project-management/
+dist/blog/startup-scaling-with-ai/
+dist/blog/legacy-website-modernization/
+dist/blog/ai-healthcare-digital-transformation/

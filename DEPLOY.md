@@ -35,6 +35,15 @@ Connect the repository; `netlify.toml` already sets the build command, output fo
 - Output directory: `dist`
 - Environment: `NODE_VERSION=24`, `BASE_PATH=/`, `SITE_URL=https://your-domain`, plus `PUBLIC_WEB3FORMS_KEY` if you use it.
 
+## Redirects from the old site
+
+Old www.winapps.co.in URLs (`/case-studies/…`, `/contact-us`, the AI service pages and others) are listed in `src/lib/legacy-redirects.ts`. Every build produces both:
+
+- a small redirect page at each old path, which works on GitHub Pages and any static host, and
+- `dist/_redirects` with real 301s, which Netlify and Cloudflare Pages read automatically.
+
+Old `/blog/<slug>` and `/news/<slug>` URLs need no redirect: the pages exist at the same paths. When the domain moves, check a few old links (for example `/case-studies` and `/contact-us`) land on the right page.
+
 ## Contact form (Web3Forms)
 
 1. Get a free access key at web3forms.com using `sales@winapps.co.in`.
