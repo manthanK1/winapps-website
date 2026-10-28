@@ -78,12 +78,33 @@ const items = await Promise.all(
 <style>
   .practice-theme + .practice-theme { margin-top: 1rem; }
   .practice-item {
+    position: relative;
+    isolation: isolate;
     display: grid;
     gap: 1.5rem;
     border-radius: var(--radius-panel);
     background: var(--theme-bg);
     color: var(--theme-ink);
     padding: clamp(1.5rem, 0.9rem + 2.6vw, 3rem);
+  }
+  /* While a panel is in the middle of the screen it lights up in the logo's
+     yellow → orange (fades in over its own colour). Accents and links
+     darken to stay readable on it. */
+  .practice-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--color-amber-300), var(--color-orange-300));
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-out);
+  }
+  .is-lit .practice-item::before { opacity: 1; }
+  .is-lit .practice-item { --theme-highlight: var(--color-teal-800); }
+  .is-lit .practice-item :global(.link) { color: var(--color-teal-900); }
+  @media (prefers-reduced-motion: reduce) {
+    .practice-item::before { transition: none; }
   }
   .practice-visual {
     align-self: stretch;
@@ -103,3 +124,25 @@ const items = await Promise.all(
     .is-last .practice-item { padding-bottom: 3rem; border-radius: var(--radius-panel); }
   }
 </style>
+
+<script>
+  // Light up the practice panel crossing the middle band of the screen. On
+  // desktop the panels stack, so several can be in the band: only the front
+  // one (latest on the page) lights up.
+  const panels = [...document.querySelectorAll<HTMLElement>(".practice-theme")];
+  if ("IntersectionObserver" in window) {
+    const inBand = new Set<Element>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) inBand.add(e.target);
+          else inBand.delete(e.target);
+        }
+        const front = [...panels].reverse().find((p) => inBand.has(p));
+        for (const p of panels) p.classList.toggle("is-lit", p === front);
+      },
+      { rootMargin: "-40% 0px -40% 0px" }
+    );
+    panels.forEach((p) => io.observe(p));
+  }
+</script>

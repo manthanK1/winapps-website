@@ -109,7 +109,7 @@ const crumbs = [{ name: "Work", path: "/work/" }, { name: d.title, path }];
         </ul>
 
         <nav aria-label="Next case study" class="mt-16 border-t border-line pt-8">
-          <a href={href(`/work/${next.id}/`)} class="group inline-flex flex-col gap-1">
+          <a href={href(`/work/${next.id}/`)} class="pop group inline-flex flex-col gap-1 [--pop-inset:-0.5rem_-0.75rem]">
             <span class="text-sm text-muted">Next case study</span>
             <span class="inline-flex items-center gap-2 font-display text-h4 text-teal-950 group-hover:text-teal-900">
               {next.data.title} <Icon name="arrow-right" size={20} class="transition-transform duration-300 group-hover:translate-x-1" />

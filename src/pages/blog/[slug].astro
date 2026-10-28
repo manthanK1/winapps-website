@@ -50,8 +50,8 @@ if (d.faq.length) schemas.push(faqPage(d.faq));
         <div class="card-tint p-5 lg:sticky lg:top-24">
           <h2 id="toc-title" class="eyebrow">Contents</h2>
           <ol class="mt-3 space-y-0.5 text-sm">
-            {toc.map((h) => <li><a class="flex min-h-9 items-center rounded-lg px-2 text-stone-700 hover:bg-white hover:text-ink" href={`#${h.slug}`}>{h.text}</a></li>)}
-            {d.faq.length > 0 && <li><a class="flex min-h-9 items-center rounded-lg px-2 text-stone-700 hover:bg-white hover:text-ink" href="#faq-title">Frequently asked questions</a></li>}
+            {toc.map((h) => <li><a class="pop flex min-h-9 items-center rounded-lg px-2 text-stone-700 hover:text-ink [--pop-inset:0]" href={`#${h.slug}`}>{h.text}</a></li>)}
+            {d.faq.length > 0 && <li><a class="pop flex min-h-9 items-center rounded-lg px-2 text-stone-700 hover:text-ink [--pop-inset:0]" href="#faq-title">Frequently asked questions</a></li>}
           </ol>
         </div>
       </nav>
