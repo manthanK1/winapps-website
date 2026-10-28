@@ -1,25 +1,83 @@
 ---
 // The supplied Winapps logo, used exactly as provided (background keyed out
 // only). Light backgrounds only: there is no reversed version yet.
+// `animated` (header only) plays the logo animation from www.winapps.co.in
+// once on load, then hands back to this static logo. It's laid over the
+// static logo so nothing shifts, and it is only downloaded when motion is
+// allowed; without JS or with reduced motion the static logo simply stays.
+// Source: brand/source/header-logo.gif → scripts/convert-logo-gif.mjs.
 import { Image } from "astro:assets";
 import logo from "../assets/brand/logo.png";
+import animatedLogo from "../assets/brand/logo-animated.webp?url";
+import layout from "../assets/brand/logo-animated.json";
 
 interface Props {
   height: number;
   class?: string;
   eager?: boolean;
+  animated?: boolean;
 }
-const { height, class: className, eager = false } = Astro.props;
+const { height, class: className, eager = false, animated = false } = Astro.props;
 const width = Math.round((logo.width / logo.height) * height);
 ---
-<Image
-  src={logo}
-  alt="Winapps"
-  width={width}
-  height={height}
-  densities={[1, 2]}
-  format="webp"
-  loading={eager ? "eager" : "lazy"}
-  decoding="async"
-  class={className}
-/>
+{animated ? (
+  <span
+    class="logo-anim"
+    data-logo-anim={animatedLogo}
+    data-duration={layout.durationMs}
+    style={`--anim-left:${layout.left}%;--anim-top:${layout.top}%;--anim-height:${layout.height}%`}
+  >
+    <Image src={logo} alt="Winapps" width={width} height={height} densities={[1, 2]} format="webp" loading="eager" decoding="async" class={className} />
+  </span>
+) : (
+  <Image
+    src={logo}
+    alt="Winapps"
+    width={width}
+    height={height}
+    densities={[1, 2]}
+    format="webp"
+    loading={eager ? "eager" : "lazy"}
+    decoding="async"
+    class={className}
+  />
+)}
+
+<style>
+  .logo-anim { position: relative; display: inline-flex; }
+  /* The crop is larger than the finished logo (the ribbon swirls outside it);
+     these offsets put its last frame exactly over the static logo. */
+  .logo-anim :global(.logo-anim-img) {
+    position: absolute;
+    left: var(--anim-left);
+    top: var(--anim-top);
+    height: var(--anim-height);
+    width: auto;
+    max-width: none;
+    pointer-events: none;
+  }
+  /* Opacity, not visibility: the static logo keeps the link's accessible name. */
+  .logo-anim.is-playing > :global(img:not(.logo-anim-img)) { opacity: 0; }
+</style>
+
+<script>
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    for (const wrap of document.querySelectorAll<HTMLElement>("[data-logo-anim]")) {
+      const anim = new Image();
+      anim.alt = "";
+      anim.setAttribute("aria-hidden", "true");
+      anim.className = "logo-anim-img";
+      anim.onload = () => {
+        wrap.append(anim);
+        wrap.classList.add("is-playing");
+        // The animation plays once; its last frames are the finished logo,
+        // so swapping back to the crisp static file is seamless.
+        setTimeout(() => {
+          wrap.classList.remove("is-playing");
+          anim.remove();
+        }, Number(wrap.dataset.duration) || 2000);
+      };
+      anim.src = wrap.dataset.logoAnim!;
+    }
+  }
+</script>

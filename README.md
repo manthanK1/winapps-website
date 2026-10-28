@@ -60,5 +60,6 @@ The design system is documented at `/styleguide/` (not indexed by search engines
 ## Brand
 
 - Logo: `brand/source/winapps-logo-original.png`, used as supplied with only the grey background removed. Light backgrounds only until a reversed version exists.
+- Header logo animation: the ribbon animation from www.winapps.co.in (`brand/source/header-logo.gif`) plays once on each page load, then the static logo takes over. After replacing the GIF, run `node scripts/convert-logo-gif.mjs`.
 - Colours: teal leads, orange/amber for calls to action and small accents. Tokens and contrast notes are in `src/styles/global.css`; run `node scripts/contrast.mjs` to re-check.
 - Type: Schibsted Grotesk (headings) and Inter (text), both SIL Open Font License, self-hosted.
