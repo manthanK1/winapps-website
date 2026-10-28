@@ -24,11 +24,11 @@ export const SITE = {
 // from the content collections); `href` is where the item itself leads.
 export const NAV = [
   { label: "What we do", href: "/services/", menu: "what-we-do" },
-  { label: "Training", href: "/training/", menu: "training" },
   { label: "Work", href: "/work/" },
   { label: "How we work", href: "/how-we-work/" },
   { label: "Insights", href: "/blog/", menu: "insights" },
   { label: "About", href: "/about/" },
+  { label: "Training", href: "/training/", menu: "training" },
 ] as const;
 
 export const INSIGHTS = [
