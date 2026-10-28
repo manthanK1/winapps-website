@@ -17,104 +17,124 @@ const activeMenu = (menu: string) =>
   menu === "what-we-do"
     ? isActive(current, "/services/") || isActive(current, "/industries/")
     : INSIGHTS.some((i) => isActive(current, i.href));
+// Below lg the primary nav sits behind "Menu"; these two stay in view on a
+// second row of the bar.
+const quickLinks = NAV.filter((item) => item.label === "What we do" || item.label === "How we work");
 ---
 <header class="site-header fixed inset-x-0 top-0 z-50 px-2 sm:px-4 lg:px-6" data-site-header>
-  <div class="header-bar mx-auto flex h-16 max-w-[86rem] items-center gap-2 rounded-b-3xl bg-white pl-4 pr-2 sm:pl-6 sm:pr-3">
-    <a href={href("/")} class="-my-1 flex shrink-0 items-center rounded-sm">
-      <Logo height={44} eager animated class="h-10 w-auto lg:h-11" />
-    </a>
+  <div class="header-bar mx-auto max-w-[86rem] rounded-b-3xl bg-white pl-4 pr-2 sm:pl-6 sm:pr-3">
+    <div class="flex h-14 items-center gap-2 lg:h-16">
+      <a href={href("/")} class="-my-1 flex shrink-0 items-center rounded-sm">
+        <Logo height={44} eager animated class="h-10 w-auto lg:h-11" />
+      </a>
 
-    <nav aria-label="Primary" class="ml-6 hidden lg:block">
-      <ul class="flex items-center gap-0.5">
-        {NAV.map((item) => "menu" in item ? (
-          <li class="relative" data-menu>
-            <button
-              type="button"
-              class="nav-link"
-              aria-expanded="false"
-              aria-controls={`menu-${item.menu}`}
-              data-active={activeMenu(item.menu) ? "" : undefined}
-              data-menu-trigger
-            >
-              {item.label} <Icon name="chevron-down" size={16} class="nav-chevron" />
-            </button>
-            <div id={`menu-${item.menu}`} class:list={["nav-panel", item.menu === "what-we-do" ? "w-[46rem]" : "w-[24rem]"]} hidden data-menu-panel>
-              {item.menu === "what-we-do" ? (
-                <div class="grid grid-cols-[1.45fr_1fr] gap-2">
-                  <div class="rounded-2xl bg-paper p-3">
-                    <p class="eyebrow px-3 pt-2">Services</p>
-                    <ul class="mt-2 grid gap-0.5">
-                      {services.map((s) => (
-                        <li>
-                          <a class="menu-item" href={href(`/services/${s.id}/`)} aria-current={isActive(current, `/services/${s.id}/`) ? "page" : undefined}>
-                            <span class="menu-icon"><Icon name={s.data.icon as IconName} size={18} /></span>
-                            <span class="min-w-0">
-                              <span class="block text-sm font-semibold text-ink">{s.data.title}</span>
-                              <span class="block truncate text-xs text-muted">{s.data.summary.split(". ")[0]}</span>
-                            </span>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                    <a class="line-link ml-3 text-sm" href={href("/services/")}><span>All services</span> <Icon name="arrow-right" size={16} /></a>
+      <nav aria-label="Primary" class="ml-6 hidden lg:block">
+        <ul class="flex items-center gap-0.5">
+          {NAV.map((item) => "menu" in item ? (
+            <li class="relative" data-menu>
+              <button
+                type="button"
+                class="nav-link"
+                aria-expanded="false"
+                aria-controls={`menu-${item.menu}`}
+                data-active={activeMenu(item.menu) ? "" : undefined}
+                data-menu-trigger
+              >
+                {item.label} <Icon name="chevron-down" size={16} class="nav-chevron" />
+              </button>
+              <div id={`menu-${item.menu}`} class:list={["nav-panel", item.menu === "what-we-do" ? "w-[46rem]" : "w-[24rem]"]} hidden data-menu-panel>
+                {item.menu === "what-we-do" ? (
+                  <div class="grid grid-cols-[1.45fr_1fr] gap-2">
+                    <div class="rounded-2xl bg-paper p-3">
+                      <p class="eyebrow px-3 pt-2">Services</p>
+                      <ul class="mt-2 grid gap-0.5">
+                        {services.map((s) => (
+                          <li>
+                            <a class="menu-item" href={href(`/services/${s.id}/`)} aria-current={isActive(current, `/services/${s.id}/`) ? "page" : undefined}>
+                              <span class="menu-icon"><Icon name={s.data.icon as IconName} size={18} /></span>
+                              <span class="min-w-0">
+                                <span class="block text-sm font-semibold text-ink">{s.data.title}</span>
+                                <span class="block truncate text-xs text-muted">{s.data.summary.split(". ")[0]}</span>
+                              </span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                      <a class="line-link ml-3 text-sm" href={href("/services/")}><span>All services</span> <Icon name="arrow-right" size={16} /></a>
+                    </div>
+                    <div class="p-3">
+                      <p class="eyebrow px-3 pt-2">Industries</p>
+                      <ul class="mt-2 grid gap-0.5">
+                        {industries.map((i) => (
+                          <li><a class="menu-item py-2 text-sm font-semibold text-ink" href={href(`/industries/#${i.id}`)}>{i.data.name}</a></li>
+                        ))}
+                      </ul>
+                      <a class="line-link ml-3 text-sm" href={href("/industries/")}><span>All industries</span> <Icon name="arrow-right" size={16} /></a>
+                    </div>
                   </div>
-                  <div class="p-3">
-                    <p class="eyebrow px-3 pt-2">Industries</p>
-                    <ul class="mt-2 grid gap-0.5">
-                      {industries.map((i) => (
-                        <li><a class="menu-item py-2 text-sm font-semibold text-ink" href={href(`/industries/#${i.id}`)}>{i.data.name}</a></li>
-                      ))}
-                    </ul>
-                    <a class="line-link ml-3 text-sm" href={href("/industries/")}><span>All industries</span> <Icon name="arrow-right" size={16} /></a>
-                  </div>
-                </div>
-              ) : (
-                <ul class="grid gap-0.5 p-1">
-                  {INSIGHTS.map((i) => (
-                    <li>
-                      <a class="menu-item" href={href(i.href)} aria-current={isActive(current, i.href) ? "page" : undefined}>
-                        <span class="menu-icon"><Icon name={insightIcons[i.href]} size={18} /></span>
-                        <span>
-                          <span class="block text-sm font-semibold text-ink">{i.label}</span>
-                          <span class="block text-xs text-muted">{i.text}</span>
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </li>
-        ) : (
+                ) : (
+                  <ul class="grid gap-0.5 p-1">
+                    {INSIGHTS.map((i) => (
+                      <li>
+                        <a class="menu-item" href={href(i.href)} aria-current={isActive(current, i.href) ? "page" : undefined}>
+                          <span class="menu-icon"><Icon name={insightIcons[i.href]} size={18} /></span>
+                          <span>
+                            <span class="block text-sm font-semibold text-ink">{i.label}</span>
+                            <span class="block text-xs text-muted">{i.text}</span>
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </li>
+          ) : (
+            <li>
+              <a href={href(item.href)} class="nav-link" aria-current={isActive(current, item.href) ? "page" : undefined}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="ml-auto flex items-center gap-2">
+        <a href={SITE.whatsappHref} rel="noopener" class="btn btn-secondary btn-sm px-3 sm:px-4" aria-label="Chat on WhatsApp">
+          <Icon name="message-circle" size={18} /><span class="hidden sm:inline">WhatsApp</span>
+        </a>
+        <a href={href("/contact/")} class="btn btn-dark btn-sm hidden lg:inline-flex">Book a call</a>
+        <button
+          type="button"
+          class="btn btn-ghost btn-sm px-3 lg:hidden"
+          aria-haspopup="dialog"
+          aria-controls="mobile-menu"
+          data-menu-open
+        >
+          <Icon name="menu" size={22} /> Menu
+        </button>
+      </div>
+    </div>
+
+    <nav aria-label="Quick links" class="pb-2 pr-2 sm:pr-3 lg:hidden">
+      <ul class="grid grid-cols-2 gap-2">
+        {quickLinks.map((item) => (
           <li>
-            <a href={href(item.href)} class="nav-link" aria-current={isActive(current, item.href) ? "page" : undefined}>{item.label}</a>
+            <a
+              href={href(item.href)}
+              class="nav-link quick-link"
+              aria-current={isActive(current, item.href) ? "page" : undefined}
+              data-active={"menu" in item && activeMenu(item.menu) ? "" : undefined}
+            >{item.label}</a>
           </li>
         ))}
       </ul>
     </nav>
-
-    <div class="ml-auto flex items-center gap-2">
-      <a href={SITE.whatsappHref} rel="noopener" class="btn btn-secondary btn-sm px-3 sm:px-4" aria-label="Chat on WhatsApp">
-        <Icon name="message-circle" size={18} /><span class="hidden sm:inline">WhatsApp</span>
-      </a>
-      <a href={href("/contact/")} class="btn btn-dark btn-sm hidden lg:inline-flex">Book a call</a>
-      <button
-        type="button"
-        class="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-ink hover:bg-paper lg:hidden"
-        aria-haspopup="dialog"
-        aria-controls="mobile-menu"
-        data-menu-open
-      >
-        <Icon name="menu" size={22} /> Menu
-      </button>
-    </div>
   </div>
 </header>
 
 <dialog id="mobile-menu" aria-label="Site menu" class="mobile-menu m-0 h-dvh max-h-none w-full max-w-none bg-white p-0 text-ink backdrop:bg-ink/40">
   <div class="container-site flex h-16 items-center justify-between">
     <a href={href("/")} class="flex items-center rounded-sm"><Logo height={40} class="h-10 w-auto" /></a>
-    <button type="button" class="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-ink hover:bg-paper" data-menu-close>
+    <button type="button" class="btn btn-ghost btn-sm px-3" data-menu-close>
       <Icon name="x" size={22} /> Close
     </button>
   </div>
@@ -183,9 +203,9 @@ const activeMenu = (menu: string) =>
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--color-ink);
-    transition: background-color 0.25s var(--ease-expo);
+    transition: background-color 0.25s var(--ease-expo), transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
   }
-  .nav-link:hover, .nav-link[aria-expanded="true"] { background: var(--color-paper); }
+  .nav-link[aria-expanded="true"] { background: var(--color-paper); }
   .nav-link[aria-current="page"]::after,
   .nav-link[data-active]::after {
     content: "";
@@ -198,6 +218,11 @@ const activeMenu = (menu: string) =>
   }
   .nav-link :global(.nav-chevron) { color: var(--color-stone-500); transition: transform 0.3s var(--ease-quart); }
   .nav-link[aria-expanded="true"] :global(.nav-chevron) { transform: rotate(180deg); }
+
+  /* Mobile quick links: filled so they read as buttons; the current one is teal. */
+  .quick-link { justify-content: center; width: 100%; min-height: 2.5rem; background: var(--color-paper); }
+  .quick-link::after { display: none; }
+  .quick-link[aria-current="page"], .quick-link[data-active] { background: var(--color-teal-50); color: var(--color-teal-800); }
 
   .nav-panel {
     position: absolute;
@@ -220,11 +245,21 @@ const activeMenu = (menu: string) =>
     min-height: 2.75rem;
     padding: 0.375rem 0.75rem;
     border-radius: 0.875rem;
-    transition: background-color 0.25s var(--ease-expo);
+    transition: background-color 0.25s var(--ease-expo), transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
   }
-  .menu-item:hover, .menu-item[aria-current="page"] { background: var(--color-white); }
-  .nav-panel :global(.menu-item:hover) { background: var(--color-paper); }
-  .nav-panel .bg-paper :global(.menu-item:hover) { background: var(--color-white); }
+  .menu-item[aria-current="page"] { background: var(--color-white); }
+
+  /* Same hover as .btn (global.css): pops up in the logo's yellow until pressed. */
+  @media (hover: hover) {
+    .nav-link:hover, .menu-item:hover {
+      transform: translateY(-3px);
+      background: var(--color-amber-400);
+      box-shadow: var(--shadow-pop);
+    }
+    /* Muted text is 3.4:1 on the yellow; stone-700 is 4.9:1. */
+    .menu-item:hover .text-muted { color: var(--color-stone-700); }
+  }
+  .nav-link:active, .menu-item:active { transform: translateY(0); box-shadow: none; transition-duration: 0.08s; }
   .menu-icon {
     display: grid;
     place-items: center;

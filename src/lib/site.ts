@@ -3,7 +3,7 @@
 
 export const SITE = {
   name: "Winapps",
-  legalName: "Winapps", // TODO: registered legal entity name
+  legalName: "Winapps Software Solutions Pvt. Ltd.",
   tagline: "Senior engineers for software that has to work.",
   description:
     "Winapps is a software engineering partner to companies in India, the US, the UK and Europe since 2013: AI & machine learning, web and mobile products, cloud, modernization and dedicated teams.",

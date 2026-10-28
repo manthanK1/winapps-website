@@ -33,9 +33,12 @@ const linkClass = "inline-flex min-h-11 items-center text-sm text-stone-700 tran
   <Hills variant="footer" class="pointer-events-none absolute inset-x-0 top-0 h-[24rem] w-full sm:h-[30rem]" />
   <div class="relative mx-2 sm:mx-4 lg:mx-auto lg:max-w-[80rem]">
     <div class="rounded-t-panel bg-paper px-5 pt-10 sm:px-10 sm:pt-12 lg:px-12">
-      <nav aria-label="Footer" class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 lg:grid-cols-5">
-        <div class="col-span-2 md:col-span-4 lg:col-span-1">
-          <a href={href("/")} class="inline-flex rounded-sm"><Logo height={64} class="h-16 w-auto" /></a>
+      <nav aria-label="Footer" class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 lg:grid-cols-6">
+        <div class="col-span-2 md:col-span-4 lg:col-span-2">
+          <div class="flex items-center gap-4">
+            <a href={href("/")} class="inline-flex shrink-0 rounded-sm"><Logo height={64} class="h-16 w-auto" /></a>
+            <p class="max-w-[12rem] font-display text-h4 font-semibold leading-tight text-ink">{SITE.legalName}</p>
+          </div>
           <p class="mt-5 max-w-xs text-sm text-stone-700">
             Senior software engineering partner to companies in India, the US, the UK and Europe. Est. {SITE.founded}.
           </p>
