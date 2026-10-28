@@ -42,7 +42,7 @@ const crumbs = [{ name: "News", path: "/news/" }, { name: d.title, path }];
           <ul class="mt-3 space-y-1">
             {more.map((n) => (
               <li>
-                <a href={href(`/news/${n.id}/`)} class="group flex min-h-11 items-start justify-between gap-3 rounded-lg p-2 hover:bg-white">
+                <a href={href(`/news/${n.id}/`)} class="pop group flex min-h-11 items-start justify-between gap-3 rounded-lg p-2 [--pop-inset:0]">
                   <span>
                     <span class="block text-sm font-semibold text-ink">{n.data.title}</span>
                     <span class="block text-xs text-muted">{n.data.dateLabel}</span>

@@ -324,7 +324,6 @@
   .prose-site li + li { margin-top: 0.4em; }
   .prose-site li::marker { color: var(--color-teal-600); }
   .prose-site a { color: var(--color-teal-700); text-decoration: underline; text-underline-offset: 3px; }
-  .prose-site a:hover { color: var(--color-teal-900); }
   .prose-site strong { font-weight: 600; color: var(--color-ink); }
   /* Tables (blog cost guides). Without JS, cells wrap so tables never widen
      the page; with JS each table sits in a focusable scroll box (.table-wrap). */
@@ -355,11 +354,46 @@
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
-    transition: color 0.1s ease-out;
+    transition: color 0.1s ease-out, background-size 0.2s var(--ease-out);
   }
-  .link:hover { color: var(--color-teal-900); text-decoration-thickness: 2px; }
   .on-dark .link { color: var(--color-teal-100); }
-  .on-dark .link:hover { color: var(--color-white); }
+
+  /* Inline text links: a band of the logo's yellow, like a highlighter,
+     on hover (ink text, 9.8:1). Works across line breaks. */
+  .link, .prose-site a, .hover-mark {
+    background: linear-gradient(var(--color-amber-400), var(--color-amber-400)) 0 50% / 0 1.5em no-repeat;
+    transition: color 0.1s ease-out, background-size 0.2s var(--ease-out);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  :is(.link, .prose-site a, .hover-mark):hover { background-size: 100% 1.5em; color: var(--color-ink); text-decoration-thickness: 2px; }
+  .on-dark .link:hover { color: var(--color-ink); }
+
+  /* Links that aren't buttons or inline text (text CTAs, footer, contact and
+     menu links, FAQ questions) pop like the buttons: a yellow key cap drawn
+     behind the text, so nothing shifts. --pop-inset sets its reach. */
+  :is(.pop, .line-link, .faq-item summary) {
+    position: relative;
+    isolation: isolate;
+    transition: transform 0.25s var(--ease-out), color 0.15s linear;
+  }
+  :is(.pop, .line-link, .faq-item summary)::before {
+    content: "";
+    position: absolute;
+    inset: var(--pop-inset, 0.25rem -0.625rem);
+    z-index: -1;
+    border-radius: 0.75rem;
+    background: var(--color-amber-400);
+    box-shadow: var(--shadow-pop);
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+  }
+  @media (hover: hover) {
+    :is(.pop, .line-link, .faq-item summary):hover { transform: translateY(-3px); color: var(--color-ink); }
+    :is(.pop, .line-link, .faq-item summary):hover::before { opacity: 1; }
+  }
+  :is(.pop, .line-link, .faq-item summary):active { transform: none; transition-duration: 0.08s; }
+  :is(.pop, .line-link, .faq-item summary):active::before { box-shadow: none; }
 
   /* Line link: text CTA with a 2px track and an ink fill that sweeps in on
      hover. Wrap the label in a <span>. */
@@ -477,10 +511,10 @@
     border-bottom: 1px solid rgb(91 107 108 / 0.16);
     border-radius: var(--radius-lg);
   }
-  .card-interactive { transition: background-color 0.3s var(--ease-expo), border-color 0.3s var(--ease-expo), transform 0.4s var(--ease-quart); }
-  @media (hover: hover) {
-    .card-interactive:hover { transform: translateY(-2px); border-color: var(--color-teal-200); }
-    .tile.card-interactive:hover { background: var(--color-white); }
+  /* Hover (yellow pop, like the buttons): see "Hover pop on cards" below. */
+  .card-interactive {
+    transition: background-color 0.3s var(--ease-expo), border-color 0.3s var(--ease-expo),
+      transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
   }
   /* Small ↗ in a card corner */
   .corner-arrow {
@@ -563,7 +597,7 @@
     color: var(--color-ink);
   }
   .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item summary:hover { color: var(--color-teal-800); }
+  .faq-item summary { --pop-inset: 0.625rem -0.75rem; }
   .faq-item summary .icon { flex: none; margin-top: 0.2em; color: var(--color-teal-700); transition: transform 0.4s var(--ease-quart); }
   .faq-item[open] summary .icon { transform: rotate(45deg); }
   .faq-item .faq-body { padding-bottom: 1.5rem; color: var(--color-stone-700); max-width: 65ch; }
@@ -621,6 +655,25 @@
   .choice-chip input:checked + span { background: var(--color-teal-700); color: var(--color-white); }
   .choice-chip input:focus-visible + span { outline: 3px solid var(--color-teal-600); outline-offset: 2px; }
 }
+
+/* ==========================================================================
+   Hover pop on cards: clickable cards and tiles lift in the logo's yellow,
+   like the buttons. Outside the layers so it beats the utility colours set
+   inside cards; accents and muted text darken to stay readable on yellow.
+   ========================================================================== */
+@media (hover: hover) {
+  .card-interactive:hover {
+    --theme-bg: var(--color-amber-400);
+    --theme-accent: var(--color-teal-900);
+    --theme-highlight: var(--color-teal-900);
+    background-color: var(--color-amber-400);
+    border-color: var(--color-amber-400);
+    box-shadow: var(--shadow-pop);
+    transform: translateY(-3px);
+  }
+  .card-interactive:hover :is(.text-muted, .text-stone-500, .text-stone-600) { color: var(--color-stone-700); }
+}
+.card-interactive:active { transform: none; box-shadow: none; transition-duration: 0.08s; }
 
 /* ==========================================================================
    Motion: scroll reveal (only when JS runs and motion is allowed)
