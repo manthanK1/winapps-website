@@ -1,0 +1,22 @@
+---
+// A row of technology logos on raised tiles (training tracks and courses).
+import { techLogo, type TechLogo } from "../lib/tech-logos";
+
+interface Props {
+  logos: readonly TechLogo[];
+  small?: boolean;
+  class?: string;
+}
+const { logos, small = false, class: className } = Astro.props;
+const size = small ? 20 : 28;
+---
+<ul class:list={["flex flex-wrap gap-2", className]} aria-label="Technologies">
+  {logos.map((key) => {
+    const { src, name } = techLogo(key);
+    return (
+      <li class:list={["logo-tile", { "logo-tile-sm": small }]} title={name}>
+        <img src={src} alt={name} width={size} height={size} loading="lazy" decoding="async" />
+      </li>
+    );
+  })}
+</ul>

@@ -25,7 +25,6 @@ import layers from "lucide-static/icons/layers.svg?raw";
 import lock from "lucide-static/icons/lock.svg?raw";
 import mail from "lucide-static/icons/mail.svg?raw";
 import menu from "lucide-static/icons/menu.svg?raw";
-import messageCircle from "lucide-static/icons/message-circle.svg?raw";
 import newspaper from "lucide-static/icons/newspaper.svg?raw";
 import phone from "lucide-static/icons/phone.svg?raw";
 import plane from "lucide-static/icons/plane.svg?raw";
@@ -39,6 +38,8 @@ import truck from "lucide-static/icons/truck.svg?raw";
 import userCheck from "lucide-static/icons/user-check.svg?raw";
 import users from "lucide-static/icons/users.svg?raw";
 import x from "lucide-static/icons/x.svg?raw";
+// Brand glyph (Simple Icons, CC0), the one filled icon.
+import whatsapp from "../assets/icons/whatsapp.svg?raw";
 
 export const ICONS = {
   "app-window": appWindow,
@@ -66,7 +67,6 @@ export const ICONS = {
   lock,
   mail,
   menu,
-  "message-circle": messageCircle,
   newspaper,
   phone,
   plane,
@@ -79,6 +79,7 @@ export const ICONS = {
   truck,
   "user-check": userCheck,
   users,
+  whatsapp,
   x,
 } as const;
 

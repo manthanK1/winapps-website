@@ -1,6 +1,7 @@
 import { defineCollection, reference } from "astro:content";
 import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { TECH_LOGO_KEYS } from "./lib/tech-logos";
 
 // Content lives in src/content/. Edit the Markdown/YAML files there; the
 // schemas below catch missing or misspelled fields at build time.
@@ -67,6 +68,26 @@ const industries = defineCollection({
   }),
 });
 
+// Training tracks, each with its courses. A logo key not in
+// src/lib/tech-logos.ts fails the build.
+const techLogo = z.enum(TECH_LOGO_KEYS);
+const training = defineCollection({
+  loader: file("src/content/training.yaml"),
+  schema: z.object({
+    name: z.string(),
+    order: z.number(),
+    intro: z.string(),
+    logos: z.array(techLogo).min(1),
+    courses: z.array(z.object({
+      id: z.string().regex(/^[a-z0-9-]+$/),
+      name: z.string(),
+      logos: z.array(techLogo).min(1),
+      summary: z.string(),
+      topics: z.array(z.string()).min(3),
+    })).min(1),
+  }),
+});
+
 // Real quotes only, with written permission. Files starting with "_" are ignored.
 const testimonials = defineCollection({
   loader: glob({ pattern: "[!_]*.md", base: "./src/content/testimonials" }),
@@ -127,4 +148,4 @@ const news = defineCollection({
   }),
 });
 
-export const collections = { services, work, faq, industries, testimonials, clients, team, blog, news };
+export const collections = { services, work, faq, industries, training, testimonials, clients, team, blog, news };

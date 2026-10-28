@@ -24,6 +24,7 @@ export const SITE = {
 // from the content collections); `href` is where the item itself leads.
 export const NAV = [
   { label: "What we do", href: "/services/", menu: "what-we-do" },
+  { label: "Training", href: "/training/", menu: "training" },
   { label: "Work", href: "/work/" },
   { label: "How we work", href: "/how-we-work/" },
   { label: "Insights", href: "/blog/", menu: "insights" },
@@ -47,6 +48,11 @@ export const NEEDS = [
 ] as const;
 
 export const BUDGETS = ["Not sure yet", "$5,000 – $10,000", "$10,000 – $25,000", "$25,000 – $50,000", "$50,000+"] as const;
+
+/** WhatsApp chat link with the first message already typed. */
+export function whatsappFor(message: string): string {
+  return `${SITE.whatsappHref}?text=${encodeURIComponent(message)}`;
+}
 
 /** Contact page link that pre-selects the need for a practice. */
 export function contactFor(serviceId: string): string {
