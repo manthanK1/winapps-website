@@ -38,7 +38,7 @@ const tones = ["teal", "orange", "amber"] as const;
 >
   <!-- Hero: sky, hills and the clay mark; the headline sits on the front hill. -->
   <section class="relative overflow-hidden" aria-labelledby="hero-title">
-    <div class="relative bg-gradient-to-b from-teal-100 to-teal-50 pt-20 lg:pt-24">
+    <div class="relative bg-gradient-to-b from-teal-100 to-teal-50 pt-[calc(var(--header-h)+1rem)] lg:pt-24">
       <Hills variant="hero" class="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] w-full" />
       <div class="relative mx-auto flex h-[17rem] max-w-[30rem] items-end justify-center sm:h-[21rem] lg:h-[26rem]">
         <ClayMark size={384} eager class="block w-[14rem] sm:w-[18rem] lg:w-[24rem]" />
