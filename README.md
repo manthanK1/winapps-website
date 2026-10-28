@@ -16,6 +16,7 @@ Most text lives in `src/content/` and can be edited without touching code:
 | News posts (slugs match the old site) | `src/content/news/*.md` |
 | Home page FAQ | `src/content/faq.yaml` |
 | Industries | `src/content/industries.yaml` |
+| Training tracks and courses (logos, syllabus) | `src/content/training.yaml` |
 | Testimonials (hidden until one exists) | `src/content/testimonials/`: copy `_TEMPLATE.md` |
 | Client logos (hidden until one exists) | `src/content/clients/`: copy `_TEMPLATE.md` |
 | Leadership (hidden until one exists) | `src/content/team/`: copy `_TEMPLATE.md` |

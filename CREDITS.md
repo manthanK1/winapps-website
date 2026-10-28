@@ -20,3 +20,14 @@ Photos were found through [Openverse](https://openverse.org) and imported with `
 | `src/assets/images/industries/travel.jpg` | Airport gate corridor (Pro Image Photography) | [StockSnap](https://stocksnap.io/photo/airport-gate-VMT8H7IHT9) | CC0 1.0 |
 
 When you replace any of these with your own photos, update this table.
+
+# Logo credits
+
+Technology logos on the training courses (`src/assets/tech-logos/`) and the WhatsApp glyph (`src/assets/icons/whatsapp.svg`) are the companies' own marks, shown unaltered to name the technology each course teaches. They are trademarks of their owners; using them does not imply endorsement or partnership.
+
+| Files | Source | Licence of the files |
+| --- | --- | --- |
+| All of `src/assets/tech-logos/` except the four below | [Devicon](https://devicon.dev) 2.18.0 (`*-original.svg`; Kubernetes `-plain`) | MIT |
+| `dotnet.svg`, `unity.svg`, `meta.svg`, `instagram.svg`, `src/assets/icons/whatsapp.svg` | [Simple Icons](https://simpleicons.org) 16.36.0, filled with each brand's colour | CC0 1.0 |
+
+Some owners (Apple, Amazon Web Services, Oracle, Google) restrict use of their logos by companies that aren't licensed partners. If one asks for its logo to be removed, delete its key from the course in `src/content/training.yaml`.

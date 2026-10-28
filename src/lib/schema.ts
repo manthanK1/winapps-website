@@ -73,6 +73,24 @@ export function faqPage(items: { question: string; answer: string }[]) {
   };
 }
 
+export function courseList(site: URL | undefined, courses: { id: string; name: string; summary: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: courses.map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "Course",
+        name: c.name,
+        description: c.summary,
+        url: absolute(`/training/#${c.id}`, site),
+        provider: { "@id": absolute("/", site) + "#organization" },
+      },
+    })),
+  };
+}
+
 export function service(site: URL | undefined, s: { name: string; description: string; path: string }) {
   return {
     "@context": "https://schema.org",
